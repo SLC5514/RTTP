@@ -3,3 +3,11 @@
     <h1>This is an about page</h1>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.about {
+  h1 {
+    font-size: 6px;
+  }
+}
+</style>
