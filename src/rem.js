@@ -1,4 +1,4 @@
-const baseSize = 32;
+const baseSize = 20;
 
 // 设置 rem 函数
 function setRem() {

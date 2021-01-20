@@ -3,8 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// rem适配
+import 'normalize.css/normalize.css'
+
+import './vant'
 import './rem'
+
+import vhCheck from 'vh-check'
+vhCheck('browser-address-bar')
+
+import './styles/main.scss'
 
 Vue.config.productionTip = false
 
