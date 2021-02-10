@@ -11,19 +11,19 @@
 
 ::-webkit-scrollbar-track {
   width: 6px;
-  background-color: rgba(#101F1C, 0.1);
+  background-color: rgba(#101f1c, 0.1);
   border-radius: 2em;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(#101F1C, 0.5);
+  background-color: rgba(#101f1c, 0.5);
   background-clip: padding-box;
   min-height: 28px;
   border-radius: 2em;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(#101F1C, 0.8);
+  background-color: rgba(#101f1c, 0.8);
 }
 
 /* 格式化 */
@@ -49,11 +49,11 @@ input,
 textarea,
 select {
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 li {
-  list-style: none
+  list-style: none;
 }
 
 a {
@@ -140,11 +140,11 @@ img {
 }
 
 .text-left {
-  text-align: left
+  text-align: left;
 }
 
 .text-right {
-  text-align: right
+  text-align: right;
 }
 
 /*文字超出显示省略号*/
@@ -184,7 +184,7 @@ img {
 }
 
 .word-wrap {
-  word-wrap: break-word
+  word-wrap: break-word;
 }
 
 .page-title {
@@ -286,11 +286,11 @@ img {
 }
 
 .table {
-  display: table
+  display: table;
 }
 
 .table-cell {
-  display: table-cell
+  display: table-cell;
 }
 
 .vertical-align-middle {
@@ -307,7 +307,7 @@ img {
   display: block;
   height: 0;
   clear: both;
-  visibility: hidden
+  visibility: hidden;
 }
 
 /*左浮动，右浮动*/
@@ -402,43 +402,43 @@ img {
 @for $i from 0 through 90 {
   @if $i % 5==0 {
     .paddingT#{$i} {
-      padding-top: #{$i}px
+      padding-top: #{$i}px;
     }
 
     .paddingL#{$i} {
-      padding-left: #{$i}px
+      padding-left: #{$i}px;
     }
 
     .paddingR#{$i} {
-      padding-right: #{$i}px
+      padding-right: #{$i}px;
     }
 
     .paddingB#{$i} {
-      padding-bottom: #{$i}px
+      padding-bottom: #{$i}px;
     }
 
     .marginT#{$i} {
-      margin-top: #{$i}px
+      margin-top: #{$i}px;
     }
 
     .marginL#{$i} {
-      margin-left: #{$i}px
+      margin-left: #{$i}px;
     }
 
     .marginR#{$i} {
-      margin-right: #{$i}px
+      margin-right: #{$i}px;
     }
 
     .marginB#{$i} {
-      margin-bottom: #{$i}px
+      margin-bottom: #{$i}px;
     }
 
     .padding#{$i} {
-      padding: #{$i}px
+      padding: #{$i}px;
     }
 
     .margin#{$i} {
-      margin: #{$i}px
+      margin: #{$i}px;
     }
   }
 }
@@ -542,7 +542,7 @@ img {
 
 /* 必填项 * 图标 */
 .required-fields:before {
-  content: ' *';
+  content: " *";
   color: $error;
   font-size: 20px;
 }
@@ -557,8 +557,10 @@ body {
 }
 
 #app {
+  max-width: 750px;
   height: 100%;
   font-size: 14px;
+  margin: 0 auto;
   overflow: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
