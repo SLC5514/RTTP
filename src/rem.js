@@ -1,4 +1,4 @@
-const baseSize = 50;
+const baseSize = 50; // 蓝湖须设置相应尺寸
 
 // 设置 rem 函数
 function setRem() {
