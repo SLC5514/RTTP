@@ -1,29 +1,53 @@
 <template>
   <div :class="'home ' + (pageType === 0 ? 'bg1' : 'bg2')">
     <div class="rule-btn pointer">活动规则</div>
-    <div :class="'preview ' + (pageType === 0 ? '' : 'poster')"></div>
-    <div v-if="pageType !== 2" v-swiper:mySwiper="swiperOption">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in coverData" :key="index">
-          <div class="item pointer">{{ item }}</div>
-        </div>
-      </div>
+    <!-- 预览成品 -->
+    <swiper v-show="pageType === 0" class="gallery-top" :options="swiperOptionTop" ref="swiperTop">
+      <swiper-slide v-for="(item, index) in previewList" :key="index">
+        <div class="item pointer">{{ index }}</div>
+      </swiper-slide>
+    </swiper>
+    <!-- 报告生成效果 -->
+    <div v-if="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
+      {{ activeIndex }}
     </div>
+    <!-- 成品缩略图 -->
+    <swiper v-show="pageType !== 2" class="gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
+      <swiper-slide v-for="(item, index) in previewList" :key="index">
+        <div class="item pointer">{{ index }}</div>
+      </swiper-slide>
+    </swiper>
     <div class="info">超过<span>10000</span>人通过海报邀请好友获得推荐奖励</div>
-    <div v-if="pageType === 0" class="recommend-btn pointer"></div>
+    <!-- 推荐按钮 -->
+    <van-uploader v-if="pageType === 0" :after-read="generateRead">
+      <div class="recommend-btn pointer"></div>
+    </van-uploader>
+    <!-- 重新生成按钮 -->
     <div v-if="pageType === 1">
-      <div class="reselect-btn pointer">重新选图</div>
-      <div class="generate-btn pointer">生成海报</div>
+      <van-uploader :after-read="generateRead">
+        <div class="reselect-btn pointer">重新选图</div>
+      </van-uploader>
+      <div class="generate-btn pointer" @click="generatePointer">生成海报</div>
     </div>
-    <div v-if="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">复制邀请语 得奖几率翻倍！</div>
+    <!-- 复制按钮 -->
+    <div v-if="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">
+      复制邀请语 得奖几率翻倍！
+    </div>
+    <!-- 复制对话框 -->
     <van-dialog className="copy-dialog" width="9.9rem" v-model="showCopyDialog" :showConfirmButton="false"
       closeOnClickOverlay>
       <div class="clearfix">
         <div class="change-btn pull-right pointer">换一换</div>
       </div>
-      <p class="text-content">之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习 ，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！</p>
-      <div class="conform-btn pointer" @click="showCopyDialog = false">一键复制邀请语</div>
+      <p class="text-content">
+        之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习
+        ，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！
+      </p>
+      <div class="conform-btn pointer" @click="showCopyDialog = false">
+        一键复制邀请语
+      </div>
     </van-dialog>
+    <!-- 礼物对话框 -->
     <van-dialog className="gift-dialog" width="9.9rem" v-model="showGiftDialog" :showConfirmButton="false"
       closeOnClickOverlay>
       <img src="../assets/alert.png" />
@@ -33,32 +57,87 @@
 </template>
 
 <script>
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import 'swiper/css/swiper.css'
+
 const rootSize = parseFloat(document.documentElement.style.fontSize)
 
 export default {
   name: 'Home',
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
   data() {
+    const self = this
     return {
       pageType: 0, // 0 默认 1 预览 2 已生成
       showCopyDialog: false,
       showGiftDialog: false,
 
-      coverData: [1, 2, 3, 4, 5],
-      swiperOption: {
+      activeIndex: 0,
+      previewList: [1, 2, 3, 4, 5],
+      swiperOptionTop: {
+        loop: true,
+        loopedSlides: 5,
+        spaceBetween: rootSize * 0.74,
+      },
+      swiperOptionThumbs: {
+        loop: true,
+        loopedSlides: 5,
         slidesPerView: 'auto',
         spaceBetween: rootSize * 0.74,
+        touchRatio: 0.2,
+        slideToClickedSlide: true,
+        watchSlidesVisibility: true,
+        on: {
+          slideChangeTransitionEnd: function () {
+            self.activeIndex = this.activeIndex % self.previewList.length
+          },
+        },
       },
     }
   },
-  mounted() {},
-  methods: {},
+  // watch: {
+  //   pageType() {
+  //     this.thumbsInit()
+  //   },
+  // },
+  mounted() {
+    this.thumbsInit()
+  },
+  methods: {
+    // 初始化缩略图
+    thumbsInit() {
+      this.$nextTick(() => {
+        if (this.$refs.swiperTop && this.$refs.swiperThumbs) {
+          const swiperTop = this.$refs.swiperTop.$swiper
+          const swiperThumbs = this.$refs.swiperThumbs.$swiper
+          swiperTop.controller.control = swiperThumbs
+          swiperThumbs.controller.control = swiperTop
+        }
+      })
+    },
+    // 生成预览
+    generateRead(file) {
+      console.log(file)
+      this.pageType = 1
+      this.activeIndex =
+        this.$refs.swiperThumbs.$swiper.activeIndex % this.previewList.length
+    },
+    // 生成海报
+    generatePointer() {
+      this.pageType = 2
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .home {
   position: relative;
-  min-height: 29.78rem;
+  // min-height: 29.78rem;
+  min-height: 100vh;
   padding-bottom: 1.6rem;
   text-align: center;
   overflow: hidden;
@@ -91,16 +170,30 @@ export default {
     margin: 3.54rem auto 0;
     background-color: #fff6c1;
     box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
-    &.poster {
-      width: 10.49rem;
-      height: 18.59rem;
-      margin-top: 3.96rem;
-      margin-bottom: 1.36rem;
+  }
+  .poster {
+    width: 10.49rem;
+    height: 18.59rem;
+    margin: 3.96rem auto 1.36rem;
+    background-color: #fff6c1;
+    box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+  }
+  .gallery-top {
+    margin: 3.54rem auto 0;
+    .swiper-slide {
+      .item {
+        width: 7.93rem;
+        height: 14.05rem;
+        margin: 0 auto;
+        background-color: #fff6c1;
+        box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+      }
     }
   }
-  .swiper-container {
+  .gallery-thumbs {
     margin-top: 1.3rem;
-    padding: 0 0.86rem;
+    padding: 0 1.3rem;
+    overflow: initial;
     .swiper-slide {
       width: auto;
       .item {
