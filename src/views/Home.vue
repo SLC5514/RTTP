@@ -2,21 +2,26 @@
   <div :class="'home ' + (pageType === 0 ? 'bg1' : 'bg2')">
     <div class="rule-btn pointer">活动规则</div>
     <!-- 预览成品 -->
-    <swiper v-show="pageType === 0" class="gallery-top" :options="swiperOptionTop" ref="swiperTop">
-      <swiper-slide v-for="(item, index) in previewList" :key="index">
-        <div class="item pointer">{{ index }}</div>
-      </swiper-slide>
-    </swiper>
+    <div v-show="pageType === 0" class="gallery-top">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(item, index) in previewList" :key="index">
+          <div class="item pointer">{{ index }}</div>
+        </div>
+      </div>
+    </div>
     <!-- 报告生成效果 -->
     <div v-if="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
       {{ activeIndex }}
     </div>
     <!-- 成品缩略图 -->
-    <swiper v-show="pageType !== 2" class="gallery-thumbs" :options="swiperOptionThumbs" ref="swiperThumbs">
-      <swiper-slide v-for="(item, index) in previewList" :key="index">
-        <div class="item pointer">{{ index }}</div>
-      </swiper-slide>
-    </swiper>
+    <div v-show="pageType !== 2" class="gallery-thumbs">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="(item, index) in previewList" :key="index">
+          <div class="item pointer">{{ index }}</div>
+        </div>
+      </div>
+    </div>
+
     <div class="info">超过<span>10000</span>人通过海报邀请好友获得推荐奖励</div>
     <!-- 推荐按钮 -->
     <van-uploader v-if="pageType === 0" :after-read="generateRead">
@@ -57,19 +62,14 @@
 </template>
 
 <script>
-import { Swiper, SwiperSlide } from 'vue-awesome-swiper'
+import Swiper from 'swiper'
 import 'swiper/css/swiper.css'
 
 const rootSize = parseFloat(document.documentElement.style.fontSize)
 
 export default {
   name: 'Home',
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
   data() {
-    const self = this
     return {
       pageType: 0, // 0 默认 1 预览 2 已生成
       showCopyDialog: false,
@@ -77,45 +77,37 @@ export default {
 
       activeIndex: 0,
       previewList: [1, 2, 3, 4, 5],
-      swiperOptionTop: {
-        loop: true,
-        loopedSlides: 5,
-        spaceBetween: rootSize * 0.74,
-      },
-      swiperOptionThumbs: {
-        loop: true,
-        loopedSlides: 5,
-        slidesPerView: 'auto',
-        spaceBetween: rootSize * 0.74,
-        touchRatio: 0.2,
-        slideToClickedSlide: true,
-        watchSlidesVisibility: true,
-        on: {
-          slideChangeTransitionEnd: function () {
-            self.activeIndex = this.activeIndex % self.previewList.length
-          },
-        },
-      },
     }
   },
-  // watch: {
-  //   pageType() {
-  //     this.thumbsInit()
-  //   },
-  // },
   mounted() {
     this.thumbsInit()
   },
   methods: {
     // 初始化缩略图
     thumbsInit() {
-      this.$nextTick(() => {
-        if (this.$refs.swiperTop && this.$refs.swiperThumbs) {
-          const swiperTop = this.$refs.swiperTop.$swiper
-          const swiperThumbs = this.$refs.swiperThumbs.$swiper
-          swiperTop.controller.control = swiperThumbs
-          swiperThumbs.controller.control = swiperTop
-        }
+      const self = this
+      var galleryThumbs = new Swiper('.gallery-thumbs', {
+        // loop: true,
+        // loopedSlides: 5,
+        spaceBetween: rootSize * 0.74,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+      })
+      new Swiper('.gallery-top', {
+        // loop: true,
+        // loopedSlides: 5,
+        spaceBetween: rootSize * 0.74,
+        thumbs: {
+          swiper: galleryThumbs,
+        },
+        on: {
+          slideChange: function () {
+            self.activeIndex = this.activeIndex % self.previewList.length
+            console.log(self.activeIndex)
+          },
+        },
       })
     },
     // 生成预览
