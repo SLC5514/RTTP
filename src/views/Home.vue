@@ -1,6 +1,6 @@
 <template>
   <div :class="'home ' + (pageType === 0 ? 'bg1' : 'bg2')">
-    <div class="rule-btn pointer">活动规则</div>
+    <div class="rule-btn pointer" @click="showRuleDialog = true">活动规则</div>
     <!-- 预览成品 -->
     <div v-show="pageType === 0" class="gallery-top">
       <div class="swiper-wrapper">
@@ -10,7 +10,7 @@
       </div>
     </div>
     <!-- 报告生成效果 -->
-    <div v-if="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
+    <div v-show="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
       {{ activeIndex }}
     </div>
     <!-- 成品缩略图 -->
@@ -21,23 +21,30 @@
         </div>
       </div>
     </div>
-
     <div class="info">超过<span>10000</span>人通过海报邀请好友获得推荐奖励</div>
     <!-- 推荐按钮 -->
-    <van-uploader v-if="pageType === 0" :after-read="generateRead">
+    <van-uploader v-show="pageType === 0" :after-read="generateRead">
       <div class="recommend-btn pointer"></div>
     </van-uploader>
     <!-- 重新生成按钮 -->
-    <div v-if="pageType === 1">
+    <div v-show="pageType === 1">
       <van-uploader :after-read="generateRead">
         <div class="reselect-btn pointer">重新选图</div>
       </van-uploader>
       <div class="generate-btn pointer" @click="generatePointer">生成海报</div>
     </div>
     <!-- 复制按钮 -->
-    <div v-if="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">
+    <div v-show="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">
       复制邀请语 得奖几率翻倍！
     </div>
+    <!-- 活动规则 -->
+    <van-dialog className="rule-dialog" width="9.9rem" v-model="showRuleDialog" closeOnClickOverlay>
+      <div class="text-content">
+        <p>
+          规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则
+        </p>
+      </div>
+    </van-dialog>
     <!-- 复制对话框 -->
     <van-dialog className="copy-dialog" width="9.9rem" v-model="showCopyDialog" :showConfirmButton="false"
       closeOnClickOverlay>
@@ -72,6 +79,7 @@ export default {
   data() {
     return {
       pageType: 0, // 0 默认 1 预览 2 已生成
+      showRuleDialog: false,
       showCopyDialog: false,
       showGiftDialog: false,
 
@@ -114,8 +122,6 @@ export default {
     generateRead(file) {
       console.log(file)
       this.pageType = 1
-      this.activeIndex =
-        this.$refs.swiperThumbs.$swiper.activeIndex % this.previewList.length
     },
     // 生成海报
     generatePointer() {
@@ -256,6 +262,17 @@ export default {
     font-size: 0.76rem;
     font-weight: 800;
     color: #ff900e;
+  }
+  .rule-dialog {
+    .text-content {
+      padding: 0.62rem 1.03rem 0.54rem;
+      p {
+        height: 6rem;
+        letter-spacing: 0.05rem;
+        overflow-y: auto;
+        text-align: justify;
+      }
+    }
   }
   .copy-dialog {
     padding: 0.62rem 1.03rem 0.54rem;
