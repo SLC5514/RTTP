@@ -12,6 +12,7 @@
     <!-- 报告生成效果 -->
     <div v-show="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
       {{ activeIndex }}
+      <vue-qr class="qrcode" :text="downloadData.url" :logoSrc="downloadData.icon" :margin="0"></vue-qr>
     </div>
     <!-- 成品缩略图 -->
     <div v-show="pageType !== 2" class="gallery-thumbs">
@@ -55,7 +56,8 @@
         之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习
         ，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！
       </p>
-      <div class="conform-btn pointer" @click="showCopyDialog = false">
+      <div class="conform-btn pointer" v-clipboard:copy="'fff'" v-clipboard:success="copySuc"
+        v-clipboard:error="copyErr">
         一键复制邀请语
       </div>
     </van-dialog>
@@ -69,6 +71,7 @@
 </template>
 
 <script>
+import vueQr from 'vue-qr'
 import Swiper from 'swiper'
 import 'swiper/css/swiper.css'
 
@@ -76,19 +79,41 @@ const rootSize = parseFloat(document.documentElement.style.fontSize)
 
 export default {
   name: 'Home',
+  components: {
+    vueQr,
+  },
   data() {
     return {
       pageType: 0, // 0 默认 1 预览 2 已生成
       showRuleDialog: false,
       showCopyDialog: false,
       showGiftDialog: false,
+      giftCount: 0,
 
       activeIndex: 0,
       previewList: [1, 2, 3, 4, 5],
+
+      downloadData: {
+        url: 'https://www.baidu.com',
+        icon: '/favicon.ico',
+      },
     }
   },
   mounted() {
     this.thumbsInit()
+    // 退出挽留
+    const self = this
+    window.addEventListener(
+      'popstate',
+      function () {
+        if (self.giftCount === 0) {
+          self.giftCount++
+          self.showGiftDialog = true
+          window.history.pushState({ status: 0 }, '', '')
+        }
+      },
+      false
+    )
   },
   methods: {
     // 初始化缩略图
@@ -127,6 +152,13 @@ export default {
     generatePointer() {
       this.pageType = 2
     },
+    copySuc() {
+      this.showCopyDialog = false
+      this.$notify('复制成功')
+    },
+    copyErr() {
+      this.$notify('复制失败')
+    },
   },
 }
 </script>
@@ -163,11 +195,18 @@ export default {
     box-shadow: 0rem 0rem 0.14rem 0.16rem rgba(148, 57, 168, 0.39);
   }
   .preview {
+    position: relative;
     width: 7.93rem;
     height: 14.05rem;
     margin: 3.54rem auto 0;
     background-color: #fff6c1;
     box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+    .qrcode {
+      position: absolute;
+      width: 30%;
+      right: 0;
+      bottom: 0;
+    }
   }
   .poster {
     width: 10.49rem;

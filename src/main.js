@@ -3,17 +3,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import 'normalize.css/normalize.css'
-
-import './vant'
-import './rem'
-
 import vhCheck from 'vh-check'
 vhCheck('browser-address-bar')
 
+import VueClipboard from 'vue-clipboard2'
+
+import 'normalize.css/normalize.css'
+import './vant'
+import './rem'
 import './styles/main.scss'
 
 Vue.config.productionTip = false
+
+Vue.use(VueClipboard)
 
 new Vue({
   router,
