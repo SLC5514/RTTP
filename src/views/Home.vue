@@ -10,9 +10,16 @@
       </div>
     </div>
     <!-- 报告生成效果 -->
-    <div v-show="pageType !== 0" :class="'preview ' + (pageType === 2 ? 'poster' : '')">
-      {{ activeIndex }}
-      <vue-qr class="qrcode" :text="downloadData.url" :logoSrc="downloadData.icon" :margin="0"></vue-qr>
+    <div v-show="pageType === 1" class="preview">
+      <div>
+        {{ activeIndex }}
+        <img class="album-img" :src="albumImg" alt="">
+        <vue-qr class="qrcode" :text="qrcodeData.url" :logoSrc="qrcodeData.icon" :margin="0"></vue-qr>
+      </div>
+    </div>
+    <!-- 海报 -->
+    <div v-show="pageType === 2" class="poster">
+      <img :src="posterImg" alt="">
     </div>
     <!-- 成品缩略图 -->
     <div v-show="pageType !== 2" class="gallery-thumbs">
@@ -64,7 +71,7 @@
     <!-- 礼物对话框 -->
     <van-dialog className="gift-dialog" width="4.95rem" v-model="showGiftDialog" :showConfirmButton="false"
       closeOnClickOverlay>
-      <img :src="alertImg" />
+      <img :src="giftImg" />
       <div class="conform-btn pointer" @click="showGiftDialog = false"></div>
     </van-dialog>
     <div>
@@ -77,7 +84,8 @@
 
 <script>
 import { wechatLogin } from '@/api'
-import alertImg from '@/assets/home/alert.png'
+import giftImg from '@/assets/home/alert.png'
+import html2canvas from 'html2canvas'
 import vueQr from 'vue-qr'
 import Swiper from 'swiper'
 import 'swiper/css/swiper.css'
@@ -91,20 +99,20 @@ export default {
   },
   data() {
     return {
-      alertImg,
+      giftImg, // 礼物图
       pageType: 0, // 0 默认 1 预览 2 已生成
-      showRuleDialog: false,
-      showCopyDialog: false,
-      showGiftDialog: false,
-      giftCount: 0,
-
-      activeIndex: 0,
-      previewList: [1, 2, 3, 4, 5],
-
-      downloadData: {
-        url: 'https://www.baidu.com',
-        icon: '/favicon.ico',
-      },
+      showRuleDialog: false, // 规则弹框
+      showCopyDialog: false, // 复制弹框
+      showGiftDialog: false, // 礼物弹框
+      backCount: 0, // 退出计数
+      activeIndex: 0, // 所选蒙层位置
+      previewList: [1, 2, 3, 4, 5], // 蒙层列表
+      qrcodeData: {
+        url: window.location.origin + '/poster',
+        // icon: '/favicon.ico',
+      }, // 二维码数据
+      albumImg: null, // 相册图
+      posterImg: null, // 海报图
     }
   },
   created() {
@@ -113,8 +121,8 @@ export default {
     window.addEventListener(
       'popstate',
       function () {
-        if (self.giftCount === 0) {
-          self.giftCount++
+        if (self.backCount === 0) {
+          self.backCount++
           self.showGiftDialog = true
           window.history.pushState({ status: 0 }, '', '')
         }
@@ -126,6 +134,7 @@ export default {
     this.thumbsInit()
   },
   methods: {
+    // 获取授权
     wechatLogin() {
       wechatLogin(encodeURI(window.location.href))
     },
@@ -159,16 +168,63 @@ export default {
     // 生成预览
     generateRead(file) {
       console.log(file)
+      this.albumImg = file.content
       this.pageType = 1
     },
     // 生成海报
     generatePointer() {
-      this.pageType = 2
+      const box = document.querySelector('.preview>div')
+      const rect = box.getBoundingClientRect()
+      const w = box.scrollWidth
+      const h = box.scrollHeight
+      const canvas = document.createElement('canvas')
+      canvas.width = w
+      canvas.height = h
+      console.log(w, h, rect, window.scrollX, window.scrollY)
+      html2canvas(box, {
+        canvas: canvas,
+        scale: 1,
+        logging: false,
+        taintTest: true,
+        allowTaint: false,
+        useCORS: true,
+        width: w,
+        hegiht: h,
+        windowWidth: w,
+        windowHeight: w,
+        x: 0,
+        y: window.scrollY + rect.y,
+        // x: rect.x,
+        // y: rect.y,
+        // x: window.scrollX,
+        // y: window.scrollY,
+        // scrollX: window.scrollX,
+        // scrollY: window.scrollY,
+        // scrollX: 0,
+        // scrollY: 0,
+      })
+        .then((cvs) => {
+          var ctx = cvs.getContext('2d')
+          // 关闭抗锯齿形
+          ctx.mozImageSmoothingEnabled = false
+          ctx.webkitImageSmoothingEnabled = false
+          ctx.msImageSmoothingEnabled = false
+          ctx.imageSmoothingEnabled = false
+          // 生成图片
+          var baseurl = cvs.toDataURL('image/jpeg', 1)
+          this.posterImg = baseurl
+          this.pageType = 2
+        })
+        .catch(() => {
+          this.$notify({ type: 'warning', message: '生成失败' })
+        })
     },
+    // 复制成功
     copySuc() {
       this.showCopyDialog = false
       this.$notify({ type: 'success', message: '复制成功' })
     },
+    // 复制失败
     copyErr() {
       this.$notify({ type: 'warning', message: '复制失败' })
     },
@@ -208,12 +264,16 @@ export default {
     box-shadow: 0 0 0.07rem 0.08rem rgba(148, 57, 168, 0.39);
   }
   .preview {
-    position: relative;
     width: 3.965rem;
     height: 7.025rem;
     margin: 1.77rem auto 0;
-    background-color: #fff6c1;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
+    & > div {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: #fff6c1;
+    }
     .qrcode {
       position: absolute;
       width: 30%;
@@ -227,6 +287,9 @@ export default {
     margin: 1.98rem auto 0.68rem;
     background-color: #fff6c1;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
+    & > img {
+      width: 100%;
+    }
   }
   .gallery-top {
     margin: 1.77rem auto 0;
