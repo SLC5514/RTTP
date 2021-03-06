@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>傲梦编程</title>
+</head>
+
+<body>
+  <script>
+    // 微信授权登录
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd670b998fde22935&redirect_uri=http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com/wx/oauth&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+    var base = 'http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com';
+    var redirect = window.location.origin + getUrlParam("redirectUrl");
+    var url = base + '/wx/wechatLogin?url=' + encodeURIComponent(redirect);
+    window.location.replace(url);
+
+    // 获取URL中的参数
+    function getUrlParam(key) {
+      if (typeof URLSearchParams === "function") {
+        return new URLSearchParams(window.location.search).get(key);
+      }
+      var reg = new RegExp("[?&]" + key + "=([^&]*)[&]?", "i");
+      var val = window.location.search.match(reg);
+      return val == null ? "" : decodeURIComponent(val[1]);
+    }
+  </script>
+</body>
+
+</html>

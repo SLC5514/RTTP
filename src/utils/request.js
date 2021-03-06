@@ -1,6 +1,6 @@
 import axios from 'axios'
 import get from 'lodash/get'
-import { Dialog, Notify } from 'vant'
+import { /* Dialog, */ Notify } from 'vant'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -12,8 +12,8 @@ const request = axios.create({
 
 // 异常拦截处理器
 const errorHandler = (error) => {
-  const status = get(error, 'response.status');
-  switch (status) {
+  error = get(error, 'response');
+  switch (error.status) {
     /* eslint-disable no-param-reassign */
     case 400: error.message = '请求错误'; break;
     case 401: error.message = '未授权，请登录'; break;
@@ -50,22 +50,22 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     const res = response.data
-    const { code, message } = res
-    if (code !== 1) {
-      Notify({ type: 'danger', message: message || 'Error', duration: 5 * 1000 });
-      if (code === 2000) {
-        // to re-login
-        Dialog.alert({
-          title: '确认登出',
-          message: '您已超时，请重新登录',
-          confirmButtonText: '重新登录'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        });
-      }
-      return Promise.reject(message || 'Error')
+    const { status, message } = res
+    if (status != 200) {
+      Notify({ type: 'warning', message: message || 'Error', duration: 5 * 1000 });
+      // if (status === 2000) {
+      //   // to re-login
+      //   Dialog.alert({
+      //     title: '确认登出',
+      //     message: '您已超时，请重新登录',
+      //     confirmButtonText: '重新登录'
+      //   }).then(() => {
+      //     store.dispatch('user/resetToken').then(() => {
+      //       location.reload()
+      //     })
+      //   });
+      // }
+      return Promise.reject(res)
     } else {
       return res
     }

@@ -39,7 +39,7 @@
       复制邀请语 得奖几率翻倍！
     </div>
     <!-- 活动规则 -->
-    <van-dialog className="rule-dialog" width="9.9rem" v-model="showRuleDialog" closeOnClickOverlay>
+    <van-dialog className="rule-dialog" width="4.95rem" v-model="showRuleDialog" closeOnClickOverlay>
       <div class="text-content">
         <p>
           规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则
@@ -47,7 +47,7 @@
       </div>
     </van-dialog>
     <!-- 复制对话框 -->
-    <van-dialog className="copy-dialog" width="9.9rem" v-model="showCopyDialog" :showConfirmButton="false"
+    <van-dialog className="copy-dialog" width="4.95rem" v-model="showCopyDialog" :showConfirmButton="false"
       closeOnClickOverlay>
       <div class="clearfix">
         <div class="change-btn pull-right pointer">换一换</div>
@@ -62,15 +62,22 @@
       </div>
     </van-dialog>
     <!-- 礼物对话框 -->
-    <van-dialog className="gift-dialog" width="9.9rem" v-model="showGiftDialog" :showConfirmButton="false"
+    <van-dialog className="gift-dialog" width="4.95rem" v-model="showGiftDialog" :showConfirmButton="false"
       closeOnClickOverlay>
-      <img src="../assets/alert.png" />
+      <img :src="alertImg" />
       <div class="conform-btn pointer" @click="showGiftDialog = false"></div>
     </van-dialog>
+    <div>
+      <router-link to="/poster"><button>Poster</button></router-link>
+      <router-link to="/overview"><button>Overview</button></router-link>
+      <button @click="wechatLogin">登录</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { wechatLogin } from '@/api'
+import alertImg from '@/assets/home/alert.png'
 import vueQr from 'vue-qr'
 import Swiper from 'swiper'
 import 'swiper/css/swiper.css'
@@ -84,6 +91,7 @@ export default {
   },
   data() {
     return {
+      alertImg,
       pageType: 0, // 0 默认 1 预览 2 已生成
       showRuleDialog: false,
       showCopyDialog: false,
@@ -99,8 +107,7 @@ export default {
       },
     }
   },
-  mounted() {
-    this.thumbsInit()
+  created() {
     // 退出挽留
     const self = this
     window.addEventListener(
@@ -115,7 +122,13 @@ export default {
       false
     )
   },
+  mounted() {
+    this.thumbsInit()
+  },
   methods: {
+    wechatLogin() {
+      wechatLogin(encodeURI(window.location.href))
+    },
     // 初始化缩略图
     thumbsInit() {
       const self = this
@@ -154,10 +167,10 @@ export default {
     },
     copySuc() {
       this.showCopyDialog = false
-      this.$notify('复制成功')
+      this.$notify({ type: 'success', message: '复制成功' })
     },
     copyErr() {
-      this.$notify('复制失败')
+      this.$notify({ type: 'warning', message: '复制失败' })
     },
   },
 }
@@ -166,41 +179,41 @@ export default {
 <style lang="scss" scoped>
 .home {
   position: relative;
-  // min-height: 29.78rem;
-  min-height: 100vh;
-  padding-bottom: 1.6rem;
+  min-height: 14.89rem;
+  // min-height: 100vh;
+  // padding-bottom: 0.8rem;
   text-align: center;
   overflow: hidden;
   &.bg1 {
-    background: #4b42f3 url(~@/assets/bg1.jpg) no-repeat top center;
+    background: #4b42f3 url(~@/assets/home/bg1.jpg) no-repeat top center;
     background-size: 100% auto;
   }
   &.bg2 {
-    background: #4b42f3 url(~@/assets/bg2.jpg) no-repeat top center;
+    background: #4b42f3 url(~@/assets/home/bg2.jpg) no-repeat top center;
     background-size: 100% auto;
   }
   .rule-btn {
-    font-size: 0.64rem;
+    font-size: 0.32rem;
     font-weight: 400;
-    line-height: 1.19rem;
     position: absolute;
-    top: 1.46rem;
+    top: 0.73rem;
     left: 0;
-    width: 3.45rem;
-    height: 1.19rem;
+    width: 1.72rem;
+    height: 0.6rem;
+    line-height: 0.6rem;
     text-align: center;
     color: #7357f0;
-    border-radius: 0rem 1rem 1rem 0rem;
+    border-radius: 0 0.5rem 0.5rem 0;
     background-color: #fff;
-    box-shadow: 0rem 0rem 0.14rem 0.16rem rgba(148, 57, 168, 0.39);
+    box-shadow: 0 0 0.07rem 0.08rem rgba(148, 57, 168, 0.39);
   }
   .preview {
     position: relative;
-    width: 7.93rem;
-    height: 14.05rem;
-    margin: 3.54rem auto 0;
+    width: 3.965rem;
+    height: 7.025rem;
+    margin: 1.77rem auto 0;
     background-color: #fff6c1;
-    box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+    box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
     .qrcode {
       position: absolute;
       width: 30%;
@@ -209,45 +222,45 @@ export default {
     }
   }
   .poster {
-    width: 10.49rem;
-    height: 18.59rem;
-    margin: 3.96rem auto 1.36rem;
+    width: 5.245rem;
+    height: 9.295rem;
+    margin: 1.98rem auto 0.68rem;
     background-color: #fff6c1;
-    box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+    box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
   }
   .gallery-top {
-    margin: 3.54rem auto 0;
+    margin: 1.77rem auto 0;
     .swiper-slide {
       .item {
-        width: 7.93rem;
-        height: 14.05rem;
+        width: 3.97rem;
+        height: 7.02rem;
         margin: 0 auto;
         background-color: #fff6c1;
-        box-shadow: 0rem 0rem 0.52rem 0.42rem rgba(148, 57, 168, 0.39);
+        box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
       }
     }
   }
   .gallery-thumbs {
-    margin-top: 1.3rem;
-    padding: 0 1.3rem;
+    margin-top: 0.65rem;
+    padding: 0 0.65rem;
     overflow: initial;
     .swiper-slide {
       width: auto;
       .item {
-        width: 2.54rem;
-        height: 4.5rem;
+        width: 1.27rem;
+        height: 2.25rem;
         margin: 0 auto;
         background-color: #fff6c1;
-        box-shadow: 0rem 0rem 0rem 0.18rem rgba(148, 57, 168, 0.21);
+        box-shadow: 0 0 0 0.09rem rgba(148, 57, 168, 0.21);
       }
     }
   }
   .info {
-    font-size: 0.56rem;
+    font-size: 0.28rem;
     font-weight: 500;
-    line-height: 1.1rem;
-    margin-top: 0.52rem;
-    margin-bottom: 0.88rem;
+    line-height: 0.55rem;
+    margin-top: 0.26rem;
+    margin-bottom: 0.44rem;
     text-align: center;
     color: #fff;
     span {
@@ -255,91 +268,91 @@ export default {
     }
   }
   .recommend-btn {
-    width: 12rem;
-    height: 2.9rem;
+    width: 6rem;
+    height: 1.45rem;
     margin: 0 auto;
-    background: url(~@/assets/btn1.png) no-repeat center;
+    background: url(~@/assets/home/btn1.png) no-repeat center;
     background-size: contain;
   }
   .reselect-btn {
     display: inline-block;
-    width: 6.15rem;
-    height: 1.8rem;
-    line-height: 1.8rem;
+    width: 3.075rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
     background: #ada9ff;
-    box-shadow: 0rem 0rem 1rem 0rem rgba(39, 34, 149, 0.23);
-    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
+    border-radius: 0.5rem;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.4rem;
     font-weight: 400;
     color: #ffffff;
-    margin: 0 0.34rem;
+    margin: 0 0.17rem;
   }
   .generate-btn {
     display: inline-block;
-    width: 6.15rem;
-    height: 1.8rem;
-    line-height: 1.8rem;
+    width: 3.075rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
     background: #fff6c1;
-    box-shadow: 0rem 0rem 1rem 0rem rgba(39, 34, 149, 0.23);
-    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
+    border-radius: 0.5rem;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.4rem;
     font-weight: 800;
     color: #ff900e;
-    margin: 0 0.34rem;
+    margin: 0 0.17rem;
   }
   .copy-btn {
-    width: 11.15rem;
-    height: 1.8rem;
-    line-height: 1.8rem;
+    width: 5.575rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
     margin: 0 auto;
     background: #fff6c1;
-    box-shadow: 0rem 0rem 1rem 0rem rgba(39, 34, 149, 0.23);
-    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
+    border-radius: 0.5rem;
     text-align: center;
-    font-size: 0.76rem;
+    font-size: 0.38rem;
     font-weight: 800;
     color: #ff900e;
   }
   .rule-dialog {
     .text-content {
-      padding: 0.62rem 1.03rem 0.54rem;
+      padding: 0.31rem 0.515rem 0.27rem;
       p {
         height: 6rem;
-        letter-spacing: 0.05rem;
+        letter-spacing: 0.025rem;
         overflow-y: auto;
         text-align: justify;
       }
     }
   }
   .copy-dialog {
-    padding: 0.62rem 1.03rem 0.54rem;
+    padding: 0.31rem 0.515rem 0.27rem;
     background-color: #ffffff;
     .change-btn {
-      font-size: 0.59rem;
+      font-size: 0.295rem;
       font-weight: 400;
       color: #ff900e;
     }
     .text-content {
       width: 100%;
-      margin-top: 0.56rem;
-      font-size: 0.56rem;
+      margin-top: 0.28rem;
+      font-size: 0.28rem;
       font-weight: 400;
       color: #5a5a5a;
       text-align: justify;
     }
     .conform-btn {
-      width: 7.2rem;
-      height: 1.33rem;
-      line-height: 1.33rem;
+      width: 3.6rem;
+      height: 0.665rem;
+      line-height: 0.665rem;
       background: #ff900e;
-      border-radius: 1rem;
+      border-radius: 0.5rem;
       text-align: center;
-      font-size: 0.59rem;
+      font-size: 0.295rem;
       font-weight: 400;
       color: #ffffff;
-      margin: 1.2rem auto 0;
+      margin: 0.6rem auto 0;
     }
   }
   .gift-dialog {
@@ -348,11 +361,11 @@ export default {
     .conform-btn {
       position: absolute;
       left: 50%;
-      bottom: 0.78rem;
-      margin-left: -2.5rem;
-      width: 5rem;
-      height: 1.33rem;
-      border-radius: 1rem;
+      bottom: 0.39rem;
+      margin-left: -1.25rem;
+      width: 2.5rem;
+      height: 0.665rem;
+      border-radius: 0.5rem;
     }
   }
 }

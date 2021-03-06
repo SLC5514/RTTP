@@ -26,14 +26,14 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    // proxy: {
-    //   '/api': {
-    //     target: `http://127.0.0.1:${port}/mock`,
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       // '^/api': ''
-    //     }
-    //   }
-    // },
+    proxy: {
+      '/wx': {
+        target: 'http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com',
+        changeOrigin: true,
+        // pathRewrite: {
+        //   '^/wx': ''
+        // }
+      }
+    },
   }
 }

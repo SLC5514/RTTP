@@ -5,9 +5,19 @@ Vue.use(VueRouter)
 
 const constantRoutes = [
   {
+    path: '/poster',
+    name: 'Poster',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Poster.vue')
+  },
+  {
+    path: '/overview',
+    name: 'Overview',
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Overview.vue')
+  },
+  {
     path: '/',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue')
   },
   // 404
   { path: '*', redirect: '/' }
