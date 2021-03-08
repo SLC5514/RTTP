@@ -5,11 +5,10 @@ import request from '@/utils/request'
  * @param {String} url 回跳路由
  * @return:
  */
-export function wechatLogin(url) {
+export function wechatLogin({ url }) {
   return request({
-    url: '/wx/wechatLogin',
+    url: '/wx/wechatLogin?url=' + url,
     method: 'get',
-    data: { url }
   })
 }
 
@@ -18,11 +17,10 @@ export function wechatLogin(url) {
  * @param {String} openId 用户ID oIdnG5-wPO2csWtppJpy1xJPv6ig
  * @return:
  */
-export function getStudentByOpenId(openId) {
+export function getStudentByOpenId({ openId }) {
   return request({
-    url: '/wx/getStudentByOpenId',
-    method: 'post',
-    data: { openId }
+    url: '/wx/getStudentByOpenId?openId=' + openId,
+    method: 'get',
   })
 }
 
@@ -34,9 +32,8 @@ export function getStudentByOpenId(openId) {
  */
 export function savePhone({ phone, openId }) {
   return request({
-    url: '/wx/savePhone',
-    method: 'post',
-    data: { phone, openId }
+    url: '/wx/savePhone?phone=' + phone + '&openId=' + openId,
+    method: 'get',
   })
 }
 
@@ -47,8 +44,7 @@ export function savePhone({ phone, openId }) {
  */
 export function getProgressByOpenId({ openId }) {
   return request({
-    url: '/wx/getProgressByOpenId',
+    url: '/wx/getProgressByOpenId?openId=' + openId,
     method: 'get',
-    data: { openId }
   })
 }

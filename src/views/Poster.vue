@@ -35,8 +35,11 @@ export default {
         phone: this.phoneNum,
         openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
       }).then((res) => {
-        console.log(res)
-        this.$notify({ type: 'success', message: res.message })
+        if (res.status == '200') {
+          this.$notify({ type: 'success', message: res.message })
+        } else {
+          this.$notify({ type: 'warning', message: res.message })
+        }
       })
     },
   },

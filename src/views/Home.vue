@@ -46,10 +46,29 @@
       复制邀请语 得奖几率翻倍！
     </div>
     <!-- 活动规则 -->
-    <van-dialog className="rule-dialog" width="4.95rem" v-model="showRuleDialog" closeOnClickOverlay>
+    <van-dialog class="rule-dialog" width="4.95rem" v-model="showRuleDialog" closeOnClickOverlay>
       <div class="text-content">
         <p>
-          规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则规则
+          1、“品牌名”注册用户(推荐人)分享专属个性化海报，每推荐一位新用户(被推荐人)，通过推荐人专属个性化海报注册为“品牌名”用户，并首次购买4单元及以上主修课课程包或15课段及以上全项进阶课课程包，且满足如下赠课条件之一的，推荐人即可获得赠课(根据被推荐人购买的课程包不同有所区别)，最多可获赠10课时/课段主修课/全项进阶课，奖励可以累计。<br/>
+          (1)首次购买的课程包是主修课课程包的，当被推荐人被扣除的主修课课时超过8节(含缺席课时)且未退费；<br/>
+          (2)首次购买的课程包是全项进阶课课程包的，当被推荐人被扣除的全项进阶课超过2课段(含缺席课时)且未退费；<br/>
+
+          2、赠课将在满足奖励条件后30个工作日内添加到获赠用户的账户中。<br/>
+
+          3、具体奖励规则可咨询您的学习成长伙伴，您也可前往公众号查看奖励明细。活动分期开展，如参与活动，则被推荐人按照活动要求购买课程包的时间须在活动期间内。推荐人因参与本活动而获得的赠课将在购买的全部主修课/全项进阶课使用完毕以后方能开始使用。不论推荐人在参与本活动获得赠课时是否为付费学员，推荐人获得的全部赠课均不得进行退费。<br/>
+
+          4、获赠的课程仅限本账户使用，不可转赠其他用户，不得与其他优惠叠加使用。<br/>
+
+          5、如推荐人或被推荐人参加的其他活动与本活动互斥的，以推荐人或被推荐人参加的其他活动的活动规则为准。推荐人和被推存人均不再享有本活动赠课奖励。<br/>
+
+          6、本活动所有数据以“品牌名”系统数据为准。同“品牌名”账号，或账号不同但手机号、身份证相同，或账号不同但名下“品牌名”学员有交叉，符合以上任一条件均视为同一用户。<br/>
+
+          7、如果发现有参与者使用任何不正当手段参加活动，包括但不限于以下情况，主办方有权在不事先通知的前提下取消其获奖资格。<br/>
+          (1)任何有违本活动目的和宗旨；<br/>
+          (2)不遵守本活动规则参与活动(如刷单,作弊,同一用户通过不同账号互相邀请)；<br/>
+          (3)影响活动正常有序进行等(比如滥发短信、微信等骚扰行为,扰乱系统,批量或使用机器注册账号等不诚信行为)。<br/>
+
+          8、用户所上传的文本、图片、音视频等内容由用户自行对该等内容承担责任。<br/>
         </p>
       </div>
     </van-dialog>
@@ -83,7 +102,8 @@
 </template>
 
 <script>
-import { wechatLogin } from '@/api'
+let openid
+import { wechatLogin, getStudentByOpenId } from '@/api'
 import giftImg from '@/assets/home/alert.png'
 import html2canvas from 'html2canvas'
 import vueQr from 'vue-qr'
@@ -131,12 +151,34 @@ export default {
     )
   },
   mounted() {
+    // 未获取到微信openid
+    const params = new URLSearchParams(window.location.search)
+    openid = params.get('openid') || params.get('openId')
+    const { pathname, search } = window.location
+    const redirect = encodeURIComponent(pathname + search)
+    alert(redirect)
+    if (!openid) {
+      location.replace('/oauth.html?url=' + redirect)
+      return false
+    }
     this.thumbsInit()
+    this.getUserFn()
   },
   methods: {
     // 获取授权
     wechatLogin() {
       wechatLogin(encodeURI(window.location.href))
+    },
+    getUserFn () {
+      getStudentByOpenId({
+        openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
+      }).then((res) => {
+        if (res.status == "200") {
+          console.log(res)
+        } else {
+          this.$notify({ type: 'warning', message: res.message })
+        }
+      })
     },
     // 初始化缩略图
     thumbsInit() {

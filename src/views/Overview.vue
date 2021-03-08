@@ -5,19 +5,19 @@
       <div class="avtiveTxt fw">活动说明</div>
       <div class="count flexRow">
         <div class="each-item flexCol fw">
-          <b>13</b>
+          <b>{{registerNum || 0}}</b>
           <span>已注册</span>
         </div>
         <div class="each-item flexCol fw">
-          <b>1</b>
+          <b>{{auditionNum || 0}}</b>
           <span>已试听</span>
         </div>
         <div class="each-item flexCol fw">
-          <b>0</b>
+          <b>{{payNum || 0}}</b>
           <span>已付款</span>
         </div>
         <div class="each-item flexCol fw">
-          <b>0</b>
+          <b>{{unRefundNum || 0}}</b>
           <span>已过退费期</span>
         </div>
       </div>
@@ -29,33 +29,8 @@
         <i></i>
       </div>
       <div class="progress">
-        <div class="item">
-          <div class="item_top">被推荐人：180****2345</div>
-          <div class="item_content flexRow">
-            <div class="item_child flexCol success">
-              <div class="line"></div>
-              <div class="icon"></div>
-              <span class="type fw">已注册</span>
-              <span class="time">2018/11/20</span>
-            </div>
-            <div class="item_child flexCol">
-              <div class="icon"></div>
-              <span class="type fw">已试听</span>
-            </div>
-            <div class="item_child flexCol">
-              <div class="line line_left"></div>
-              <div class="icon"></div>
-              <span class="type fw">已付费</span>
-            </div>
-            <div class="item_child flexCol">
-              <div class="line line_left"></div>
-              <div class="icon"></div>
-              <span class="type fw">已过退费期</span>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <div class="item_top">被推荐人：180****2345</div>
+        <div class="item" v-for="(v, i) in progressData" :key="i">
+          <div class="item_top">被推荐人：{{v.phone}}</div>
           <div class="item_content flexRow">
             <div class="item_child flexCol success">
               <div class="line"></div>
@@ -85,8 +60,38 @@
   </div>
 </template>
 <script>
+import { getProgressByOpenId } from '@/api'
 export default {
   name: 'Overview',
+  data() {
+    return {
+      registerNum: '',
+      auditionNum: '',
+      payNum: '',
+      unRefundNum: '',
+      progressData: []
+    }
+  },
+  created () {
+    this.progressFn()
+  },
+  methods: {
+    progressFn() {
+      getProgressByOpenId({
+        openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
+      }).then((res) => {
+        if (res.status == "200") {
+          this.registerNum = res.data.registerNum
+          this.auditionNum = res.data.auditionNum
+          this.payNum = res.data.payNum
+          this.unRefundNum = res.data.unRefundNum
+          this.progressData = res.data.list
+        } else {
+          this.$notify({ type: 'warning', message: res.message })
+        }
+      })
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
