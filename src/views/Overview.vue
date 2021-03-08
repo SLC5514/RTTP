@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header">
       <div class="title fw">总奖励明细</div>
-      <div class="avtiveTxt fw">活动说明</div>
+      <div class="avtiveTxt fw" @click="$refs['rules-alert'].showRulesAllert()">活动说明</div>
       <div class="count flexRow">
         <div class="each-item flexCol fw">
           <b>{{registerNum || 0}}</b>
@@ -29,50 +29,58 @@
         <i></i>
       </div>
       <div class="progress">
-        <div class="item" v-for="(v, i) in progressData" :key="i">
+        <div class="item" v-for="(v, i) in progressData" :key="i" v-show="!lookAll && i < 2 || lookAll">
           <div class="item_top">被推荐人：{{v.phone}}</div>
           <div class="item_content flexRow">
-            <div class="item_child flexCol success">
+            <div :class="'item_child flexCol ' + (v.progress >= 1 ? 'success' : '')">
               <div class="line"></div>
               <div class="icon"></div>
               <span class="type fw">已注册</span>
-              <span class="time">2018/11/20</span>
+              <span class="time" v-if="v.progress >= 1">{{v.registerTimeStr}}</span>
             </div>
-            <div class="item_child flexCol">
+            <div :class="'item_child flexCol ' + (v.progress >= 2 ? 'success' : '')">
+              <div class="line"></div>
               <div class="icon"></div>
               <span class="type fw">已试听</span>
+              <span class="time" v-if="v.progress >= 2">{{v.auditionTimeStr}}</span>
             </div>
-            <div class="item_child flexCol">
-              <div class="line line_left"></div>
+            <div :class="'item_child flexCol ' + (v.progress >= 3 ? 'success' : '')">
+              <div class="line"></div>
               <div class="icon"></div>
               <span class="type fw">已付费</span>
+              <span class="time" v-if="v.progress >= 3">{{v.payTimeStr}}</span>
             </div>
-            <div class="item_child flexCol">
-              <div class="line line_left"></div>
+            <div :class="'item_child flexCol ' + (v.progress >= 4 ? 'success' : '')">
               <div class="icon"></div>
               <span class="type fw">已过退费期</span>
+              <span class="time" v-if="v.progress >= 4">{{v.unRefundTimeStr}}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="allData">查看全部</div>
+      <div class="allData" v-if="progressData.length > 2 && !lookAll" @click="lookAll = true">查看全部</div>
     </div>
+    <RulesAlert ref="rules-alert" />
   </div>
 </template>
 <script>
 import { getProgressByOpenId } from '@/api'
 export default {
   name: 'Overview',
+  components: {
+    RulesAlert: () => import('@/components/RulesAlert.vue'),
+  },
   data() {
     return {
       registerNum: '',
       auditionNum: '',
       payNum: '',
       unRefundNum: '',
-      progressData: []
+      progressData: [],
+      lookAll: false,
     }
   },
-  created () {
+  created() {
     this.progressFn()
   },
   methods: {
@@ -80,7 +88,7 @@ export default {
       getProgressByOpenId({
         openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
       }).then((res) => {
-        if (res.status == "200") {
+        if (res.status == '200') {
           this.registerNum = res.data.registerNum
           this.auditionNum = res.data.auditionNum
           this.payNum = res.data.payNum
@@ -163,7 +171,7 @@ export default {
   margin: -1.11rem 0.25rem 0;
   background: #fff;
   position: relative;
-  z-index: 111;
+  z-index: 1;
 }
 .content .txt {
   align-items: center;
@@ -214,10 +222,6 @@ export default {
   right: -0.53rem;
   top: 0.27rem;
 }
-.content .progress .item_content .item_child .line_left {
-  right: auto;
-  left: -0.5rem;
-}
 .content .progress .item_content .item_child .icon {
   width: 0.57rem;
   height: 0.54rem;
@@ -241,6 +245,7 @@ export default {
   position: absolute;
   top: 1.02rem;
   white-space: nowrap;
+  letter-spacing: 0;
 }
 .content .progress .item_content .success .line {
   background: #a281fb;
@@ -251,12 +256,14 @@ export default {
 .content .progress .item_content .success .icon {
   background: url(~@/assets/overview/success.png) no-repeat;
   background-size: cover;
+  border: none;
 }
 .allData {
+  width: fit-content;
+  margin: 0.3rem auto;
   font-size: 0.3rem;
   color: #a281fb;
   font-weight: 400;
-  margin-top: 0.3rem;
   text-align: center;
 }
 </style>

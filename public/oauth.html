@@ -14,8 +14,8 @@
     // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd670b998fde22935&redirect_uri=http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com/wx/oauth&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
 
     var base = 'http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com';
-    var redirect = window.location.origin + getUrlParam("redirectUrl");
-    var url = base + '/wx/wechatLogin?url=' + encodeURIComponent(redirect);
+    var redirect = getUrlParam("redirectUrl");
+    var url = base + '/wx/wechatLogin?url=' + encodeURI(redirect);
     window.location.replace(url);
 
     // 获取URL中的参数

@@ -5,7 +5,7 @@ import request from '@/utils/request'
  * @param {String} url 回跳路由
  * @return:
  */
-export function wechatLogin({ url }) {
+export function wechatLogin(url) {
   return request({
     url: '/wx/wechatLogin?url=' + url,
     method: 'get',
