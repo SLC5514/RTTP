@@ -72,6 +72,7 @@ export default {
   },
   data() {
     return {
+      openid: '',
       registerNum: '',
       auditionNum: '',
       payNum: '',
@@ -81,12 +82,14 @@ export default {
     }
   },
   created() {
+    const params = new URLSearchParams(window.location.search)
+    this.openid = params.get('openid') || params.get('openId')
     this.progressFn()
   },
   methods: {
     progressFn() {
       getProgressByOpenId({
-        openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
+        openId: this.openid,
       }).then((res) => {
         if (res.status == '200') {
           this.registerNum = res.data.registerNum

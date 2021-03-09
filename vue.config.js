@@ -9,6 +9,7 @@ function resolve(dir) {
 const port = process.env.port || process.env.npm_config_port || 8080 // dev port
 
 module.exports = {
+  publicPath: '/front/',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,

@@ -109,6 +109,14 @@ export default {
     }
   },
   created() {
+    // 未获取到微信openid
+    const params = new URLSearchParams(window.location.search)
+    this.openid = params.get('openid') || params.get('openId')
+    const redirect = window.location.href
+    if (!this.openid) {
+      location.replace('/oauth.html?redirectUrl=' + redirect)
+      return false
+    }
     // 退出挽留
     const self = this
     // window.history.pushState(null, null, '#')
@@ -126,14 +134,6 @@ export default {
     )
   },
   mounted() {
-    // 未获取到微信openid
-    const params = new URLSearchParams(window.location.search)
-    this.openid = params.get('openid') || params.get('openId')
-    const redirect = window.location.href
-    if (!this.openid) {
-      location.replace('/oauth.html?redirectUrl=' + redirect)
-      return false
-    }
     this.thumbsInit()
     this.getUserFn()
   },
@@ -145,7 +145,7 @@ export default {
     // 获取用户信息
     getUserFn() {
       getStudentByOpenId({
-        openId: 'oIdnG5-wPO2csWtppJpy1xJPv6ig',
+        openId: this.openid,
       }).then((res) => {
         this.userData = res.data
       })
