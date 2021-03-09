@@ -74,8 +74,7 @@ export default {
   left: 0;
   top: 0;
   width: 7.5rem;
-  // height: 14.89rem;
-  // transform: scale(0.5);
+  height: 14.89rem;
   text-align: left;
   background: #fdd35b;
   transform-origin: left top;

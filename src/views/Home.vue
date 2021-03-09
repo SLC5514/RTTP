@@ -16,7 +16,7 @@
     <div v-if="pageType === 1" class="preview">
       <div>
         {{ activeIndex }}
-        <PosterView :user-data="userData" :album-img="albumImg" :test="activeIndex" />
+        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :test="activeIndex" />
       </div>
     </div>
     <!-- 海报 -->
@@ -179,7 +179,6 @@ export default {
     },
     // 生成预览
     generateRead(file) {
-      console.log(file)
       this.albumImg = file.content
       this.pageType = 1
     },
@@ -187,15 +186,16 @@ export default {
     generatePointer() {
       const box = document.querySelector('.preview>div')
       const rect = box.getBoundingClientRect()
-      const w = box.scrollWidth
-      const h = box.scrollHeight
+      const scale = 1 / (this.$refs['preview-poster'].scale || 1)
+      const w = box.scrollWidth * scale
+      const h = box.scrollHeight * scale
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
-      console.log(w, h, rect, window.scrollX, window.scrollY)
+      console.log(w, h, scale, rect, window.scrollX, window.scrollY)
       html2canvas(box, {
         canvas: canvas,
-        scale: 1,
+        scale: scale,
         logging: false,
         taintTest: true,
         allowTaint: false,
@@ -204,16 +204,7 @@ export default {
         hegiht: h,
         windowWidth: w,
         windowHeight: w,
-        x: 0,
         y: window.scrollY + rect.y,
-        // x: rect.x,
-        // y: rect.y,
-        // x: window.scrollX,
-        // y: window.scrollY,
-        // scrollX: window.scrollX,
-        // scrollY: window.scrollY,
-        // scrollX: 0,
-        // scrollY: 0,
       })
         .then((cvs) => {
           var ctx = cvs.getContext('2d')
