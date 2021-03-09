@@ -129,8 +129,6 @@ export default {
     // 未获取到微信openid
     const params = new URLSearchParams(window.location.search)
     this.openid = params.get('openid') || params.get('openId')
-    // const { pathname, search } = window.location
-    // const redirect = encodeURIComponent(pathname + search)
     const redirect = window.location.href
     if (!this.openid) {
       location.replace('/oauth.html?redirectUrl=' + redirect)

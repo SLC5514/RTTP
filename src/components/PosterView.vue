@@ -9,8 +9,8 @@
       <div class="back-rotate">
         <div class="left">
           <div class="user">
-            <img v-if="userData.avatarUrl" :src="userData.avatarUrl" alt="">
-            <span>{{userData.nickname}}</span>
+            <img v-if="userData && userData.avatarUrl" :src="userData.avatarUrl" alt="">
+            <span v-if="userData && userData.nickname">{{userData.nickname}}</span>
           </div>
           <p>送你<span>288</span>元<br>真人直播体验课</p>
           <div class="info">扫码识别 立即领取</div>
@@ -30,20 +30,7 @@ import userImg from '@/assets/overview/success.png'
 
 export default {
   name: 'PosterView',
-  props: {
-    userData: {
-      default: {
-        nickname: '',
-        avatarUrl: '',
-      },
-    },
-    albumImg: {
-      default: '',
-    },
-    test: {
-      default: '',
-    },
-  },
+  props: ['userData', 'albumImg', 'test'],
   components: {
     vueQr,
   },
