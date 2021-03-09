@@ -22,7 +22,7 @@ Vue.prototype.$oauth = function() {
   const openid = params.get('openid') || params.get('openId')
   const redirect = window.location.href
   if (!openid) {
-    location.replace('/front/oauth.html?redirectUrl=' + redirect)
+    location.replace('/oauth.html?redirectUrl=' + redirect)
     return false
   }
   return openid
