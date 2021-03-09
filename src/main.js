@@ -25,6 +25,7 @@ Vue.prototype.$oauth = function() {
     location.replace('/front/oauth.html?redirectUrl=' + redirect)
     return false
   }
+  return openid
 }
 
 new Vue({
@@ -32,8 +33,6 @@ new Vue({
   store,
   render: h => h(App),
   created() {
-    this.$oauth()
-    const params = new URLSearchParams(window.location.search)
-    Vue.prototype.$openId = params.get('openid') || params.get('openId')
+    Vue.prototype.$openId = this.$oauth()
   }
 }).$mount('#app')
