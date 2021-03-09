@@ -26,7 +26,7 @@ const constantRoutes = [
 const createRouter = () =>
   new VueRouter({
     mode: 'history', // require service support
-    base: '/front/',
+    base: '/',
     routes: constantRoutes,
     scrollBehavior: () => ({ y: 0 })
   })
