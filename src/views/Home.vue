@@ -114,7 +114,7 @@ export default {
     this.openid = params.get('openid') || params.get('openId')
     const redirect = window.location.href
     if (!this.openid) {
-      location.replace('/oauth.html?redirectUrl=' + redirect)
+      location.replace('/front/oauth.html?redirectUrl=' + redirect)
       return false
     }
     // 退出挽留
