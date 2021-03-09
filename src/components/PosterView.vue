@@ -40,7 +40,7 @@ export default {
       userImg,
       scale: 1,
       qrcodeData: {
-        url: window.location.origin + '/poster',
+        url: window.location.origin + '/front/poster',
         // icon: '/favicon.ico',
       }, // 二维码数据
     }
@@ -148,6 +148,7 @@ export default {
           line-height: 0.75rem;
           margin-top: 0.1rem;
           color: #794df1;
+          white-space: nowrap;
           span {
             font-size: 0.6rem;
           }

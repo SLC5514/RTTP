@@ -17,8 +17,23 @@ Vue.config.productionTip = false
 
 Vue.use(VueClipboard)
 
+Vue.prototype.$oauth = function() {
+  const params = new URLSearchParams(window.location.search)
+  const openid = params.get('openid') || params.get('openId')
+  const redirect = window.location.href
+  if (!openid) {
+    location.replace('/front/oauth.html?redirectUrl=' + redirect)
+    return false
+  }
+}
+
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created() {
+    this.$oauth()
+    const params = new URLSearchParams(window.location.search)
+    Vue.prototype.$openId = params.get('openid') || params.get('openId')
+  }
 }).$mount('#app')

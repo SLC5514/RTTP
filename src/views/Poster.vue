@@ -16,13 +16,8 @@ export default {
   name: 'Poster',
   data() {
     return {
-      openid: '',
       phoneNum: '',
     }
-  },
-  created() {
-    const params = new URLSearchParams(window.location.search)
-    this.openid = params.get('openid') || params.get('openId')
   },
   methods: {
     phoneFn() {
@@ -38,7 +33,7 @@ export default {
       }
       savePhone({
         phone: this.phoneNum,
-        openId: this.openid,
+        openId: this.$openId,
       }).then((res) => {
         if (res.status == '200') {
           this.$notify({ type: 'success', message: res.message })
