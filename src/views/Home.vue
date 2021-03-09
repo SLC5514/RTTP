@@ -70,11 +70,11 @@
       <img :src="giftImg" />
       <div class="conform-btn pointer" @click="showGiftDialog = false"></div>
     </van-dialog>
-    <div>
+    <!-- <div>
       <router-link to="/poster"><button>Poster</button></router-link>
       <router-link to="/overview"><button>Overview</button></router-link>
       <button @click="wechatLogin">登录</button>
-    </div>
+    </div> -->
   </div>
 </template>
 
