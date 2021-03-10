@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       phoneNum: '',
+      jtOpenId: ''
     }
   },
   methods: {
@@ -31,9 +32,12 @@ export default {
         this.$notify({ type: 'warning', message: '请输入正确的手机号' })
         return
       }
+      const params = new URLSearchParams(window.location.search)
+      const jtOpenId = params.get('jtOpenId')
       savePhone({
         phone: this.phoneNum,
         openId: this.$openId,
+        jtOpenId: jtOpenId
       }).then((res) => {
         if (res.status == '200') {
           this.$notify({ type: 'success', message: res.message })

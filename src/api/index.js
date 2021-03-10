@@ -30,9 +30,9 @@ export function getStudentByOpenId({ openId }) {
  * @param {String} openId 用户ID oIdnG5-wPO2csWtppJpy1xJPv6ig
  * @return:
  */
-export function savePhone({ phone, openId }) {
+export function savePhone({ phone, openId, jtOpenId }) {
   return request({
-    url: '/wx/savePhone?phone=' + phone + '&openId=' + openId,
+    url: '/wx/savePhone?phone=' + phone + '&openId=' + openId + '&jtOpenId=' + jtOpenId,
     method: 'get',
   })
 }
