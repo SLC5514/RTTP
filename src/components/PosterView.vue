@@ -86,6 +86,11 @@ export default {
     width: 2.01rem;
     height: 0.79rem;
     background: #e6e6e6;
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   .album-box {
     position: absolute;
@@ -101,6 +106,8 @@ export default {
       left: 0;
       top: -1.8rem;
       width: 6rem;
+      height: 3.5rem;
+      object-fit: cover;
     }
     .album {
       width: 100%;
@@ -125,6 +132,7 @@ export default {
       transform-origin: left top;
       display: flex;
       .left {
+        max-width: 3.9rem;
         .user {
           display: flex;
           align-items: center;

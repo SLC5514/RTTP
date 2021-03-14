@@ -1,0 +1,318 @@
+[v-cloak] {
+  display: none;
+}
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+p {
+  margin: 0;
+}
+#app {
+  min-width: 1000px;
+}
+
+.control {
+  padding: 10px;
+}
+.form-box {
+  display: flex;
+  padding: 10px;
+}
+.form-box > li {
+  flex: 1;
+  padding: 10px;
+}
+
+.preview {
+  width: 375px;
+  height: 667px;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 20px solid #ccc;
+  box-sizing: content-box;
+  overflow: auto;
+}
+.preview .el-scrollbar {
+  height: 100%;
+}
+.preview .el-scrollbar > .el-scrollbar__wrap {
+  overflow-x: auto;
+}
+.preview .content {
+  position: relative;
+  width: 100%;
+  height: 744px;
+  box-sizing: border-box;
+}
+.preview .content.pull {
+  height: 667px;
+}
+.preview .defbg {
+  padding-top: 88px;
+  background: #4b42f3 url(./images/bg1.jpg) no-repeat center top / 100% auto;
+}
+.preview .rule-btn {
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  top: 36.5px;
+  left: 0;
+  width: 86px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #7357f0;
+  background-color: #fff;
+  border-radius: 0px 15px 15px 0px;
+  box-shadow: 0px 4px 4px 0px rgba(148, 57, 168, 0.39);
+}
+.preview .pointer {
+  width: 198px;
+  height: 351px;
+  margin: 0 auto;
+  background-color: #fff6c1;
+  box-shadow: 0px 13px 11px 0px rgba(148, 57, 168, 0.39);
+}
+.preview .poster {
+  width: 262px;
+  height: 465px;
+  margin: 0 auto 34px;
+  background-color: #fff6c1;
+  box-shadow: 0px 13px 11px 0px rgba(148, 57, 168, 0.39);
+}
+.preview .templates {
+  display: flex;
+  margin-top: 30px;
+  padding-left: 20px;
+  overflow: hidden;
+}
+.preview .templates > li {
+  flex: none;
+  width: 64px;
+  height: 112px;
+  margin-right: 20px;
+  background: #fff6c1;
+  box-shadow: 0px 0px 5px 0px rgba(148, 57, 168, 0.21);
+}
+.preview .info {
+  margin-top: 13px;
+  height: 13px;
+  line-height: 13px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: center;
+}
+.preview .info > span {
+  color: #ffe362;
+}
+.preview .recommend-btn {
+  width: 274px;
+  height: 46px;
+  line-height: 46px;
+  border-radius: 25px;
+  margin: 30px auto;
+  background-color: #fddc88;
+  font-size: 25px;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0px 4px 4px rgba(255, 141, 58, 0.86);
+  box-shadow: 0px 4px 4px #ff7611;
+}
+.preview .copy-btn {
+  width: 279px;
+  height: 45px;
+  line-height: 45px;
+  margin: 20px auto;
+  background: #fff6c1;
+  box-shadow: 0px 4px 18px 0px rgba(39, 34, 149, 0.23);
+  border-radius: 23px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #ff900e;
+  text-align: center;
+}
+.preview .alert-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.preview .gift-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 232px;
+  height: 201px;
+  border-radius: 15px;
+  font-size: 0;
+}
+.preview .gift-dialog > .bg {
+  position: absolute;
+  width: 100%;
+}
+.preview .gift-dialog > .gift {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  background-color: #432f79;
+  border-radius: 50%;
+}
+.preview .rule-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 267px;
+  height: 427px;
+  padding: 26px 22px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.preview .rule-dialog .close {
+  position: absolute;
+  left: 50%;
+  top: -58px;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background: url(./images/close.png) no-repeat center / contain;
+}
+.preview .rule-dialog p {
+  height: 100%;
+  font-size: 15px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 20px;
+  color: #1a1a1a;
+  text-align: justify;
+  word-break: break-all;
+  overflow: auto;
+}
+.poster-view-box {
+  position: relative;
+  text-align: left;
+  background: #fdd35b;
+  transform-origin: left top;
+  overflow: hidden;
+}
+.poster-view-box .logo {
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  width: 100px;
+  height: 39px;
+  background: #e6e6e6;
+}
+.poster-view-box .logo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.poster-view-box .album-box {
+  position: absolute;
+  left: 50%;
+  top: 108px;
+  transform: translateX(-50%);
+  width: 338px;
+  height: 546px;
+  border-radius: 10px;
+  background: #e6e6e6;
+}
+.poster-view-box .album-box .title {
+  position: absolute;
+  left: 0;
+  top: -90px;
+  width: 300px;
+  height: 175px;
+  object-fit: cover;
+}
+.poster-view-box .album-box .album {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.poster-view-box .btm {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 110%;
+  height: 200.5px;
+  background: #ffffff;
+  box-shadow: 0px 13px 20px 0px rgba(213, 140, 44, 0.39);
+  transform: rotate(7deg);
+  transform-origin: left top;
+}
+.poster-view-box .btm .back-rotate {
+  width: 375px;
+  padding: 33px 24.5px 34px 28px;
+  transform: rotate(-7deg);
+  transform-origin: left top;
+  display: flex;
+  box-sizing: border-box;
+}
+.poster-view-box .btm .back-rotate .left {
+  max-width: 195px;
+}
+.poster-view-box .btm .back-rotate .left .user {
+  display: flex;
+  align-items: center;
+}
+.poster-view-box .btm .back-rotate .left .user img {
+  width: 28px;
+  height: 28px;
+  margin-right: 5px;
+  background: #e6e6e6;
+  border-radius: 50%;
+}
+.poster-view-box .btm .back-rotate .left .user span {
+  font-size: 17px;
+  font-weight: 400;
+  color: #5e5e5e;
+  letter-spacing: 0.25px;
+}
+.poster-view-box .btm .back-rotate .left p {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 38px;
+  margin-top: 5px;
+  color: #794df1;
+  white-space: nowrap;
+}
+.poster-view-box .btm .back-rotate .left p span {
+  font-size: 30px;
+}
+.poster-view-box .btm .back-rotate .left .info {
+  display: inline-block;
+  width: 189px;
+  height: auto;
+  line-height: 1;
+  padding: 5px 0;
+  margin-top: 5px;
+  border: 1px solid #794df1;
+  border-radius: 13px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #794df1;
+  text-align: center;
+}
+.poster-view-box .btm .back-rotate .qrcode {
+  width: 104px;
+  height: 104px;
+  background: #e6e6e6;
+  margin: 30px 0 0 25px;
+}

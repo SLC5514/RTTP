@@ -1,5 +1,5 @@
 <template>
-  <div :class="'home ' + (pageType === 0 ? 'bg1' : 'bg2')">
+  <div :class="'home ' + (pageType <= 1 ? 'bg1' : 'bg2')">
     <div class="rule-btn pointer" @click="$refs['rules-alert'].showRulesAllert()">活动规则</div>
     <!-- 预览成品 -->
     <div v-show="pageType === 0" class="gallery-top">
@@ -53,13 +53,11 @@
     <van-dialog className="copy-dialog" width="4.95rem" v-model="showCopyDialog" :showConfirmButton="false"
       closeOnClickOverlay>
       <div class="clearfix">
-        <div class="change-btn pull-right pointer">换一换</div>
+        <div class="change-btn pull-right pointer"
+          @click="copyTextRandom = Math.floor(Math.random()*(0-copyTextList.length)+copyTextList.length)">换一换</div>
       </div>
-      <p class="text-content">
-        之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习
-        ，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！
-      </p>
-      <div class="conform-btn pointer" v-clipboard:copy="'fff'" v-clipboard:success="copySuc"
+      <p class="text-content">{{copyTextList[copyTextRandom]}}</p>
+      <div class="conform-btn pointer" v-clipboard:copy="copyTextList[copyTextRandom]" v-clipboard:success="copySuc"
         v-clipboard:error="copyErr">
         一键复制邀请语
       </div>
@@ -73,7 +71,6 @@
     <!-- <div>
       <router-link to="/poster"><button>Poster</button></router-link>
       <router-link to="/overview"><button>Overview</button></router-link>
-      <button @click="wechatLogin">登录</button>
     </div> -->
   </div>
 </template>
@@ -105,26 +102,29 @@ export default {
       albumImg: null, // 相册图
       posterImg: null, // 海报图
       userData: null, // 用户数据
+      copyTextRandom: 0, // 随机下标
+      copyTextList: [
+        '之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！',
+        'teset',
+        'aaaaaaaaa',
+        'bbbbbbbbbbbbb',
+        'ccccccccccccccccccccccc',
+      ],
     }
   },
-  created() {
+  mounted() {
     // 退出挽留
-    const self = this
-    // window.history.pushState(null, null, '#')
-    // window.history.pushState({ status: 0 }, '', '')
+    window.history.pushState(null, null, document.URL)
     window.addEventListener(
       'popstate',
-      function () {
-        console.log(666)
-        if (self.backCount === 0) {
-          self.backCount++
-          self.showGiftDialog = true
+      () => {
+        if (this.backCount === 0) {
+          this.backCount++
+          this.showGiftDialog = true
         }
       },
       false
     )
-  },
-  mounted() {
     this.thumbsInit()
     this.getUserFn()
   },
@@ -139,6 +139,14 @@ export default {
         openId: this.$openId,
       }).then((res) => {
         this.userData = res.data
+        if (!this.userData.phone) {
+          this.$router.push({
+            path: '/poster',
+            query: {
+              openid: this.$openId,
+            },
+          })
+        }
       })
     },
     // 初始化缩略图
@@ -147,8 +155,9 @@ export default {
       var galleryThumbs = new Swiper('.gallery-thumbs', {
         // loop: true,
         // loopedSlides: 5,
-        spaceBetween: rootSize * 0.74,
-        slidesPerView: 4,
+        spaceBetween: rootSize * 0.38,
+        slidesPerView: 'auto',
+        // slidesPerView: 4,
         freeMode: true,
         watchSlidesVisibility: true,
         watchSlidesProgress: true,
@@ -156,7 +165,7 @@ export default {
       new Swiper('.gallery-top', {
         // loop: true,
         // loopedSlides: 5,
-        spaceBetween: rootSize * 0.74,
+        spaceBetween: rootSize * 0.38,
         thumbs: {
           swiper: galleryThumbs,
         },
@@ -183,7 +192,6 @@ export default {
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
-      console.log(w, h, scale, rect, window.scrollX, window.scrollY)
       html2canvas(box, {
         canvas: canvas,
         scale: scale,
@@ -195,7 +203,7 @@ export default {
         hegiht: h,
         windowWidth: w,
         windowHeight: w,
-        y: window.scrollY + rect.y,
+        y: window.scrollY + rect.top,
       })
         .then((cvs) => {
           var ctx = cvs.getContext('2d')
@@ -235,8 +243,8 @@ export default {
   text-align: center;
   overflow: hidden;
   &.bg1 {
-    background: #4b42f3 url(~@/assets/home/bg1.jpg) no-repeat top center;
-    background-size: 100% auto;
+    background: #4b42f3 url(~@/assets/home/bg1.jpg) no-repeat center top / 100%
+      auto;
   }
   &.bg2 {
     background: #4b42f3 url(~@/assets/home/bg2.jpg) no-repeat top center;
@@ -300,7 +308,7 @@ export default {
   }
   .gallery-thumbs {
     margin-top: 0.65rem;
-    padding: 0 0.65rem;
+    padding: 0 0.4rem;
     overflow: initial;
     .swiper-slide {
       width: auto;
@@ -373,17 +381,6 @@ export default {
     font-size: 0.38rem;
     font-weight: 800;
     color: #ff900e;
-  }
-  .rule-dialog {
-    .text-content {
-      padding: 0.31rem 0.515rem 0.27rem;
-      p {
-        height: 6rem;
-        letter-spacing: 0.025rem;
-        overflow-y: auto;
-        text-align: justify;
-      }
-    }
   }
   .copy-dialog {
     padding: 0.31rem 0.515rem 0.27rem;

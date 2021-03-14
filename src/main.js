@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueClipboard)
 
-Vue.prototype.$oauth = function() {
+Vue.prototype.$oauth = function () {
   const params = new URLSearchParams(window.location.search)
   const openid = params.get('openid') || params.get('openId')
   const redirect = window.location.href

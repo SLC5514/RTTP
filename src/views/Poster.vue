@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       phoneNum: '',
-      jtOpenId: ''
+      jtOpenId: '',
     }
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
       savePhone({
         phone: this.phoneNum,
         openId: this.$openId,
-        jtOpenId: jtOpenId
+        jtOpenId: jtOpenId,
       }).then((res) => {
         if (res.status == '200') {
           this.$notify({ type: 'success', message: res.message })
