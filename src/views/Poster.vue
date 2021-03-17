@@ -41,6 +41,12 @@ export default {
       }).then((res) => {
         if (res.status == '200') {
           this.$notify({ type: 'success', message: res.message })
+          this.$router.push({
+            path: '/',
+            query: {
+              openid: this.$openId,
+            },
+          })
         } else {
           this.$notify({ type: 'warning', message: res.message })
         }
