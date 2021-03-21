@@ -3,7 +3,14 @@
     <div class="logo">{{test}}</div>
     <div class="album-box">
       <img class="title" :src="posterTitle" alt="">
-      <img class="album" v-if="albumImg" :src="albumImg" alt="">
+      <div class="album-img-box">
+        <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
+          :style="albumImgStyle"
+          v-finger:press-move="pressMove"
+          v-finger:rotate="rotate"
+          v-finger:pinch="pinch"
+        >
+      </div>
     </div>
     <div class="btm">
       <div class="back-rotate">
@@ -43,6 +50,14 @@ export default {
         url: window.location.origin + '/poster?jtOpenId=' + this.$openId,
         // icon: '/favicon.ico',
       }, // 二维码数据
+      albumImgAttr: {
+        w: '',
+        h: '',
+        x: 0,
+        y: 0,
+        angle: 0,
+        zoom: 1
+      }
     }
   },
   computed: {
@@ -52,17 +67,64 @@ export default {
         height: (1 / this.scale) * 100 + '%',
       }
     },
+    albumImgStyle() {
+      return {
+        width: this.albumImgAttr.w + 'px',
+        height: this.albumImgAttr.h + 'px',
+        transform: `translate(${this.albumImgAttr.x}px, ${this.albumImgAttr.y}px) rotate(${this.albumImgAttr.angle}deg) scale(${this.albumImgAttr.zoom})`
+      }
+    }
   },
   mounted() {
     this.init()
   },
   methods: {
     init() {
-      this.$nextTick(() => {
-        const box = this.$refs['box']
-        const parent = box.parentNode
-        this.scale = parent.clientWidth / box.clientWidth
-      })
+      const box = this.$refs['box']
+      const parent = box.parentNode
+      this.scale = parent.clientWidth / box.clientWidth
+      // 图片尺寸位置初始化
+      const albumImg = this.$refs['album-img'];
+      if (albumImg) {
+        const pw = albumImg.parentNode.clientWidth;
+        const ph = albumImg.parentNode.clientHeight;
+        if (pw > 0 && ph > 0) {
+          const self = this;
+          albumImg.onload = function() {
+            this.style = '';
+            const w = this.width || pw;
+            const h = this.height || ph;
+            const wr = pw / w;
+            const hr = ph / h;
+            if (wr > hr) {
+              self.albumImgAttr.w = pw;
+              self.albumImgAttr.h = h * wr;
+            } else {
+              self.albumImgAttr.h = ph;
+              self.albumImgAttr.w = w * hr;
+            }
+            self.albumImgAttr.x = (pw - self.albumImgAttr.w) / 2;
+            self.albumImgAttr.y = (ph - self.albumImgAttr.h) / 2;
+          }
+        }
+      }
+    },
+
+    pressMove(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.albumImgAttr.x += e.deltaX / this.scale;
+      this.albumImgAttr.y += e.deltaY / this.scale;
+    },
+    rotate(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.albumImgAttr.angle = e.angle;
+    },
+    pinch(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.albumImgAttr.zoom = e.zoom;
     },
   },
 }
@@ -99,20 +161,24 @@ export default {
     transform: translateX(-50%);
     width: 6.75rem;
     height: 10.92rem;
-    border-radius: 0.2rem;
-    background: #e6e6e6;
     .title {
       position: absolute;
       left: 0;
       top: -1.8rem;
       width: 6rem;
       height: 3.5rem;
+      z-index: 1;
       object-fit: cover;
     }
-    .album {
+    .album-img-box {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      border-radius: 0.2rem;
+      background: #e6e6e6;
+      overflow: hidden;
+      .album {
+        max-width: none;
+      }
     }
   }
   .btm {

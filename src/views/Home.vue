@@ -66,7 +66,7 @@
     <van-dialog className="gift-dialog" width="4.95rem" v-model="showGiftDialog" :showConfirmButton="false"
       closeOnClickOverlay>
       <img :src="giftImg" />
-      <div class="conform-btn pointer" @click="showGiftDialog = false"></div>
+      <div class="conform-btn pointer" @click="closeGiftDialog"></div>
     </van-dialog>
     <!-- <div>
       <router-link to="/poster"><button>Poster</button></router-link>
@@ -138,7 +138,7 @@ export default {
       getStudentByOpenId({
         openId: this.$openId,
       }).then((res) => {
-        this.userData = res.data
+        this.userData = res.data || {}
         if (!this.userData.phone) {
           this.$router.push({
             path: '/poster',
@@ -178,20 +178,35 @@ export default {
       })
     },
     // 生成预览
-    generateRead(file) {
-      this.albumImg = file.content
-      this.pageType = 1
+    generateRead(res) {
+      let reader = new FileReader()
+      reader.readAsArrayBuffer(res.file)
+      reader.onload = e => {
+        let blob = null;
+        if (typeof e.target.result === 'object') {
+          blob = new Blob([e.target.result])
+        } else {
+          blob = e.target.result
+        }
+        const blobUrl = window.URL.createObjectURL(blob)
+        this.albumImg = blobUrl
+        this.pageType = 1
+      }
     },
     // 生成海报
     generatePointer() {
       const box = document.querySelector('.preview>div')
       const rect = box.getBoundingClientRect()
       const scale = 1 / (this.$refs['preview-poster'].scale || 1)
-      const w = box.scrollWidth * scale
-      const h = box.scrollHeight * scale
+      let w = box.scrollWidth * scale
+      let h = box.scrollHeight * scale
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
+      let left = 0
+      if (document.documentElement.clientWidth > 750) {
+        left = document.documentElement.clientWidth - 750
+      }
       html2canvas(box, {
         canvas: canvas,
         scale: scale,
@@ -202,8 +217,11 @@ export default {
         width: w,
         hegiht: h,
         windowWidth: w,
-        windowHeight: w,
+        windowHeight: h,
+        x: window.scrollX + rect.left - left / 2,
         y: window.scrollY + rect.top,
+        scrollX: 0,
+        scrollY: 0,
       })
         .then((cvs) => {
           var ctx = cvs.getContext('2d')
@@ -230,6 +248,12 @@ export default {
     copyErr() {
       this.$notify({ type: 'warning', message: '复制失败' })
     },
+    closeGiftDialog() {
+      this.showGiftDialog = false;
+      this.albumImg = null;
+      this.pageType = 0;
+      document.documentElement.scrollTop = 0;
+    }
   },
 }
 </script>
@@ -238,8 +262,6 @@ export default {
 .home {
   position: relative;
   min-height: 14.89rem;
-  // min-height: 100vh;
-  // padding-bottom: 0.8rem;
   text-align: center;
   overflow: hidden;
   &.bg1 {
@@ -266,14 +288,14 @@ export default {
     box-shadow: 0 0 0.07rem 0.08rem rgba(148, 57, 168, 0.39);
   }
   .preview {
+    position: relative;
     width: 3.965rem;
     height: 7.025rem;
     margin: 1.77rem auto 0;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
     & > div {
-      width: 100%;
-      height: 100%;
-      position: relative;
+      width: 3.965rem;
+      height: 7.025rem;
       background-color: #fff6c1;
     }
     .qrcode {

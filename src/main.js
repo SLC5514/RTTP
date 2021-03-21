@@ -8,6 +8,9 @@ vhCheck('browser-address-bar')
 
 import VueClipboard from 'vue-clipboard2'
 
+import AlloyFinger from 'alloyfinger'
+import AlloyFingerPlugin from 'alloyfinger/vue/alloy_finger_vue.js'
+
 import 'normalize.css/normalize.css'
 import './vant'
 import './rem'
@@ -16,6 +19,9 @@ import './styles/main.scss'
 Vue.config.productionTip = false
 
 Vue.use(VueClipboard)
+Vue.use(AlloyFingerPlugin, {
+  AlloyFinger
+})
 
 Vue.prototype.$oauth = function () {
   const params = new URLSearchParams(window.location.search)
