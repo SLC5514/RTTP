@@ -16,6 +16,12 @@ p {
 #app {
   min-width: 1000px;
 }
+.flex-line .el-form-item__content {
+  display: flex;
+}
+.flex-line .el-form-item__content .el-button {
+  margin-left: 10px;
+}
 
 .control {
   padding: 10px;
@@ -202,6 +208,7 @@ p {
   text-align: justify;
   word-break: break-all;
   overflow: auto;
+  white-space: pre-line;
 }
 .poster-view-box {
   position: relative;
