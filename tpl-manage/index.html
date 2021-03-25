@@ -22,10 +22,6 @@
                   ref="ruleForm1"
                   label-width="120px"
                 >
-                  <!-- <el-form-item label="获得奖励人数" prop="perpleNum">
-                    <el-input v-model.number="formList[0].perpleNum">
-                    </el-input>
-                  </el-form-item> -->
                   <el-form-item label="描述提示文案" prop="infoText">
                     <el-input v-model="formList[0].infoText"></el-input>
                   </el-form-item>
@@ -73,7 +69,7 @@
                   <el-scrollbar>
                     <div class="content defbg" :style="contentBgStyle1">
                       <div class="rule-btn">活动规则</div>
-                      <div class="pointer"></div>
+                      <div class="poster-view"></div>
                       <ul class="templates">
                         <li></li>
                         <li></li>
@@ -335,7 +331,7 @@
                     :rules="{
                       required: true, message: '邀请语不能为空', trigger: 'blur'
                     }">
-                    <el-input v-model="v.value"></el-input>
+                    <el-input v-model="v.value" @focus="focusCopyIptIdx = i"></el-input>
                     <el-button v-if="formList[5].copytext.length > 1" @click="changeCopyText(formList[5], 'copytext', i)">删除</el-button>
                   </el-form-item>
                   <el-form-item>
@@ -347,11 +343,15 @@
               </li>
               <li>
                 <div class="preview">
-                  <el-scrollbar>
-                    <div class="content pull">
-                      <p v-for="(v, i) in formList[5].copytext" :key="i">{{v.value}}</p>
+                  <div class="content pull">
+                    <div class="alert-box">
+                      <div class="copy-dialog">
+                        <div class="change-btn">换一换</div>
+                        <p class="text-content">{{formList[5].copytext[focusCopyIptIdx] && formList[5].copytext[focusCopyIptIdx].value}}</p>
+                        <div class="conform-btn">一键复制邀请语</div>
+                      </div>
                     </div>
-                  </el-scrollbar>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -416,11 +416,75 @@
               </li>
             </ul>
           </el-tab-pane>
+          <el-tab-pane label="落地页" name="6">
+            <ul class="form-box">
+              <li>
+                <el-form
+                  :model="formList[6]"
+                  :rules="rules"
+                  ref="ruleForm7"
+                  label-width="120px"
+                >
+                  <el-form-item label="背景图" prop="bgImg">
+                    <el-upload
+                      class="gift-upload"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      :file-list="formList[6].bgImg"
+                      :on-change="handleChange"
+                      :on-error="handleError"
+                      :on-success="handleSuccess"
+                      :on-remove="handleRemove"
+                      :before-remove="beforeRemove"
+                      :before-upload="beforeUpload"
+                      :auto-upload="false"
+                      drag
+                    >
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">
+                        将文件拖到此处，或<em>点击上传</em>
+                      </div>
+                      <div class="el-upload__tip" slot="tip">
+                        只能上传jpg/png文件，且不超过500kb
+                      </div>
+                    </el-upload>
+                  </el-form-item>
+                  <el-form-item label="背景色" prop="bgColor">
+                    <el-color-picker
+                      v-model="formList[6].bgColor"
+                    ></el-color-picker>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm7')"
+                      >确定</el-button
+                    >
+                    <el-button @click="resetForm('ruleForm7')">重置</el-button>
+                  </el-form-item>
+                </el-form>
+              </li>
+              <li>
+                <div class="preview">
+                  <el-scrollbar>
+                    <div class="content pull-page landing-page" :style="{
+                      backgroundColor: formList[6].bgColor || null,
+                      backgroundImage: formList[6].bgImg[0] && formList[6].bgImg[0].base64 ? `url(${formList[6].bgImg[0] && formList[6].bgImg[0].base64})` : null,
+                    }">
+                      <div class="receive">
+                        <b>马上领取<span><i>598</i>元</span>思维大礼包</b>
+                        <div class="phone"><input type="text" placeholder="请输入手机号" maxLength="11"></div>
+                        <button>限时免费 立即体验</button>
+                      </div>
+                    </div>
+                  </el-scrollbar>
+                </div>
+              </li>
+            </ul>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
   </body>
   <script src="./lib/vue/vue.min.js"></script>
   <script src="./lib/element-ui/element-ui.js"></script>
+  <script src="./lib/axios/axios.min.js"></script>
   <script src="./index.js"></script>
 </html>

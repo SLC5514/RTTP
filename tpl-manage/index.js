@@ -4,30 +4,42 @@ const defImg = {
   isDefImg: true
 };
 
+// api
+const instance = axios.create({
+  baseURL: 'http://gl.huoyusaas.com/'
+});
+// 获取模板素材
+const getMaterial = function () {
+  return instance({
+    url: '/api/getMaterial?code=407364bcd69cf6b3a1b0c981a7380c&type=1&temId=1&id=1',
+    method: 'get'
+  });
+};
+
 new Vue({
   data: {
     // 编辑页面位置
     pageCount: 0,
     // 默认表单
-    formList: [
-      {
+    formList: {
+      0:{
         // perpleNum: 10000,
         infoText: '超过10000人通过海报邀请好友获得推荐奖励',
         recommendBtnText: '我要推荐奖励',
         bgColor: '#4b42f3',
         bgImg: [defImg]
       },
-      {
+      1:{
         // perpleNum: 10000,
         infoText: '超过10000人通过海报邀请好友获得推荐奖励',
         copyBtnText: '复制邀请语 得奖几率翻倍！',
         bgColor: '#4b42f3',
         bgImg: [defImg]
       },
-      {
+      2:{
         giftImg: []
       },
-      {
+      3:{
         ruleText:
           `1、“品牌名”注册用户(推荐人)分享专属个性化海报，每推荐一位新用户(被推荐人)，通过推荐人专属个性化海报注册为“品牌名”用户，并首次购买4单元及以上主修课课程包或15课段及以上全项进阶课课程包，且满足如下赠课条件之一的，推荐人即可获得赠课(根据被推荐人购买的课程包不同有所区别)，最多可获赠10课时/课段主修课/全项进阶课，奖励可以累计。\n`+
           `(1)首次购买的课程包是主修课课程包的，当被推荐人被扣除的主修课课时超过8节(含缺席课时)且未退费；\n`+
@@ -43,7 +55,7 @@ new Vue({
           `(3)影响活动正常有序进行等(比如滥发短信、微信等骚扰行为,扰乱系统,批量或使用机器注册账号等不诚信行为)。\n`+
           `8、用户所上传的文本、图片、音视频等内容由用户自行对该等内容承担责任。\n`
       },
-      {
+      4:{
         tplId: 0,
         logoImg: [],
         titleImg: [defImg],
@@ -51,29 +63,30 @@ new Vue({
         infoText2: '真人直播体验课',
         infoText3: '扫码识别 立即领取',
       },
-      {
+      5:{
         copytext: [
           {
             value: '邀请语'
           }
         ]
-      }
-    ],
+      },
+      6:{
+        bgImg: [],
+        bgColor: '#182fba',
+      },
+    },
     imgKeyValue: {
       0: 'bgImg',
       1: 'bgImg',
       2: 'giftImg',
       4: 'titleImg',
+      6: 'bgImg',
     },
     imgKeyValue2: {
       4: 'logoImg',
     },
     // 验证规则
     rules: {
-      // perpleNum: [
-      //   { required: true, message: '请输入人数', trigger: 'blur' },
-      //   { type: 'number', message: '必须为数字', trigger: 'change' }
-      // ],
       infoText: [
         { required: true, message: '请输入描述文案', trigger: 'blur' },
         { max: 23, message: '长度不能大于 236 个字符', trigger: 'change' }
@@ -111,6 +124,8 @@ new Vue({
         { required: true, message: '请输入描述文案', trigger: 'blur' },
       ],
     },
+    // 邀请语下标
+    focusCopyIptIdx: 0
   },
   computed: {
     // 背景样式
@@ -146,6 +161,13 @@ new Vue({
         'background-image': `url(${this.formList[1].bgImg[0].base64})`
       }
     },
+  },
+  created() {
+    getMaterial().then(function(res) {
+      console.log(res)
+    }).catch(function(err) {
+      console.log(err)
+    });
   },
   methods: {
     /* 表单操作 */
@@ -291,6 +313,6 @@ new Vue({
           value: ''
         });
       }
-    }
+    },
   }
 }).$mount('#app')

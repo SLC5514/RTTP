@@ -59,6 +59,9 @@ p {
 .preview .content.pull {
   height: 667px;
 }
+.preview .content.pull-page {
+  height: 744.5px;
+}
 .preview .defbg {
   padding-top: 88px;
   background: #4b42f3 url(./images/bg1.jpg) no-repeat center top / 100% auto;
@@ -78,7 +81,7 @@ p {
   border-radius: 0px 15px 15px 0px;
   box-shadow: 0px 4px 4px 0px rgba(148, 57, 168, 0.39);
 }
-.preview .pointer {
+.preview .poster-view {
   width: 198px;
   height: 351px;
   margin: 0 auto;
@@ -210,6 +213,109 @@ p {
   overflow: auto;
   white-space: pre-line;
 }
+.preview .copy-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 248px;
+  padding: 15.5px 25.75px 13.5px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+.preview .copy-dialog .change-btn {
+  text-align: right;
+  font-size: 14.75px;
+  font-weight: 400;
+  color: #ff900e;
+}
+.preview .copy-dialog .text-content {
+  text-align: justify;
+  word-break: break-all;
+}
+.preview .copy-dialog .conform-btn{
+  width: 180px;
+  height: 33.25px;
+  line-height: 33.25px;
+  background: #ff900e;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 14.75px;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 30px auto 0;
+}
+.preview .landing-page {
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+}
+.preview .receive {
+  width: 345px;
+  height: 201.5px;
+  background: #fff;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 498px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.preview .receive b {
+  font-size: 22px;
+  color: #474747;
+  font-weight: 400;
+  margin-top: 25px;
+}
+.preview .receive b span {
+  color: #ff619c;
+}
+.preview .receive b span i {
+  font-style: normal;
+  font-size: 27px;
+}
+.preview .receive .phone {
+  width: 314px;
+  height: 45px;
+  box-shadow: 0px 0.4px 17.5px 0px rgba(39, 34, 149, 0.1);
+  border-radius: 6px;
+  margin-top: 12.5px;
+  position: relative;
+}
+.preview .receive .phone input {
+  border: 1px solid #ffcd54;
+  outline: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 314px;
+  height: 45px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0 7.5px 0 7.5px;
+}
+.preview .receive button {
+  width: 314px;
+  height: 45px;
+  background: #ff619c;
+  box-shadow: 0px 0.4px 17.5px 0px rgba(39, 34, 149, 0.23);
+  border-radius: 6px;
+  font-size: 17px;
+  font-family: AlibabaPuHuiTiB;
+  font-weight: 400;
+  color: #fff;
+  margin-top: 20px;
+  border: none;
+  outline: none;
+}
+.preview .receive input::-webkit-input-placeholder {
+  color: #b3b3b3;
+}
+
 .poster-view-box {
   position: relative;
   text-align: left;
