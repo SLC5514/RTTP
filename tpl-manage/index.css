@@ -22,6 +22,10 @@ p {
 .flex-line .el-form-item__content .el-button {
   margin-left: 10px;
 }
+.info-msg {
+  font-size: 14px;
+  color: #999;
+}
 
 .control {
   padding: 10px;
