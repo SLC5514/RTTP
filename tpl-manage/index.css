@@ -64,7 +64,7 @@ p {
 }
 .preview .defbg {
   padding-top: 88px;
-  background: #4b42f3 url(./images/bg1.jpg) no-repeat center top / 100% auto;
+  background: #4b42f3 no-repeat center top / 100% auto;
 }
 .preview .rule-btn {
   font-size: 16px;

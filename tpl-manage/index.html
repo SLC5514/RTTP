@@ -13,38 +13,35 @@
     <div id="app" v-cloak>
       <div class="control">
         <el-tabs v-model="pageCount" tab-position="left" type="border-card">
-          <el-tab-pane label="展示页" name="0">
+          <el-tab-pane label="展示页" :name="1">
             <ul class="form-box">
               <li>
                 <el-form
-                  :model="formList[0]"
+                  :model="formData"
                   :rules="rules"
                   ref="ruleForm1"
                   label-width="120px"
                 >
-                  <el-form-item label="描述提示文案" prop="infoText">
-                    <el-input v-model="formList[0].infoText"></el-input>
+                  <el-form-item label="描述提示文案" prop="show_info_text">
+                    <el-input v-model="formData.show_info_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="推荐按钮文案" prop="recommendBtnText">
-                    <el-input v-model="formList[0].recommendBtnText"></el-input>
+                  <el-form-item label="推荐按钮文案" prop="show_btn_text">
+                    <el-input v-model="formData.show_btn_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="背景色" prop="bgColor">
-                    <el-color-picker
-                      v-model="formList[0].bgColor"
-                    ></el-color-picker>
+                  <el-form-item label="背景色" prop="show_bg_color">
+                    <el-color-picker v-model="formData.show_bg_color" ></el-color-picker>
                   </el-form-item>
                   <el-form-item label="背景图" prop="bgImg">
                     <el-upload
                       class="bg-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[0].bgImg"
-                      :on-change="handleChange"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.show_bg_img]"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :on-remove="handleRemove"
                       :before-remove="beforeRemove"
                       :before-upload="beforeUpload"
-                      :auto-upload="false"
+                      @mousedown.native="uploadingKey = 'show_bg_img'"
                       drag
                     >
                       <i class="el-icon-upload"></i>
@@ -77,9 +74,9 @@
                         <li></li>
                         <li></li>
                       </ul>
-                      <div class="info">{{formList[0].infoText}}</div>
+                      <div class="info">{{formData.show_info_text}}</div>
                       <div class="recommend-btn">
-                        {{formList[0].recommendBtnText}}
+                        {{formData.show_btn_text}}
                       </div>
                     </div>
                   </el-scrollbar>
@@ -87,42 +84,35 @@
               </li>
             </ul>
           </el-tab-pane>
-          <el-tab-pane label="生成页" name="1">
+          <el-tab-pane label="生成页" :name="2">
             <ul class="form-box">
               <li>
                 <el-form
-                  :model="formList[1]"
+                  :model="formData"
                   :rules="rules"
                   ref="ruleForm2"
                   label-width="120px"
                 >
-                  <!-- <el-form-item label="获得奖励人数" prop="perpleNum">
-                    <el-input v-model.number="formList[1].perpleNum">
-                    </el-input>
-                  </el-form-item> -->
-                  <el-form-item label="描述提示文案" prop="infoText">
-                    <el-input v-model="formList[1].infoText"></el-input>
+                  <el-form-item label="描述提示文案" prop="render_info_text">
+                    <el-input v-model="formData.render_info_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="复制按钮文案" prop="copyBtnText">
-                    <el-input v-model="formList[1].copyBtnText"></el-input>
+                  <el-form-item label="复制按钮文案" prop="render_btn_text">
+                    <el-input v-model="formData.render_btn_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="背景色" prop="bgColor">
-                    <el-color-picker
-                      v-model="formList[1].bgColor"
-                    ></el-color-picker>
+                  <el-form-item label="背景色" prop="render_bg_color">
+                    <el-color-picker v-model="formData.render_bg_color"></el-color-picker>
                   </el-form-item>
-                  <el-form-item label="背景图" prop="bgImg">
+                  <el-form-item label="背景图" prop="render_bg_img">
                     <el-upload
                       class="bg-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[1].bgImg"
-                      :on-change="handleChange"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.render_bg_img]"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :on-remove="handleRemove"
                       :before-remove="beforeRemove"
                       :before-upload="beforeUpload"
-                      :auto-upload="false"
+                      @mousedown.native="uploadingKey = 'render_bg_img'"
                       drag
                     >
                       <i class="el-icon-upload"></i>
@@ -148,235 +138,37 @@
                     <div class="content defbg" :style="contentBgStyle2">
                       <div class="rule-btn">活动规则</div>
                       <div class="poster"></div>
-                      <div class="info">{{formList[1].infoText}}</div>
-                      <div class="copy-btn">{{formList[1].copyBtnText}}</div>
+                      <div class="info">{{formData.render_info_text}}</div>
+                      <div class="copy-btn">{{formData.render_btn_text}}</div>
                     </div>
                   </el-scrollbar>
                 </div>
               </li>
             </ul>
           </el-tab-pane>
-          <el-tab-pane label="活动规则" name="3">
+          <el-tab-pane label="邀请页" :name="3">
             <ul class="form-box">
               <li>
                 <el-form
-                  :model="formList[3]"
-                  :rules="rules"
-                  ref="ruleForm4"
-                  label-width="120px"
-                >
-                  <el-form-item label="品牌名" prop="ruleText">
-                    <el-input type="textarea"
-                      v-model="formList[3].ruleText"
-                      :autosize="{ minRows: 2 }"
-                      placeholder="请输入内容">
-                    </el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm4')"
-                      >确定</el-button
-                    >
-                    <el-button @click="resetForm('ruleForm4')">重置</el-button>
-                  </el-form-item>
-                </el-form>
-              </li>
-              <li>
-                <div class="preview">
-                  <div class="content pull">
-                    <div class="alert-box">
-                      <div class="rule-dialog">
-                        <div class="close"></div>
-                        <el-scrollbar>
-                          <p>{{formList[3].ruleText}}</p>
-                        </el-scrollbar>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </el-tab-pane>
-          <el-tab-pane label="海报模板" name="4">
-            <ul class="form-box">
-              <li>
-                <el-form
-                  :model="formList[4]"
-                  :rules="rules"
-                  ref="ruleForm5"
-                  label-width="120px"
-                >
-                  <el-form-item label="所选模板" prop="tplId">
-                    <el-select
-                      v-model="formList[4].tplId"
-                      placeholder="请选择模板"
-                    >
-                      <el-option label="默认模板" :value="0"></el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="LOGO" prop="logoImg">
-                    <el-upload
-                      class="logo-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[4].logoImg"
-                      :on-change="handleChange2"
-                      :on-error="handleError2"
-                      :on-success="handleSuccess2"
-                      :on-remove="handleRemove2"
-                      :before-remove="beforeRemove2"
-                      :before-upload="beforeUpload2"
-                      :auto-upload="false"
-                      drag
-                    >
-                      <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">
-                        将文件拖到此处，或<em>点击上传</em>
-                      </div>
-                      <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
-                      </div>
-                    </el-upload>
-                  </el-form-item>
-                  <el-form-item label="标题图片" prop="titleImg">
-                    <el-upload
-                      class="title-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[4].titleImg"
-                      :on-change="handleChange"
-                      :on-error="handleError"
-                      :on-success="handleSuccess"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
-                      :before-upload="beforeUpload"
-                      :auto-upload="false"
-                      drag
-                    >
-                      <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">
-                        将文件拖到此处，或<em>点击上传</em>
-                      </div>
-                      <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
-                      </div>
-                    </el-upload>
-                  </el-form-item>
-                  <el-form-item label="描述文案1" prop="infoText1">
-                    <el-input v-model="formList[4].infoText1"></el-input>
-                  </el-form-item>
-                  <el-form-item label="描述文案2" prop="infoText2">
-                    <el-input v-model="formList[4].infoText2"></el-input>
-                  </el-form-item>
-                  <el-form-item label="描述文案3" prop="infoText3">
-                    <el-input v-model="formList[4].infoText3"></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm5')"
-                      >确定</el-button
-                    >
-                    <el-button @click="resetForm('ruleForm5')">重置</el-button>
-                  </el-form-item>
-                </el-form>
-              </li>
-              <li>
-                <div class="preview">
-                  <el-scrollbar>
-                    <div class="content poster-view-box">
-                      <div class="logo">
-                        <img
-                          v-if="formList[4].logoImg[0] && formList[4].logoImg[0].base64"
-                          :src="formList[4].logoImg[0] && formList[4].logoImg[0].base64"
-                          alt=""
-                        />
-                      </div>
-                      <div class="album-box">
-                        <img
-                          class="title"
-                          :src="formList[4].titleImg[0] && formList[4].titleImg[0].base64 || (formList[4].titleImg[0] && formList[4].titleImg[0].isDefImg && './images/poster_title.png')"
-                          alt=""
-                        />
-                        <img class="album" src="" alt="" />
-                      </div>
-                      <div class="btm">
-                        <div class="back-rotate">
-                          <div class="left">
-                            <div class="user">
-                              <img src="" alt="" />
-                              <span>用户名</span>
-                            </div>
-                            <p>
-                              {{formList[4].infoText1}}<br />{{formList[4].infoText2}}
-                            </p>
-                            <div class="info">{{formList[4].infoText3}}</div>
-                          </div>
-                          <div class="right">
-                            <div class="qrcode"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </el-scrollbar>
-                </div>
-              </li>
-            </ul>
-          </el-tab-pane>
-          <el-tab-pane label="邀请语" name="5">
-            <ul class="form-box">
-              <li>
-                <el-form
-                  :model="formList[5]"
-                  ref="ruleForm6"
-                  label-width="120px"
-                >
-                  <el-form-item class="flex-line" :label="'邀请语' + (i + 1)" :prop="'copytext.' + i + '.value'"
-                    v-for="(v, i) in formList[5].copytext" :key="i"
-                    :rules="{
-                      required: true, message: '邀请语不能为空', trigger: 'blur'
-                    }">
-                    <el-input v-model="v.value" @focus="focusCopyIptIdx = i"></el-input>
-                    <el-button v-if="formList[5].copytext.length > 1" @click="changeCopyText(formList[5], 'copytext', i)">删除</el-button>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm6')">确定</el-button>
-                    <el-button @click="resetForm('ruleForm6')">重置</el-button>
-                    <el-button @click="changeCopyText(formList[5], 'copytext')">新增</el-button>
-                  </el-form-item>
-                </el-form>
-              </li>
-              <li>
-                <div class="preview">
-                  <div class="content pull">
-                    <div class="alert-box">
-                      <div class="copy-dialog">
-                        <div class="change-btn">换一换</div>
-                        <p class="text-content">{{formList[5].copytext[focusCopyIptIdx] && formList[5].copytext[focusCopyIptIdx].value}}</p>
-                        <div class="conform-btn">一键复制邀请语</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </el-tab-pane>
-          <el-tab-pane label="挽留礼品" name="2">
-            <ul class="form-box">
-              <li>
-                <el-form
-                  :model="formList[2]"
+                  :model="formData"
                   :rules="rules"
                   ref="ruleForm3"
                   label-width="120px"
                 >
-                  <el-form-item label="礼品图" prop="giftImg">
+                  <el-form-item label="背景色" prop="invite_bg_color">
+                    <el-color-picker v-model="formData.invite_bg_color"></el-color-picker>
+                  </el-form-item>
+                  <el-form-item label="背景图" prop="invite_bg_img">
                     <el-upload
                       class="gift-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[2].giftImg"
-                      :on-change="handleChange"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.invite_bg_img]"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :on-remove="handleRemove"
                       :before-remove="beforeRemove"
                       :before-upload="beforeUpload"
-                      :auto-upload="false"
+                      @mousedown.native="uploadingKey = 'invite_bg_img'"
                       drag
                     >
                       <i class="el-icon-upload"></i>
@@ -399,16 +191,11 @@
               <li>
                 <div class="preview">
                   <el-scrollbar>
-                    <div class="content pull">
-                      <div class="alert-box">
-                        <div class="gift-dialog">
-                          <img
-                            class="gift"
-                            :src="formList[2].giftImg[0] && formList[2].giftImg[0].base64"
-                            alt=""
-                          />
-                          <img class="bg" src="./images/alert.png" alt="" />
-                        </div>
+                    <div class="content pull-page landing-page" :style="contentBgStyle3">
+                      <div class="receive">
+                        <b>马上领取<span><i>598</i>元</span>思维大礼包</b>
+                        <div class="phone"><input type="text" placeholder="请输入手机号" maxLength="11"></div>
+                        <button>限时免费 立即体验</button>
                       </div>
                     </div>
                   </el-scrollbar>
@@ -416,27 +203,33 @@
               </li>
             </ul>
           </el-tab-pane>
-          <el-tab-pane label="落地页" name="6">
+          <el-tab-pane label="海报模板" :name="4">
             <ul class="form-box">
               <li>
                 <el-form
-                  :model="formList[6]"
+                  :model="formData"
                   :rules="rules"
-                  ref="ruleForm7"
+                  ref="ruleForm4"
                   label-width="120px"
                 >
-                  <el-form-item label="背景图" prop="bgImg">
+                  <el-form-item label="所选模板">
+                    <el-select v-model="tplIdx" placeholder="请选择模板">
+                      <el-option label="默认模板" :value="0"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="LOGO" :prop="`poster_list.${tplIdx}.logo_img`" :rules="{
+                    required: true, message: '请上传LOGO图片', trigger: 'blur'
+                  }">
                     <el-upload
-                      class="gift-upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      :file-list="formList[6].bgImg"
-                      :on-change="handleChange"
+                      class="logo-upload"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.poster_list[tplIdx].logo_img]"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :on-remove="handleRemove"
                       :before-remove="beforeRemove"
                       :before-upload="beforeUpload"
-                      :auto-upload="false"
+                      @mousedown.native="uploadingKey = `poster_list.${tplIdx}.logo_img`"
                       drag
                     >
                       <i class="el-icon-upload"></i>
@@ -448,10 +241,203 @@
                       </div>
                     </el-upload>
                   </el-form-item>
-                  <el-form-item label="背景色" prop="bgColor">
-                    <el-color-picker
-                      v-model="formList[6].bgColor"
-                    ></el-color-picker>
+                  <el-form-item label="标题图片" :prop="`poster_list.${tplIdx}.title_img`" :rules="{
+                    required: true, message: '请上传标题图片', trigger: 'blur'
+                  }">
+                    <el-upload
+                      class="title-upload"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.poster_list[tplIdx].title_img]"
+                      :on-error="handleError"
+                      :on-success="handleSuccess"
+                      :on-remove="handleRemove"
+                      :before-remove="beforeRemove"
+                      :before-upload="beforeUpload"
+                      @mousedown.native="uploadingKey = `poster_list.${tplIdx}.title_img`"
+                      drag
+                    >
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">
+                        将文件拖到此处，或<em>点击上传</em>
+                      </div>
+                      <div class="el-upload__tip" slot="tip">
+                        只能上传jpg/png文件，且不超过500kb
+                      </div>
+                    </el-upload>
+                  </el-form-item>
+                  <el-form-item label="描述文案1" :prop="`poster_list.${tplIdx}.info_text1`" :rules="{
+                    required: true, message: '请输入描述文案', trigger: 'blur'
+                  }">
+                    <el-input v-model="formData.poster_list[tplIdx].info_text1"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述文案2" :prop="`poster_list.${tplIdx}.info_text2`" :rules="{
+                    required: true, message: '请输入描述文案', trigger: 'blur'
+                  }">
+                    <el-input v-model="formData.poster_list[tplIdx].info_text2"></el-input>
+                  </el-form-item>
+                  <el-form-item label="描述文案3" :prop="`poster_list.${tplIdx}.info_text3`" :rules="{
+                    required: true, message: '请输入描述文案', trigger: 'blur'
+                  }">
+                    <el-input v-model="formData.poster_list[tplIdx].info_text3"></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm4')"
+                      >确定</el-button
+                    >
+                    <el-button @click="resetForm('ruleForm4')">重置</el-button>
+                  </el-form-item>
+                </el-form>
+              </li>
+              <li>
+                <div class="preview">
+                  <el-scrollbar>
+                    <div class="content poster-view-box">
+                      <div class="logo">
+                        <img
+                          v-if="formData.poster_list[tplIdx].logo_img.path"
+                          :src="formData.poster_list[tplIdx].logo_img.path"
+                          alt=""
+                        />
+                      </div>
+                      <div class="album-box">
+                        <img
+                          class="title"
+                          :src="formData.poster_list[tplIdx].title_img.path || './images/poster_title.png'"
+                          alt=""
+                        />
+                        <img class="album" src="" alt="" />
+                      </div>
+                      <div class="btm">
+                        <div class="back-rotate">
+                          <div class="left">
+                            <div class="user">
+                              <img src="" alt="" />
+                              <span>用户名</span>
+                            </div>
+                            <p>
+                              {{formData.poster_list[tplIdx].info_text1}}<br />{{formData.poster_list[tplIdx].info_text2}}
+                            </p>
+                            <div class="info">{{formData.poster_list[tplIdx].info_text3}}</div>
+                          </div>
+                          <div class="right">
+                            <div class="qrcode"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </el-scrollbar>
+                </div>
+              </li>
+            </ul>
+          </el-tab-pane>
+          <el-tab-pane label="活动规则" :name="5">
+            <ul class="form-box">
+              <li>
+                <el-form
+                  :model="formData"
+                  :rules="rules"
+                  ref="ruleForm5"
+                  label-width="120px"
+                >
+                  <el-form-item label="品牌名" prop="rule_text">
+                    <el-input type="textarea"
+                      v-model="formData.rule_text"
+                      :rows="28"
+                      placeholder="请输入内容">
+                    </el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm5')"
+                      >确定</el-button
+                    >
+                    <el-button @click="resetForm('ruleForm5')">重置</el-button>
+                  </el-form-item>
+                </el-form>
+              </li>
+              <li>
+                <div class="preview">
+                  <div class="content pull">
+                    <div class="alert-box">
+                      <div class="rule-dialog">
+                        <div class="close"></div>
+                        <el-scrollbar>
+                          <p>{{formData.rule_text}}</p>
+                        </el-scrollbar>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </el-tab-pane>
+          <el-tab-pane label="邀请语" :name="6">
+            <ul class="form-box">
+              <li>
+                <el-form
+                  :model="formData"
+                  ref="ruleForm6"
+                  label-width="120px"
+                >
+                  <el-form-item class="flex-line" :label="'邀请语' + (i + 1)" :prop="`invite_info_text.${i}.value`"
+                    v-for="(v, i) in formData.invite_info_text" :key="i"
+                    :rules="{
+                      required: true, message: '邀请语不能为空', trigger: 'blur'
+                    }">
+                    <el-input v-model="v.value" @focus="focusCopyIptIdx = i"></el-input>
+                    <el-button v-if="formData.invite_info_text.length > 1" @click="changeCopyText(formData, 'invite_info_text', i)">删除</el-button>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" @click="submitForm('ruleForm6')">确定</el-button>
+                    <el-button @click="resetForm('ruleForm6')">重置</el-button>
+                    <el-button @click="changeCopyText(formData, 'invite_info_text')">新增</el-button>
+                  </el-form-item>
+                </el-form>
+              </li>
+              <li>
+                <div class="preview">
+                  <div class="content pull">
+                    <div class="alert-box">
+                      <div class="copy-dialog">
+                        <div class="change-btn">换一换</div>
+                        <p class="text-content">{{formData.invite_info_text[focusCopyIptIdx] && formData.invite_info_text[focusCopyIptIdx].value}}</p>
+                        <div class="conform-btn">一键复制邀请语</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </el-tab-pane>
+          <el-tab-pane label="挽留礼品" :name="7">
+            <ul class="form-box">
+              <li>
+                <el-form
+                  :model="formData"
+                  :rules="rules"
+                  ref="ruleForm7"
+                  label-width="120px"
+                >
+                  <el-form-item label="礼品图" prop="gift_img">
+                    <el-upload
+                      class="gift-upload"
+                      :action="baseURL + '/qiniu/uploadFile'"
+                      :file-list="[formData.gift_img]"
+                      :on-error="handleError"
+                      :on-success="handleSuccess"
+                      :on-remove="handleRemove"
+                      :before-remove="beforeRemove"
+                      :before-upload="beforeUpload"
+                      @mousedown.native="uploadingKey = 'gift_img'"
+                      drag
+                    >
+                      <i class="el-icon-upload"></i>
+                      <div class="el-upload__text">
+                        将文件拖到此处，或<em>点击上传</em>
+                      </div>
+                      <div class="el-upload__tip" slot="tip">
+                        只能上传jpg/png文件，且不超过500kb
+                      </div>
+                    </el-upload>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm7')"
@@ -464,14 +450,16 @@
               <li>
                 <div class="preview">
                   <el-scrollbar>
-                    <div class="content pull-page landing-page" :style="{
-                      backgroundColor: formList[6].bgColor || null,
-                      backgroundImage: formList[6].bgImg[0] && formList[6].bgImg[0].base64 ? `url(${formList[6].bgImg[0] && formList[6].bgImg[0].base64})` : null,
-                    }">
-                      <div class="receive">
-                        <b>马上领取<span><i>598</i>元</span>思维大礼包</b>
-                        <div class="phone"><input type="text" placeholder="请输入手机号" maxLength="11"></div>
-                        <button>限时免费 立即体验</button>
+                    <div class="content pull">
+                      <div class="alert-box">
+                        <div class="gift-dialog">
+                          <img
+                            class="gift"
+                            :src="formData.gift_img.path"
+                            alt=""
+                          />
+                          <img class="bg" src="./images/alert.png" alt="" />
+                        </div>
                       </div>
                     </div>
                   </el-scrollbar>
