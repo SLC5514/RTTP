@@ -34,7 +34,7 @@
     <div class="info">超过<span>10000</span>人通过海报邀请好友获得推荐奖励</div>
     <!-- 推荐按钮 -->
     <van-uploader v-show="pageType === 0" :after-read="generateRead">
-      <div class="recommend-btn pointer"></div>
+      <div :class="'recommend-btn pointer ' + tadaClass"></div>
     </van-uploader>
     <!-- 重新生成按钮 -->
     <div v-show="pageType === 1">
@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      tadaClass: '',
       giftImg, // 礼物图
       pageType: 0, // 0 默认 1 预览 2 已生成
       showCopyDialog: false, // 复制弹框
@@ -113,6 +114,19 @@ export default {
     }
   },
   mounted() {
+    let timeout = null
+    this.tadaClass = 'tada'
+    timeout = setTimeout(() => {
+      this.tadaClass = ''
+      clearTimeout(timeout)
+    }, 1000);
+    setInterval(() => {
+      this.tadaClass = 'tada'
+      timeout = setTimeout(() => {
+        this.tadaClass = ''
+        clearTimeout(timeout)
+      }, 1000);
+    }, 6000);
     // 退出挽留
     window.history.pushState(null, null, document.URL)
     window.addEventListener(
@@ -445,6 +459,17 @@ export default {
       height: 0.665rem;
       border-radius: 0.5rem;
     }
+  }
+
+  .tada {
+    animation: tada 1s;
+    animation-fill-mode: both;
+  }
+  @keyframes tada{
+    0%{-webkit-transform:scaleX(1);transform:scaleX(1)}
+    10%,20%{-webkit-transform:scale3d(.9,.9,.9) rotate(-3deg);transform:scale3d(.9,.9,.9) rotate(-3deg)}
+    30%,50%,70%,90%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(3deg);transform:scale3d(1.1,1.1,1.1) rotate(3deg)}
+    40%,60%,80%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(-3deg);transform:scale3d(1.1,1.1,1.1) rotate(-3deg)}to{-webkit-transform:scaleX(1);transform:scaleX(1)}
   }
 }
 </style>

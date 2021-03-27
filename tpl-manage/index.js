@@ -67,6 +67,7 @@ const saveMaterial = function (data) {
 new Vue({
   data: {
     baseURL,
+    params: new URLSearchParams(location.search),
     // 编辑页面位置
     pageCount: 1,
     // 模板下标
@@ -175,9 +176,9 @@ new Vue({
   created() {
     getMaterial({
       code: "407364bcd69cf6b3a1b0c981a7380c",
-      id: 1,
-      type: 1,
-      temId: 1
+      id: 1, // this.params.get('id'),
+      type: 1, // this.params.get('type'),
+      temId: 1, // this.params.get('type'),
     }).then(res => {
       console.log(res)
     }).catch(err => {
@@ -191,9 +192,9 @@ new Vue({
         if (valid) {
           saveMaterial({
             code: "407364bcd69cf6b3a1b0c981a7380c",
-            id: 1,
-            type: 1,
-            temId: 1,
+            id: 1, // this.params.get('id'),
+            type: 1, // this.params.get('type'),
+            temId: 1, // this.params.get('type'),
             jsonStr: JSON.stringify(this.formData),
           }).then(res => {
             this.$message.success('保存成功');
