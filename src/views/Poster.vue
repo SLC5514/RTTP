@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :style="pageBgStyle">
     <div class="receive flexCol">
       <b>马上领取<span><i>598</i>元</span>思维大礼包</b>
       <div class="phone"><input type="text" v-model="phoneNum" placeholder="请输入手机号" maxLength="11"></div>
@@ -10,15 +10,35 @@
 </template>
 
 <script>
-import { savePhone } from '@/api'
+import { savePhone, getMaterial } from '@/api'
 
 export default {
   name: 'Poster',
   data() {
     return {
+      pageData: null,
       phoneNum: '',
       jtOpenId: '',
     }
+  },
+  computed: {
+    pageBgStyle() {
+      if (!this.pageData) return null;
+      return {
+        'background-color': this.pageData.invite_bg_color,
+        'background-image': this.pageData.invite_bg_img.path ? `url(${this.pageData.invite_bg_img.path})` : null
+      }
+    }
+  },
+  created() {
+    getMaterial({
+      code: this.$params.get('code'),
+      type: this.$params.get('type'),
+      temId: this.$params.get('temId'),
+      id: this.$params.get('id')
+    }).then(res => {
+      this.pageData = JSON.parse(res.data)
+    }).catch()
   },
   methods: {
     phoneFn() {

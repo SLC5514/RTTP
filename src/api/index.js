@@ -48,3 +48,15 @@ export function getProgressByOpenId({ openId }) {
     method: 'get',
   })
 }
+
+/**
+ * @description: 获取模板
+ * @param {String} code 商家id  type  1 平台  2 商家  temId 海报模板id  id  素材id
+ * @return:
+ */
+export function getMaterial({ code, type, temId, id }) {
+  return request({
+    url: '/api/getMaterial?code=' + code + '&type=' + type + '&temId=' + temId + '&id=' + id,
+    method: 'get',
+  })
+}

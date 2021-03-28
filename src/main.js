@@ -39,6 +39,7 @@ new Vue({
   store,
   render: h => h(App),
   created() {
+    Vue.prototype.$params = new URLSearchParams(window.location.search)
     Vue.prototype.$openId = this.$oauth()
   }
 }).$mount('#app')

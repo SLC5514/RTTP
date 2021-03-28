@@ -179,8 +179,8 @@ p {
   top: 30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   background-color: #432f79;
   border-radius: 50%;
 }
@@ -235,6 +235,7 @@ p {
   color: #ff900e;
 }
 .preview .copy-dialog .text-content {
+  font-size: 14px;
   text-align: justify;
   word-break: break-all;
 }

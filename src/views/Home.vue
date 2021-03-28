@@ -1,5 +1,5 @@
 <template>
-  <div :class="'home ' + (pageType <= 1 ? 'bg1' : 'bg2')">
+  <div :class="'home ' + (pageType <= 1 ? 'bg1' : 'bg2')" :style="pageBgStyle">
     <div class="rule-btn pointer" @click="$refs['rules-alert'].showRulesAllert()">活动规则</div>
     <!-- 预览成品 -->
     <div v-show="pageType === 0" class="gallery-top">
@@ -31,10 +31,11 @@
         </div>
       </div>
     </div>
-    <div class="info">超过<span>10000</span>人通过海报邀请好友获得推荐奖励</div>
+    <div class="info" v-show="pageType <= 1">{{pageData && pageData.show_info_text}}</div>
+    <div class="info" v-show="pageType > 1">{{pageData && pageData.show_info_text}}</div>
     <!-- 推荐按钮 -->
     <van-uploader v-show="pageType === 0" :after-read="generateRead">
-      <div :class="'recommend-btn pointer ' + tadaClass"></div>
+      <div :class="'recommend-btn pointer ' + tadaClass">{{pageData && pageData.show_btn_text}}</div>
     </van-uploader>
     <!-- 重新生成按钮 -->
     <div v-show="pageType === 1">
@@ -45,7 +46,7 @@
     </div>
     <!-- 复制按钮 -->
     <div v-show="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">
-      复制邀请语 得奖几率翻倍！
+      {{pageData && pageData.render_btn_text}}
     </div>
     <!-- 活动规则 -->
     <RulesAlert ref="rules-alert" />
@@ -54,10 +55,10 @@
       closeOnClickOverlay>
       <div class="clearfix">
         <div class="change-btn pull-right pointer"
-          @click="copyTextRandom = Math.floor(Math.random()*(0-copyTextList.length)+copyTextList.length)">换一换</div>
+          @click="copyTextRandomFn">换一换</div>
       </div>
-      <p class="text-content">{{copyTextList[copyTextRandom]}}</p>
-      <div class="conform-btn pointer" v-clipboard:copy="copyTextList[copyTextRandom]" v-clipboard:success="copySuc"
+      <p class="text-content">{{pageData && pageData.invite_info_text[copyTextRandom].value || ''}}</p>
+      <div class="conform-btn pointer" v-clipboard:copy="pageData && pageData.invite_info_text[copyTextRandom].value || ''" v-clipboard:success="copySuc"
         v-clipboard:error="copyErr">
         一键复制邀请语
       </div>
@@ -65,7 +66,12 @@
     <!-- 礼物对话框 -->
     <van-dialog className="gift-dialog" width="4.95rem" v-model="showGiftDialog" :showConfirmButton="false"
       closeOnClickOverlay>
-      <img :src="giftImg" />
+      <img
+        class="gift"
+        :src="pageData && pageData.gift_img.path"
+        alt=""
+      />
+      <img class="bg" :src="giftImg" alt="" />
       <div class="conform-btn pointer" @click="closeGiftDialog"></div>
     </van-dialog>
     <!-- <div>
@@ -76,7 +82,7 @@
 </template>
 
 <script>
-import { wechatLogin, getStudentByOpenId } from '@/api'
+import { wechatLogin, getStudentByOpenId, getMaterial } from '@/api'
 import giftImg from '@/assets/home/alert.png'
 import html2canvas from 'html2canvas'
 import Swiper from 'swiper'
@@ -93,8 +99,10 @@ export default {
   data() {
     return {
       tadaClass: '',
-      giftImg, // 礼物图
+      pageData: null,
       pageType: 0, // 0 默认 1 预览 2 已生成
+
+      giftImg, // 礼物图
       showCopyDialog: false, // 复制弹框
       showGiftDialog: false, // 礼物弹框
       backCount: 0, // 退出计数
@@ -112,6 +120,32 @@ export default {
         'ccccccccccccccccccccccc',
       ],
     }
+  },
+  computed: {
+    pageBgStyle() {
+      if (!this.pageData) return null;
+      if (this.pageType <= 1) {
+        return {
+          'background-color': this.pageData.show_bg_color,
+          'background-image': this.pageData.show_bg_img.path ? `url(${this.pageData.show_bg_img.path})` : null
+        }
+      } else {
+        return {
+          'background-color': this.pageData.render_bg_color,
+          'background-image': this.pageData.render_bg_img.path ? `url(${this.pageData.render_bg_img.path})` : null
+        }
+      }
+    }
+  },
+  created() {
+    getMaterial({
+      code: this.$params.get('code'),
+      type: this.$params.get('type'),
+      temId: this.$params.get('temId'),
+      id: this.$params.get('id')
+    }).then(res => {
+      this.pageData = JSON.parse(res.data)
+    }).catch()
   },
   mounted() {
     let timeout = null
@@ -267,6 +301,14 @@ export default {
       this.albumImg = null;
       this.pageType = 0;
       document.documentElement.scrollTop = 0;
+    },
+    // 随机邀请语
+    copyTextRandomFn() {
+      // copyTextRandom = Math.floor(Math.random()*(0-(pageData && pageData.invite_info_text.length || 0))+(pageData && pageData.invite_info_text.length || 0))
+      this.copyTextRandom++;
+      if (this.copyTextRandom > (this.pageData && this.pageData.invite_info_text.length - 1 || 0)) {
+        this.copyTextRandom = 0
+      }
     }
   },
 }
@@ -278,13 +320,12 @@ export default {
   min-height: 14.89rem;
   text-align: center;
   overflow: hidden;
+  background: #4b42f3 no-repeat center top / 100% auto;
   &.bg1 {
-    background: #4b42f3 url(~@/assets/home/bg1.jpg) no-repeat center top / 100%
-      auto;
+    background-image: url(~@/assets/home/bg1.jpg);
   }
   &.bg2 {
-    background: #4b42f3 url(~@/assets/home/bg2.jpg) no-repeat top center;
-    background-size: 100% auto;
+    background-image: url(~@/assets/home/bg2.jpg);
   }
   .rule-btn {
     font-size: 0.32rem;
@@ -371,11 +412,23 @@ export default {
     }
   }
   .recommend-btn {
-    width: 6rem;
-    height: 1.45rem;
-    margin: 0 auto;
-    background: url(~@/assets/home/btn1.png) no-repeat center;
-    background-size: contain;
+    // width: 6rem;
+    // height: 1.45rem;
+    // margin: 0 auto;
+    // background: url(~@/assets/home/btn1.png) no-repeat center;
+    // background-size: contain;
+
+    width: 5.48rem;
+    height: 0.92rem;
+    line-height: 0.92rem;
+    border-radius: 0.5rem;
+    background-color: #fddc88;
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0px 0.08rem 0.08rem rgba(255, 141, 58, 0.86);
+    box-shadow: 0px 0.08rem 0.08rem #ff7611;
   }
   .reselect-btn {
     display: inline-block;
@@ -418,6 +471,21 @@ export default {
     font-weight: 800;
     color: #ff900e;
   }
+
+  .tada {
+    animation: tada 1s;
+    animation-fill-mode: both;
+  }
+  @keyframes tada{
+    0%{-webkit-transform:scaleX(1);transform:scaleX(1)}
+    10%,20%{-webkit-transform:scale3d(.9,.9,.9) rotate(-3deg);transform:scale3d(.9,.9,.9) rotate(-3deg)}
+    30%,50%,70%,90%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(3deg);transform:scale3d(1.1,1.1,1.1) rotate(3deg)}
+    40%,60%,80%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(-3deg);transform:scale3d(1.1,1.1,1.1) rotate(-3deg)}to{-webkit-transform:scaleX(1);transform:scaleX(1)}
+  }
+}
+</style>
+<style lang="scss">
+.home {
   .copy-dialog {
     padding: 0.31rem 0.515rem 0.27rem;
     background-color: #ffffff;
@@ -450,6 +518,26 @@ export default {
   .gift-dialog {
     background-color: #432f79;
     font-size: 0;
+    .van-dialog__content {
+      position: relative;
+      width: 100%;
+      height: 4.3rem;
+    }
+    .bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+    }
+    .gift {
+      position: absolute;
+      top: 0.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3rem;
+      height: 3rem;
+      background-color: #432f79;
+    }
     .conform-btn {
       position: absolute;
       left: 50%;
@@ -459,17 +547,6 @@ export default {
       height: 0.665rem;
       border-radius: 0.5rem;
     }
-  }
-
-  .tada {
-    animation: tada 1s;
-    animation-fill-mode: both;
-  }
-  @keyframes tada{
-    0%{-webkit-transform:scaleX(1);transform:scaleX(1)}
-    10%,20%{-webkit-transform:scale3d(.9,.9,.9) rotate(-3deg);transform:scale3d(.9,.9,.9) rotate(-3deg)}
-    30%,50%,70%,90%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(3deg);transform:scale3d(1.1,1.1,1.1) rotate(3deg)}
-    40%,60%,80%{-webkit-transform:scale3d(1.1,1.1,1.1) rotate(-3deg);transform:scale3d(1.1,1.1,1.1) rotate(-3deg)}to{-webkit-transform:scaleX(1);transform:scaleX(1)}
   }
 }
 </style>

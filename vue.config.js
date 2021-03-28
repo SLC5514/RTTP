@@ -45,9 +45,10 @@ module.exports = {
       '/wx': {
         target: 'http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com',
         changeOrigin: true,
-        // pathRewrite: {
-        //   '^/wx': ''
-        // }
+      },
+      '/api': {
+        target: 'http://gl.huoyusaas.com',
+        changeOrigin: true,
       }
     },
   }

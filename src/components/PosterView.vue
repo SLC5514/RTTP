@@ -1,8 +1,19 @@
 <template>
   <div class="poster-view-box" ref="box" :style="posterViewStyle">
-    <div class="logo">{{test}}</div>
+    <div class="logo">
+      <img
+        v-if="$parent.pageData && $parent.pageData.poster_list[0].logo_img.path"
+        :src="$parent.pageData.poster_list[0].logo_img.path"
+        alt=""
+      />
+      {{test}}
+    </div>
     <div class="album-box">
-      <img class="title" :src="posterTitle" alt="">
+      <img
+        class="title"
+        :src="$parent.pageData && $parent.pageData.poster_list[0].title_img.path || posterTitle"
+        alt=""
+      />
       <div class="album-img-box">
         <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
           :style="albumImgStyle"
@@ -19,8 +30,10 @@
             <img v-if="userData && userData.avatarUrl" :src="userData.avatarUrl" alt="">
             <span v-if="userData && userData.nickname">{{userData.nickname}}</span>
           </div>
-          <p>送你<span>288</span>元<br>真人直播体验课</p>
-          <div class="info">扫码识别 立即领取</div>
+          <p>
+            {{$parent.pageData && $parent.pageData.poster_list[0].info_text1}}<br />{{$parent.pageData && $parent.pageData.poster_list[0].info_text2}}
+          </p>
+          <div class="info">{{$parent.pageData && $parent.pageData.poster_list[0].info_text3}}</div>
         </div>
         <div class="right">
           <vue-qr class="qrcode" :text="qrcodeData.url" :logoSrc="qrcodeData.icon" :margin="0"></vue-qr>
