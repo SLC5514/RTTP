@@ -176,9 +176,9 @@ new Vue({
   created() {
     getMaterial({
       code: "407364bcd69cf6b3a1b0c981a7380c",
-      id: 1, // this.params.get('id'),
-      type: 1, // this.params.get('type'),
-      temId: 1, // this.params.get('temId'),
+      id: this.params.get('id'),
+      type: this.params.get('type'),
+      temId: this.params.get('temId'),
     }).then(res => {
       console.log(res)
     }).catch(err => {
@@ -192,9 +192,9 @@ new Vue({
         if (valid) {
           saveMaterial({
             code: "407364bcd69cf6b3a1b0c981a7380c",
-            id: 1, // this.params.get('id'),
-            type: 1, // this.params.get('type'),
-            temId: 1, // this.params.get('temId'),
+            id: this.params.get('id'),
+            type: this.params.get('type'),
+            temId: this.params.get('temId'),
             jsonStr: JSON.stringify(this.formData),
           }).then(res => {
             this.$message.success('保存成功');
