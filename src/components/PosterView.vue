@@ -60,7 +60,7 @@ export default {
       userImg,
       scale: 1,
       qrcodeData: {
-        url: window.location.origin + '/poster?jtOpenId=' + this.$openId,
+        url: window.location.origin + '/poster?jtOpenId=' + this.$openId + '&materialId=' + this.$params.get('id'),
         // icon: '/favicon.ico',
       }, // 二维码数据
       albumImgAttr: {

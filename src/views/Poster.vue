@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { savePhone, getMaterial } from '@/api'
+import { savePhone, getMaterialById } from '@/api'
 
 export default {
   name: 'Poster',
@@ -31,11 +31,8 @@ export default {
     }
   },
   created() {
-    getMaterial({
-      code: this.$params.get('code'),
-      type: this.$params.get('type'),
-      temId: this.$params.get('temId'),
-      id: this.$params.get('id')
+    getMaterialById({
+      id: this.$params.get('materialId')
     }).then(res => {
       this.pageData = JSON.parse(res.data)
     }).catch()
@@ -54,10 +51,12 @@ export default {
       }
       const params = new URLSearchParams(window.location.search)
       const jtOpenId = params.get('jtOpenId')
+      const materialId = params.get('materialId')
       savePhone({
         phone: this.phoneNum,
         openId: this.$openId,
         jtOpenId: jtOpenId,
+        materialId: materialId,
       }).then((res) => {
         if (res.status == '200') {
           this.$notify({ type: 'success', message: res.message })
@@ -65,6 +64,7 @@ export default {
             path: '/',
             query: {
               openid: this.$openId,
+              id: this.$params.get('materialId')
             },
           })
         } else {

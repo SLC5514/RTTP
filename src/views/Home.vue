@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { wechatLogin, getStudentByOpenId, getMaterial } from '@/api'
+import { wechatLogin, getStudentByOpenId, getMaterialById } from '@/api'
 import giftImg from '@/assets/home/alert.png'
 import html2canvas from 'html2canvas'
 import Swiper from 'swiper'
@@ -138,10 +138,7 @@ export default {
     }
   },
   created() {
-    getMaterial({
-      code: this.$params.get('code'),
-      type: this.$params.get('type'),
-      temId: this.$params.get('temId'),
+    getMaterialById({
       id: this.$params.get('id')
     }).then(res => {
       this.pageData = JSON.parse(res.data)
@@ -192,6 +189,7 @@ export default {
             path: '/poster',
             query: {
               openid: this.$openId,
+              materialId: this.$params.get('id')
             },
           })
         }

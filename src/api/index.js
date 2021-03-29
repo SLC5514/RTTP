@@ -30,9 +30,9 @@ export function getStudentByOpenId({ openId }) {
  * @param {String} openId 用户ID oIdnG5-wPO2csWtppJpy1xJPv6ig
  * @return:
  */
-export function savePhone({ phone, openId, jtOpenId }) {
+export function savePhone({ phone, openId, jtOpenId, materialId }) {
   return request({
-    url: '/wx/savePhone?phone=' + phone + '&openId=' + openId + '&jtOpenId=' + jtOpenId,
+    url: '/wx/savePhone?phone=' + phone + '&openId=' + openId + '&jtOpenId=' + jtOpenId + '&materialId=' + materialId,
     method: 'get',
   })
 }
@@ -51,12 +51,13 @@ export function getProgressByOpenId({ openId }) {
 
 /**
  * @description: 获取模板
- * @param {String} code 商家id  type  1 平台  2 商家  temId 海报模板id  id  素材id
+ * @param {String} id  素材id
  * @return:
  */
-export function getMaterial({ code, type, temId, id }) {
+export function getMaterialById({ id }) {
   return request({
-    url: '/api/getMaterial?code=' + code + '&type=' + type + '&temId=' + temId + '&id=' + id,
+    url: '/wx/getMaterialById',
     method: 'get',
+    params: { id }
   })
 }

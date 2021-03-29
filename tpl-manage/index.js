@@ -183,7 +183,7 @@ new Vue({
       this.formData = JSON.parse(res.data);
       console.log(this.formData)
     }).catch(err => {
-      console.log(err)
+      this.$message.error(err.message || 'Error');
     });
   },
   methods: {
@@ -200,7 +200,7 @@ new Vue({
           }).then(res => {
             this.$message.success('保存成功');
           }).catch(err => {
-            console.log(err)
+            this.$message.error(err.message || 'Error');
           });
         } else {
           console.log('error submit!!');
