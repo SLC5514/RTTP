@@ -141,7 +141,7 @@ export default {
     getMaterialById({
       id: this.$params.get('id')
     }).then(res => {
-      this.pageData = JSON.parse(res.data)
+      this.pageData = JSON.parse(res.data.content)
     }).catch()
   },
   mounted() {
