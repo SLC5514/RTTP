@@ -82,27 +82,146 @@ new Vue({
       show_info_text: '超过10000人通过海报邀请好友获得推荐奖励',
       show_btn_text: '我要推荐奖励',
       show_bg_color: '#4b42f3',
-      show_bg_img: JSON.parse(JSON.stringify(defImg)),
+      show_bg_img: [JSON.parse(JSON.stringify(defImg))],
       // 生成页
       render_info_text: '超过10000人通过海报邀请好友获得推荐奖励',
       render_btn_text: '复制邀请语 得奖几率翻倍！',
       render_bg_color: '#4b42f3',
-      render_bg_img: JSON.parse(JSON.stringify(defImg)),
+      render_bg_img: [JSON.parse(JSON.stringify(defImg))],
       // 海报页
       poster_list: [
         {
           id: 1,
-          name: '默认模板',
-          logo_img: JSON.parse(JSON.stringify(defImg)),
-          title_img: JSON.parse(JSON.stringify(defImg)),
+          name: '默认模板1',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t1.png' }))],
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
-        }
+          title_style: {
+            width: 305,
+            height: 252,
+            left: 0,
+            top: 55,
+          }
+        },
+        {
+          id: 2,
+          name: '默认模板2',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t2.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 230,
+            height: 343,
+            left: 145,
+            top: 0,
+          }
+        },
+        {
+          id: 3,
+          name: '默认模板3',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t3.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 230,
+            height: 119,
+            left: 135,
+            top: 10,
+          }
+        },
+        {
+          id: 4,
+          name: '默认模板4',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t4.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 91,
+            height: 317,
+            left: 10,
+            top: 70,
+          }
+        },
+        {
+          id: 5,
+          name: '默认模板5',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t5.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 324,
+            height: 109,
+            left: 25,
+            top: 70,
+          }
+        },
+        {
+          id: 6,
+          name: '默认模板6',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t6.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 199,
+            height: 308,
+            left: 176,
+            top: 20,
+          }
+        },
+        {
+          id: 7,
+          name: '默认模板7',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t7.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 239,
+            height: 168,
+            left: 72,
+            top: 85,
+          }
+        },
+        {
+          id: 8,
+          name: '默认模板8',
+          album_mask: [],
+          logo_img: [],
+          title_img: [JSON.parse(JSON.stringify({ ...defImg, path: './images/tpl_t8.png' }))],
+          info_text1: '送你288元',
+          info_text2: '真人直播体验课',
+          info_text3: '扫码识别 立即领取',
+          title_style: {
+            width: 205,
+            height: 164,
+            left: 150,
+            top: 22,
+          }
+        },
       ],
       // 邀请页
       invite_bg_color: '#4b42f3',
-      invite_bg_img: JSON.parse(JSON.stringify(defImg)),
+      invite_bg_img: [JSON.parse(JSON.stringify(defImg))],
       // 邀请语
       invite_info_text: [
         {
@@ -110,7 +229,7 @@ new Vue({
         }
       ],
       // 礼品
-      gift_img: JSON.parse(JSON.stringify(defImg)),
+      gift_img: [JSON.parse(JSON.stringify(defImg))],
       // 活动规则
       rule_text:
         `1、“品牌名”注册用户(推荐人)分享专属个性化海报，每推荐一位新用户(被推荐人)，通过推荐人专属个性化海报注册为“品牌名”用户，并首次购买4单元及以上主修课课程包或15课段及以上全项进阶课课程包，且满足如下赠课条件之一的，推荐人即可获得赠课(根据被推荐人购买的课程包不同有所区别)，最多可获赠10课时/课段主修课/全项进阶课，奖励可以累计。\n` +
@@ -155,21 +274,21 @@ new Vue({
     contentBgStyle1() {
       return {
         'background-color': this.formData.show_bg_color,
-        'background-image': `url(${this.formData.show_bg_img.path || './images/bg1.jpg'})`
+        'background-image': `url(${this.formData.show_bg_img[0] && this.formData.show_bg_img[0].path || './images/bg1.jpg'})`
       }
     },
     // 生成页背景
     contentBgStyle2() {
       return {
         'background-color': this.formData.render_bg_color,
-        'background-image': `url(${this.formData.render_bg_img.path || './images/bg2.jpg'})`
+        'background-image': `url(${this.formData.render_bg_img[0] && this.formData.render_bg_img[0].path || './images/bg2.jpg'})`
       }
     },
     // 邀请页背景
     contentBgStyle3() {
       return {
         'background-color': this.formData.invite_bg_color,
-        'background-image': `url(${this.formData.invite_bg_img.path || './images/bg3.jpg'})`
+        'background-image': `url(${this.formData.invite_bg_img[0] && this.formData.invite_bg_img[0].path || './images/bg3.jpg'})`
       }
     },
   },
@@ -219,32 +338,26 @@ new Vue({
       if (response.status == 200) {
         this.$message.success(`${file.name} 上传成功`);
         const data = this.formatUploadKey(this.formData, this.uploadingKey);
-        data.name = file.name;
-        data.path = response.data;
+        data.unshift({
+          name: file.name,
+          path: response.data
+        });
+        data.splice(1);
+        // data.name = file.name;
+        // data.path = response.data;
       }
     },
     handleError(err, file, fileList) {
       this.$message.error(`${file.name} 上传失败`);
     },
-    beforeRemove(file, fileList) {
-      const data = this.formatUploadKey(this.formData, this.uploadingKey);
-      if (!data.path) {
-        this.$message.warning('默认图片不可移除');
-        return false;
-      }
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-    handleRemove(file, fileList) {
-      this.formatUploadKey(this.formData, this.uploadingKey, JSON.parse(JSON.stringify(defImg)));
-    },
     verificationImg(file) {
-      let types = ['image/jpeg', 'image/jpg', 'image/png'];
-      const isImage = types.includes(file.type);
+      // let types = ['image/jpeg', 'image/jpg', 'image/png'];
+      // const isImage = types.includes(file.type);
       const isLtSize = file.size / 1024 / 1024 < 5;
-      if (!isImage) {
-        this.$message.error('上传图片只能是 JPG、PNG 格式!');
-        return false;
-      }
+      // if (!isImage) {
+      //   this.$message.error('上传图片只能是 JPG、PNG 格式!');
+      //   return false;
+      // }
       if (!isLtSize) {
         this.$message.error('上传图片大小不能超过 5MB!');
         return false;
@@ -271,7 +384,7 @@ new Vue({
       //     return Promise.reject();
       //   }
       // );
-      return isImage && isLtSize && isSize;
+      return /* isImage &&  */isLtSize && isSize;
     },
     formatUploadKey(data, keys, value) {
       const arr = keys.split('.');
@@ -317,6 +430,36 @@ new Vue({
           value: ''
         });
       }
+    },
+    // 处理样式
+    getPxStyle(paramStyle) {
+      let style = {};
+      const needUnitStr = ['width', 'height', 'top', 'left', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderWidth', 'fontSize', 'borderRadius', 'letterSpacing'];
+      const transformStr = ["rotate", "fliph", "flipv"];
+      const shadowStr = ["shadowColor", "shadowBlur", "shadowH", "shadowV"];
+      const noNeedUnitStr = ['x', 'y'];
+      for (let key in paramStyle) {
+        if (needUnitStr.includes(key)) {
+          if (paramStyle[key] === 'auto' || paramStyle[key] === '100%') { // 属性兼容
+            style[key] = paramStyle[key];
+          } else {
+            style[key] = paramStyle[key] + 'px';
+          }
+        } else if (noNeedUnitStr.includes(key)) {
+          continue;
+        } else if (key === 'opacity') {
+          style[key] = paramStyle[key] / 100;
+        } else if (key === 'backgroundImage') {
+          style[key] = `url(${paramStyle[key]})`;
+        } else if (transformStr.includes(key)) {
+          style['transform'] = `rotate(${paramStyle['rotate']}deg) scale(${paramStyle['fliph']}, ${paramStyle['flipv']})`;
+        } else if (shadowStr.includes(key)) {
+          style['boxShadow'] = `${paramStyle['shadowH']}px ${paramStyle['shadowV']}px ${paramStyle['shadowBlur']}px ${paramStyle['shadowColor']}`;
+        } else {
+          style[key] = paramStyle[key];
+        }
+      }
+      return style;
     },
   }
 }).$mount('#app')

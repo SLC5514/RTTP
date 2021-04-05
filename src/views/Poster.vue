@@ -26,7 +26,7 @@ export default {
       if (!this.pageData) return null;
       return {
         'background-color': this.pageData.invite_bg_color,
-        'background-image': this.pageData.invite_bg_img.path ? `url(${this.pageData.invite_bg_img.path})` : null
+        'background-image': this.pageData.invite_bg_img[0] && this.pageData.invite_bg_img[0].path ? `url(${this.pageData.invite_bg_img[0].path})` : null
       }
     }
   },

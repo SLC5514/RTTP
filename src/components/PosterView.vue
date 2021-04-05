@@ -1,39 +1,38 @@
 <template>
   <div class="poster-view-box" ref="box" :style="posterViewStyle">
-    <div class="logo">
-      <img
-        v-if="$parent.pageData && $parent.pageData.poster_list[0].logo_img.path"
-        :src="$parent.pageData.poster_list[0].logo_img.path"
-        alt=""
-      />
-      {{test}}
-    </div>
-    <div class="album-box">
-      <img
-        class="title"
-        :src="$parent.pageData && $parent.pageData.poster_list[0].title_img.path || posterTitle"
-        alt=""
-      />
-      <div class="album-img-box">
-        <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
-          :style="albumImgStyle"
-          v-finger:press-move="pressMove"
-          v-finger:rotate="rotate"
-          v-finger:pinch="pinch"
-        >
-      </div>
-    </div>
+    <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
+      :style="albumImgStyle"
+      v-finger:press-move="pressMove"
+      v-finger:rotate="rotate"
+      v-finger:pinch="pinch"
+    >
+    <img class="album-mask"
+      v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].album_mask[0] && $parent.pageData.poster_list[tplIdx].album_mask[0].path"
+      :src="$parent.pageData.poster_list[tplIdx].album_mask[0].path"
+      alt=""
+    />
+    <img class="title"
+      v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].title_img[0] && $parent.pageData.poster_list[tplIdx].title_img[0].path"
+      :src="formatTitlePath($parent.pageData && $parent.pageData.poster_list[tplIdx].title_img[0].path)"
+      :style="getPxStyle($parent.pageData.poster_list[tplIdx].title_style)"
+      alt=""
+    />
+    <img class="logo"
+      v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].logo_img[0] && $parent.pageData.poster_list[tplIdx].logo_img[0].path"
+      :src="$parent.pageData.poster_list[tplIdx].logo_img[0].path"
+      alt=""
+    />
     <div class="btm">
       <div class="back-rotate">
         <div class="left">
           <div class="user">
-            <img v-if="userData && userData.avatarUrl" :src="userData.avatarUrl" alt="">
-            <span v-if="userData && userData.nickname">{{userData.nickname}}</span>
+            <img :src="userData.avatarUrl" alt="">
+            <span>{{userData.nickname}}</span>
           </div>
           <p>
-            {{$parent.pageData && $parent.pageData.poster_list[0].info_text1}}<br />{{$parent.pageData && $parent.pageData.poster_list[0].info_text2}}
+            {{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text1}}<br />{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text2}}
           </p>
-          <div class="info">{{$parent.pageData && $parent.pageData.poster_list[0].info_text3}}</div>
+          <div class="info">{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text3}}</div>
         </div>
         <div class="right">
           <vue-qr class="qrcode" :text="qrcodeData.url" :logoSrc="qrcodeData.icon" :margin="0"></vue-qr>
@@ -45,18 +44,25 @@
 
 <script>
 import vueQr from 'vue-qr'
-import posterTitle from '@/assets/home/poster_title.png'
 import userImg from '@/assets/overview/success.png'
+
+import tplT1 from '@/assets/home/tpl_t1.png'
+import tplT2 from '@/assets/home/tpl_t2.png'
+import tplT3 from '@/assets/home/tpl_t3.png'
+import tplT4 from '@/assets/home/tpl_t4.png'
+import tplT5 from '@/assets/home/tpl_t5.png'
+import tplT6 from '@/assets/home/tpl_t6.png'
+import tplT7 from '@/assets/home/tpl_t7.png'
+import tplT8 from '@/assets/home/tpl_t8.png'
 
 export default {
   name: 'PosterView',
-  props: ['userData', 'albumImg', 'test'],
+  props: ['userData', 'albumImg', 'tplIdx'],
   components: {
     vueQr,
   },
   data() {
     return {
-      posterTitle,
       userImg,
       scale: 1,
       qrcodeData: {
@@ -70,14 +76,15 @@ export default {
         y: 0,
         angle: 0,
         zoom: 1
-      }
+      },
+      tplTitleImg: [ tplT1, tplT2, tplT3, tplT4, tplT5, tplT6, tplT7, tplT8 ]
     }
   },
   computed: {
     posterViewStyle() {
       return {
         transform: `scale(${this.scale})`,
-        height: (1 / this.scale) * 100 + '%',
+        // height: (1 / this.scale) * 100 + '%',
       }
     },
     albumImgStyle() {
@@ -139,6 +146,44 @@ export default {
       e.preventDefault();
       this.albumImgAttr.zoom = e.zoom;
     },
+    // 处理样式
+    getPxStyle(paramStyle) {
+      let style = {};
+      const needUnitStr = ['width', 'height', 'top', 'left', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderWidth', 'fontSize', 'borderRadius', 'letterSpacing'];
+      const transformStr = ["rotate", "fliph", "flipv"];
+      const shadowStr = ["shadowColor", "shadowBlur", "shadowH", "shadowV"];
+      const noNeedUnitStr = ['x', 'y'];
+      for (let key in paramStyle) {
+        if (needUnitStr.includes(key)) {
+          if (paramStyle[key] === 'auto' || paramStyle[key] === '100%') { // 属性兼容
+            style[key] = paramStyle[key];
+          } else {
+            style[key] = paramStyle[key] + 'px';
+          }
+        } else if (noNeedUnitStr.includes(key)) {
+          continue;
+        } else if (key === 'opacity') {
+          style[key] = paramStyle[key] / 100;
+        } else if (key === 'backgroundImage') {
+          style[key] = `url(${paramStyle[key]})`;
+        } else if (transformStr.includes(key)) {
+          style['transform'] = `rotate(${paramStyle['rotate']}deg) scale(${paramStyle['fliph']}, ${paramStyle['flipv']})`;
+        } else if (shadowStr.includes(key)) {
+          style['boxShadow'] = `${paramStyle['shadowH']}px ${paramStyle['shadowV']}px ${paramStyle['shadowBlur']}px ${paramStyle['shadowColor']}`;
+        } else {
+          style[key] = paramStyle[key];
+        }
+      }
+      return style;
+    },
+    formatTitlePath(path) {
+      if (path && path.indexOf('/images/') != -1) {
+        const idx = path.match(/tpl_t(\d*)\./);
+        if (!idx) return path;
+        return this.tplTitleImg[idx && idx[1] - 1];
+      }
+      return path;
+    }
   },
 }
 </script>
@@ -149,11 +194,35 @@ export default {
   left: 0;
   top: 0;
   width: 7.5rem;
-  height: 14.89rem;
+  height: 13.34rem;
   text-align: left;
-  background: #fdd35b;
+  background: #f5f5f5;
   transform-origin: left top;
   overflow: hidden;
+  .album {
+    max-width: none;
+    // width: 100%;
+    // height: 100%;
+    // object-fit: cover;
+  }
+  .album-mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  .title {
+    position: absolute;
+    left: 0;
+    top: -1.8rem;
+    width: 6rem;
+    height: 3.5rem;
+    object-fit: cover;
+    z-index: 2;
+  }
   .logo {
     position: absolute;
     left: 0.27rem;
@@ -161,78 +230,44 @@ export default {
     width: 2.01rem;
     height: 0.79rem;
     background: #e6e6e6;
-    & > img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-  .album-box {
-    position: absolute;
-    left: 50%;
-    top: 2.16rem;
-    transform: translateX(-50%);
-    width: 6.75rem;
-    height: 10.92rem;
-    .title {
-      position: absolute;
-      left: 0;
-      top: -1.8rem;
-      width: 6rem;
-      height: 3.5rem;
-      z-index: 1;
-      object-fit: cover;
-    }
-    .album-img-box {
-      width: 100%;
-      height: 100%;
-      border-radius: 0.2rem;
-      background: #e6e6e6;
-      overflow: hidden;
-      .album {
-        max-width: none;
-      }
-    }
+    object-fit: cover;
+    z-index: 3;
   }
   .btm {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 110%;
-    height: 4.01rem;
-    background: #ffffff;
-    box-shadow: 0rem 0.26rem 0.4rem rgba(213, 140, 44, 0.39);
-    transform: rotate(7deg);
-    transform-origin: left top;
+    width: 100%;
+    height: 2.42rem;
+    background: rgba(255, 255, 255, 0.58);
     .back-rotate {
-      width: 7.5rem;
-      padding: 0.66rem 0.49rem 0.68rem 0.56rem;
-      transform: rotate(-7deg);
-      transform-origin: left top;
+      padding: 0.2rem;
       display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
       .left {
-        max-width: 3.9rem;
+        max-width: 4.8rem;
         .user {
           display: flex;
           align-items: center;
           img {
-            width: 0.55rem;
-            height: 0.55rem;
+            width: 0.4rem;
+            height: 0.4rem;
             margin-right: 0.1rem;
             background: #e6e6e6;
             border-radius: 50%;
           }
           span {
-            font-size: 0.34rem;
+            font-size: 0.28rem;
             font-weight: 400;
             color: #5e5e5e;
             letter-spacing: 0.05rem;
           }
         }
         p {
-          font-size: 0.55rem;
+          font-size: 0.36rem;
           font-weight: 400;
-          line-height: 0.75rem;
+          line-height: 0.44rem;
           margin-top: 0.1rem;
           color: #794df1;
           white-space: nowrap;
@@ -242,11 +277,9 @@ export default {
         }
         .info {
           display: inline-block;
-          width: 3.78rem;
-          // height: 0.53rem;
-          // line-height: 0.53rem;
+          height: auto;
           line-height: 1;
-          padding: 0.1rem 0;
+          padding: 0.1rem 0.4rem;
           margin-top: 0.1rem;
           border: 1px solid #794df1;
           border-radius: 0.5rem;
@@ -257,9 +290,8 @@ export default {
         }
       }
       .qrcode {
-        width: 2.09rem;
-        height: 2.09rem;
-        margin: 0.6rem 0 0 0.5rem;
+        width: 2.08rem;
+        height: 2.08rem;
         background: #e6e6e6;
       }
     }

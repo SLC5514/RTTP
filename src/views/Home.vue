@@ -4,10 +4,9 @@
     <!-- 预览成品 -->
     <div v-show="pageType === 0" class="gallery-top">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in previewList" :key="index">
+        <div class="swiper-slide" v-for="(item, index) in pageData && pageData.poster_list || []" :key="index">
           <div class="item pointer">
-            {{ index }}
-            <PosterView :user-data="userData" :album-img="albumImg" :test="index" />
+            <PosterView :user-data="userData" :album-img="albumImg" :tpl-idx="index" />
           </div>
         </div>
       </div>
@@ -15,8 +14,7 @@
     <!-- 报告生成效果 -->
     <div v-if="pageType === 1" class="preview">
       <div>
-        {{ activeIndex }}
-        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :test="activeIndex" />
+        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :tpl-idx="activeIndex" />
       </div>
     </div>
     <!-- 海报 -->
@@ -26,8 +24,10 @@
     <!-- 成品缩略图 -->
     <div v-show="pageType !== 2" class="gallery-thumbs">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item, index) in previewList" :key="index">
-          <div class="item pointer">{{ index }}</div>
+        <div class="swiper-slide" v-for="(item, index) in pageData && pageData.poster_list || []" :key="index">
+          <div class="item pointer">
+            <PosterView :user-data="userData" :album-img="albumImg" :tpl-idx="index" />
+          </div>
         </div>
       </div>
     </div>
@@ -107,7 +107,6 @@ export default {
       showGiftDialog: false, // 礼物弹框
       backCount: 0, // 退出计数
       activeIndex: 0, // 所选蒙层位置
-      previewList: [1, 2, 3, 4, 5], // 蒙层列表
       albumImg: null, // 相册图
       posterImg: null, // 海报图
       userData: null, // 用户数据
@@ -142,6 +141,10 @@ export default {
       id: this.$params.get('id')
     }).then(res => {
       this.pageData = JSON.parse(res.data.content)
+      console.log(this.pageData)
+      this.$nextTick(() => {
+        this.thumbsInit()
+      })
     }).catch()
   },
   mounted() {
@@ -170,7 +173,6 @@ export default {
       },
       false
     )
-    this.thumbsInit()
     this.getUserFn()
   },
   methods: {
@@ -217,8 +219,7 @@ export default {
         },
         on: {
           slideChange: function () {
-            self.activeIndex = this.activeIndex % self.previewList.length
-            console.log(self.activeIndex)
+            self.activeIndex = this.activeIndex % (self.pageData && self.pageData.poster_list.length || 0)
           },
         },
       })
