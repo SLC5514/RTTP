@@ -38,8 +38,12 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  watch: {
+    $route() {
+      Vue.prototype.$params = new URLSearchParams(window.location.search)
+    }
+  },
   created() {
-    Vue.prototype.$params = new URLSearchParams(window.location.search)
     Vue.prototype.$openId = this.$oauth()
   }
 }).$mount('#app')
