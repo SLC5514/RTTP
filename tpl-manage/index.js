@@ -294,7 +294,7 @@ new Vue({
   },
   created() {
     getMaterial({
-      code: "407364bcd69cf6b3a1b0c981a7380c",
+      code: this.params.get('code'),
       id: this.params.get('id'),
       type: this.params.get('type'),
       temId: this.params.get('temId'),
@@ -311,7 +311,7 @@ new Vue({
       this.$refs[formName].validate(valid => {
         if (valid) {
           saveMaterial({
-            code: "407364bcd69cf6b3a1b0c981a7380c",
+            code: this.params.get('code'),
             id: this.params.get('id'),
             type: this.params.get('type'),
             temId: this.params.get('temId'),
