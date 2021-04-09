@@ -6,7 +6,7 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in pageData && pageData.poster_list || []" :key="index">
           <div class="item pointer">
-            <PosterView :user-data="userData" :album-img="albumImg" :tpl-idx="index" />
+            <PosterView :user-data="userData" :album-img="defAlbumImg" :tpl-idx="index" />
           </div>
         </div>
       </div>
@@ -14,7 +14,7 @@
     <!-- 报告生成效果 -->
     <div v-if="pageType === 1" class="preview">
       <div>
-        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :tpl-idx="activeIndex" />
+        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :tpl-idx="activeIndex" :finger="true" />
       </div>
     </div>
     <!-- 海报 -->
@@ -26,7 +26,7 @@
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) in pageData && pageData.poster_list || []" :key="index">
           <div class="item pointer">
-            <PosterView :user-data="userData" :album-img="albumImg" :tpl-idx="index" />
+            <PosterView :user-data="userData" :album-img="defAlbumImg" :tpl-idx="index" />
           </div>
         </div>
       </div>
@@ -83,6 +83,7 @@
 
 <script>
 import { wechatLogin, getStudentByOpenId, getMaterialById } from '@/api'
+import defAlbumImg from '@/assets/home/album.jpg'
 import giftImg from '@/assets/home/alert.png'
 import html2canvas from 'html2canvas'
 import Swiper from 'swiper'
@@ -107,6 +108,7 @@ export default {
       showGiftDialog: false, // 礼物弹框
       backCount: 0, // 退出计数
       activeIndex: 0, // 所选蒙层位置
+      defAlbumImg, // 相册图
       albumImg: null, // 相册图
       posterImg: null, // 海报图
       userData: null, // 用户数据
@@ -186,15 +188,15 @@ export default {
         openId: this.$openId,
       }).then((res) => {
         this.userData = res.data || {}
-        if (!this.userData.phone) {
-          this.$router.push({
-            path: '/poster',
-            query: {
-              openid: this.$openId,
-              materialId: this.$params.get('id')
-            },
-          })
-        }
+        // if (!this.userData.phone) {
+        //   this.$router.push({
+        //     path: '/poster',
+        //     query: {
+        //       openid: this.$openId,
+        //       materialId: this.$params.get('id')
+        //     },
+        //   })
+        // }
       })
     },
     // 初始化缩略图
@@ -251,9 +253,9 @@ export default {
       canvas.width = w
       canvas.height = h
       let left = 0
-      if (document.documentElement.clientWidth > 750) {
-        left = document.documentElement.clientWidth - 750
-      }
+      // if (document.documentElement.clientWidth > 750) {
+      //   left = document.documentElement.clientWidth - 750
+      // }
       html2canvas(box, {
         canvas: canvas,
         scale: scale,
@@ -343,13 +345,13 @@ export default {
   }
   .preview {
     position: relative;
-    width: 3.965rem;
-    height: 7.025rem;
+    width: 3.98rem;
+    height: 7.08rem;
     margin: 1.77rem auto 0;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
     & > div {
-      width: 3.965rem;
-      height: 7.025rem;
+      width: 100%;
+      height: 100%;
       background-color: #fff6c1;
     }
     .qrcode {
@@ -374,8 +376,8 @@ export default {
     .swiper-slide {
       .item {
         position: relative;
-        width: 3.97rem;
-        height: 7.02rem;
+        width: 3.98rem;
+        height: 7.08rem;
         margin: 0 auto;
         background-color: #fff6c1;
         box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);

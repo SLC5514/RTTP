@@ -105,8 +105,6 @@ export default {
 <style lang="scss" scoped>
 .container {
   background: #fff;
-  max-width: 750px;
-  font-family: AlibabaPuHuiTiM;
   margin: 0 auto;
   letter-spacing: 1px;
   color: #808080;

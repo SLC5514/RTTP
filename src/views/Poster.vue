@@ -77,8 +77,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  max-width: 750px;
-  font-family: AlibabaPuHuiTiM;
   min-height: 14.89rem;
   margin: 0 auto;
   letter-spacing: 1px;
@@ -138,6 +136,7 @@ export default {
   top: 0;
   width: 6.28rem;
   height: 0.9rem;
+  font-size: 0.3rem;
   box-sizing: border-box;
   text-align: center;
   border-radius: 0.12rem;

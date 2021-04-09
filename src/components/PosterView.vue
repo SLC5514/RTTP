@@ -2,9 +2,9 @@
   <div class="poster-view-box" ref="box" :style="posterViewStyle">
     <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
       :style="albumImgStyle"
-      v-finger:press-move="pressMove"
-      v-finger:rotate="rotate"
-      v-finger:pinch="pinch"
+      v-finger:press-move="finger ? pressMove : () => {}"
+      v-finger:rotate="finger ? rotate : () => {}"
+      v-finger:pinch="finger ? pinch : () => {}"
     >
     <img class="album-mask"
       v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].album_mask[0] && $parent.pageData.poster_list[tplIdx].album_mask[0].path"
@@ -57,7 +57,7 @@ import tplT8 from '@/assets/home/tpl_t8.png'
 
 export default {
   name: 'PosterView',
-  props: ['userData', 'albumImg', 'tplIdx'],
+  props: ['userData', 'albumImg', 'tplIdx', 'finger'],
   components: {
     vueQr,
   },
@@ -190,7 +190,7 @@ export default {
 
 <style lang="scss" scoped>
 .poster-view-box {
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   width: 7.5rem;
