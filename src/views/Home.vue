@@ -188,15 +188,15 @@ export default {
         openId: this.$openId,
       }).then((res) => {
         this.userData = res.data || {}
-        // if (!this.userData.phone) {
-        //   this.$router.push({
-        //     path: '/poster',
-        //     query: {
-        //       openid: this.$openId,
-        //       materialId: this.$params.get('id')
-        //     },
-        //   })
-        // }
+        if (!this.userData.phone) {
+          this.$router.push({
+            path: '/poster',
+            query: {
+              openid: this.$openId,
+              materialId: this.$params.get('id')
+            },
+          })
+        }
       })
     },
     // 初始化缩略图
