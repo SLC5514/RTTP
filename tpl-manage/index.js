@@ -92,6 +92,7 @@ new Vue({
       poster_list: [
         {
           id: 1,
+          is_def: true,
           name: '默认模板1',
           album_mask: [],
           logo_img: [],
@@ -104,10 +105,12 @@ new Vue({
             height: 252,
             left: 0,
             top: 55,
+            ratio: 1.21,
           }
         },
         {
           id: 2,
+          is_def: true,
           name: '默认模板2',
           album_mask: [],
           logo_img: [],
@@ -120,10 +123,12 @@ new Vue({
             height: 343,
             left: 145,
             top: 0,
+            ratio: 0.671,
           }
         },
         {
           id: 3,
+          is_def: true,
           name: '默认模板3',
           album_mask: [],
           logo_img: [],
@@ -136,10 +141,12 @@ new Vue({
             height: 119,
             left: 135,
             top: 10,
+            ratio: 1.933,
           }
         },
         {
           id: 4,
+          is_def: true,
           name: '默认模板4',
           album_mask: [],
           logo_img: [],
@@ -152,10 +159,12 @@ new Vue({
             height: 317,
             left: 10,
             top: 70,
+            ratio: 0.287,
           }
         },
         {
           id: 5,
+          is_def: true,
           name: '默认模板5',
           album_mask: [],
           logo_img: [],
@@ -168,10 +177,12 @@ new Vue({
             height: 109,
             left: 25,
             top: 70,
+            ratio: 2.972,
           }
         },
         {
           id: 6,
+          is_def: true,
           name: '默认模板6',
           album_mask: [],
           logo_img: [],
@@ -184,10 +195,12 @@ new Vue({
             height: 308,
             left: 176,
             top: 20,
+            ratio: 0.646,
           }
         },
         {
           id: 7,
+          is_def: true,
           name: '默认模板7',
           album_mask: [],
           logo_img: [],
@@ -200,10 +213,12 @@ new Vue({
             height: 168,
             left: 72,
             top: 85,
+            ratio: 1.423,
           }
         },
         {
           id: 8,
+          is_def: true,
           name: '默认模板8',
           album_mask: [],
           logo_img: [],
@@ -216,6 +231,7 @@ new Vue({
             height: 164,
             left: 150,
             top: 22,
+            ratio: 1.25,
           }
         },
       ],
@@ -229,7 +245,7 @@ new Vue({
         }
       ],
       // 礼品
-      gift_img: [JSON.parse(JSON.stringify(defImg))],
+      gift_img: [],
       // 活动规则
       rule_text:
         `1、“品牌名”注册用户(推荐人)分享专属个性化海报，每推荐一位新用户(被推荐人)，通过推荐人专属个性化海报注册为“品牌名”用户，并首次购买4单元及以上主修课课程包或15课段及以上全项进阶课课程包，且满足如下赠课条件之一的，推荐人即可获得赠课(根据被推荐人购买的课程包不同有所区别)，最多可获赠10课时/课段主修课/全项进阶课，奖励可以累计。\n` +
@@ -265,7 +281,7 @@ new Vue({
         { max: 16, message: '长度不能大于 16 个字符', trigger: ['change', 'blur'] }
       ],
       gift_img: [
-        { required: true, message: '请上传礼品图片', trigger: 'blur' },
+        { required: true, message: '请上传礼品图', trigger: 'change' },
       ],
     },
   },
@@ -343,8 +359,19 @@ new Vue({
           path: response.data
         });
         data.splice(1);
-        // data.name = file.name;
-        // data.path = response.data;
+        // 初始化尺寸
+        const self = this;
+        const image = new Image();
+        image.onload = function () {
+          const w = this.width;
+          const h = this.height;
+          const r = w / h;
+          const wh = self.formatWH('width', w, r, 375);
+          self.formData.poster_list[self.tplIdx].title_style.width = parseFloat(wh.width.toFixed());
+          self.formData.poster_list[self.tplIdx].title_style.height = parseFloat(wh.height.toFixed());
+          self.formData.poster_list[self.tplIdx].title_style.ratio = r;
+        }
+        image.src = response.data;
       }
     },
     handleError(err, file, fileList) {
@@ -437,7 +464,7 @@ new Vue({
       const needUnitStr = ['width', 'height', 'top', 'left', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderWidth', 'fontSize', 'borderRadius', 'letterSpacing'];
       const transformStr = ["rotate", "fliph", "flipv"];
       const shadowStr = ["shadowColor", "shadowBlur", "shadowH", "shadowV"];
-      const noNeedUnitStr = ['x', 'y'];
+      const noNeedUnitStr = ['x', 'y', 'ratio'];
       for (let key in paramStyle) {
         if (needUnitStr.includes(key)) {
           if (paramStyle[key] === 'auto' || paramStyle[key] === '100%') { // 属性兼容
@@ -461,5 +488,56 @@ new Vue({
       }
       return style;
     },
+    // 添加模板
+    addTpl() {
+      this.formData.poster_list.push({
+        id: this.formData.poster_list.length + 1,
+        is_def: false,
+        name: '自定义模板' + (this.formData.poster_list.length + 1 - 8),
+        album_mask: [],
+        logo_img: [],
+        title_img: [],
+        info_text1: '送你288元',
+        info_text2: '真人直播体验课',
+        info_text3: '扫码识别 立即领取',
+        title_style: {
+          width: '',
+          height: '',
+          left: 0,
+          top: 0,
+          ratio: 1,
+        }
+      });
+      this.tplIdx = this.formData.poster_list.length - 1;
+    },
+    // 删除模板
+    removeTpl() {
+      this.formData.poster_list.splice(this.tplIdx, 1);
+      if (this.tplIdx > this.formData.poster_list.length - 1) {
+        this.tplIdx = this.formData.poster_list.length - 1;
+      }
+    },
+    // 修改标题宽高
+    changeWH(key, style) {
+      const r = style.ratio;
+      const wh = this.formatWH(key, style[key], r);
+      style.width = parseFloat(wh.width.toFixed());
+      style.height = parseFloat(wh.height.toFixed());
+    },
+    // 格式化宽高
+    formatWH(key, wh, r, maxWH) {
+      let w = h = wh;
+      if (key === 'width') {
+        if (maxWH && w > maxWH) w = maxWH;
+        h = w / r;
+      } else if (key === 'height') {
+        if (maxWH && h > maxWH) h = maxWH;
+        w = h * r;
+      }
+      return {
+        width: w,
+        height: h
+      }
+    }
   }
 }).$mount('#app')

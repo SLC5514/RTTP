@@ -160,7 +160,7 @@ export default {
       const needUnitStr = ['width', 'height', 'top', 'left', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderWidth', 'fontSize', 'borderRadius', 'letterSpacing'];
       const transformStr = ["rotate", "fliph", "flipv"];
       const shadowStr = ["shadowColor", "shadowBlur", "shadowH", "shadowV"];
-      const noNeedUnitStr = ['x', 'y'];
+      const noNeedUnitStr = ['x', 'y', 'ratio'];
       for (let key in paramStyle) {
         if (needUnitStr.includes(key)) {
           if (paramStyle[key] === 'auto' || paramStyle[key] === '100%') { // 属性兼容
