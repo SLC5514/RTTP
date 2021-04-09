@@ -214,7 +214,7 @@
                       <el-option v-for="(v, i) in formData.poster_list" :key="i" :label="v.name" :value="v.id - 1"></el-option>
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="蒙层">
+                  <!-- <el-form-item label="蒙层">
                     <el-upload
                       class="mask-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
@@ -234,7 +234,7 @@
                         只能上传png文件，且不超过500kb
                       </div>
                     </el-upload>
-                  </el-form-item>
+                  </el-form-item> -->
                   <el-form-item label="LOGO">
                     <el-upload
                       class="logo-upload"
@@ -277,7 +277,7 @@
                       </div>
                     </el-upload>
                   </el-form-item>
-                  <el-form-item label="尺寸位置" class="flex-form-item">
+                  <el-form-item label="标题尺寸位置" class="flex-form-item">
                     <el-row>
                       <el-col :span="12" class="paddingR5 flex">
                         <label>宽：</label>
@@ -327,11 +327,11 @@
                   <el-scrollbar>
                     <div class="content poster-view-box">
                       <img class="album" src="" alt="" />
-                      <img class="album-mask"
+                      <!-- <img class="album-mask"
                         v-if="formData.poster_list[tplIdx].album_mask[0] && formData.poster_list[tplIdx].album_mask[0].path"
                         :src="formData.poster_list[tplIdx].album_mask[0].path"
                         alt=""
-                      />
+                      /> -->
                       <img class="title"
                         v-if="formData.poster_list[tplIdx].title_img[0] && formData.poster_list[tplIdx].title_img[0].path"
                         :src="formData.poster_list[tplIdx].title_img[0].path"

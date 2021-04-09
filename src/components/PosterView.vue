@@ -55,6 +55,15 @@ import tplT6 from '@/assets/home/tpl_t6.png'
 import tplT7 from '@/assets/home/tpl_t7.png'
 import tplT8 from '@/assets/home/tpl_t8.png'
 
+const defAlbumImgAttr = {
+  w: '',
+  h: '',
+  x: 0,
+  y: 0,
+  angle: 0,
+  zoom: 1
+}
+
 export default {
   name: 'PosterView',
   props: ['userData', 'albumImg', 'tplIdx', 'finger'],
@@ -69,14 +78,7 @@ export default {
         url: window.location.origin + '/poster?jtOpenId=' + this.$openId + '&materialId=' + this.$params.get('id'),
         // icon: '/favicon.ico',
       }, // 二维码数据
-      albumImgAttr: {
-        w: '',
-        h: '',
-        x: 0,
-        y: 0,
-        angle: 0,
-        zoom: 1
-      },
+      albumImgAttr: JSON.parse(JSON.stringify(defAlbumImgAttr)),
       tplTitleImg: [ tplT1, tplT2, tplT3, tplT4, tplT5, tplT6, tplT7, tplT8 ]
     }
   },
@@ -95,6 +97,11 @@ export default {
       }
     }
   },
+  watch: {
+    albumImg() {
+      this.init()
+    }
+  },
   mounted() {
     this.init()
   },
@@ -110,6 +117,7 @@ export default {
         const ph = albumImg.parentNode.clientHeight;
         if (pw > 0 && ph > 0) {
           const self = this;
+          this.albumImgAttr = JSON.parse(JSON.stringify(defAlbumImgAttr));
           albumImg.onload = function() {
             this.style = '';
             const w = this.width || pw;

@@ -188,15 +188,15 @@ export default {
         openId: this.$openId,
       }).then((res) => {
         this.userData = res.data || {}
-        if (!this.userData.phone) {
-          this.$router.push({
-            path: '/poster',
-            query: {
-              openid: this.$openId,
-              materialId: this.$params.get('id')
-            },
-          })
-        }
+        // if (!this.userData.phone) {
+        //   this.$router.replace({
+        //     path: '/poster',
+        //     query: {
+        //       openid: this.$openId,
+        //       materialId: this.$params.get('id')
+        //     },
+        //   })
+        // }
       })
     },
     // 初始化缩略图
@@ -239,6 +239,7 @@ export default {
         }
         const blobUrl = window.URL.createObjectURL(blob)
         this.albumImg = blobUrl
+        this.defAlbumImg = null
         this.pageType = 1
       }
     },
@@ -390,6 +391,15 @@ export default {
     overflow: initial;
     .swiper-slide {
       width: auto;
+      &.swiper-slide-thumb-active:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba($color: orange, $alpha: 0.3);
+      }
       .item {
         position: relative;
         width: 1.27rem;
