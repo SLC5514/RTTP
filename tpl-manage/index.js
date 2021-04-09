@@ -360,18 +360,20 @@ new Vue({
         });
         data.splice(1);
         // 初始化尺寸
-        const self = this;
-        const image = new Image();
-        image.onload = function () {
-          const w = this.width;
-          const h = this.height;
-          const r = w / h;
-          const wh = self.formatWH('width', w, r, 375);
-          self.formData.poster_list[self.tplIdx].title_style.width = parseFloat(wh.width.toFixed());
-          self.formData.poster_list[self.tplIdx].title_style.height = parseFloat(wh.height.toFixed());
-          self.formData.poster_list[self.tplIdx].title_style.ratio = r;
+        if (this.uploadingKey.indexOf('title_img') !== -1) {
+          const self = this;
+          const image = new Image();
+          image.onload = function () {
+            const w = this.width;
+            const h = this.height;
+            const r = w / h;
+            const wh = self.formatWH('width', w, r, 375);
+            self.formData.poster_list[self.tplIdx].title_style.width = parseFloat(wh.width.toFixed());
+            self.formData.poster_list[self.tplIdx].title_style.height = parseFloat(wh.height.toFixed());
+            self.formData.poster_list[self.tplIdx].title_style.ratio = r;
+          }
+          image.src = response.data;
         }
-        image.src = response.data;
       }
     },
     handleError(err, file, fileList) {
