@@ -281,21 +281,41 @@
                     <el-row>
                       <el-col :span="12" class="paddingR5 flex">
                         <label>宽：</label>
-                        <el-input v-model="formData.poster_list[tplIdx].title_style.width"></el-input>
+                        <!-- <el-input-number v-model="formData.poster_list[tplIdx].title_style.width" controls-position="right"></el-input-number> -->
+                        <div class="el-input-number is-controls-right">
+                          <span role="button" class="el-input-number__decrease" @click="formData.poster_list[tplIdx].title_style.width--"><i class="el-icon-arrow-down"></i></span>
+                          <span role="button" class="el-input-number__increase" @click="formData.poster_list[tplIdx].title_style.width++"><i class="el-icon-arrow-up"></i></span>
+                          <div class="el-input"><input type="text" autocomplete="off" max="Infinity" min="-Infinity" class="el-input__inner" v-model.number="formData.poster_list[tplIdx].title_style.width"></div>
+                        </div>
                       </el-col>
                       <el-col :span="12" class="paddingL5 flex">
                         <label>高：</label>
-                        <el-input v-model="formData.poster_list[tplIdx].title_style.height"></el-input>
+                        <!-- <el-input-number v-model="formData.poster_list[tplIdx].title_style.height" controls-position="right"></el-input-number> -->
+                        <div class="el-input-number is-controls-right">
+                          <span role="button" class="el-input-number__decrease" @click="formData.poster_list[tplIdx].title_style.height--"><i class="el-icon-arrow-down"></i></span>
+                          <span role="button" class="el-input-number__increase" @click="formData.poster_list[tplIdx].title_style.height++"><i class="el-icon-arrow-up"></i></span>
+                          <div class="el-input"><input type="text" autocomplete="off" max="Infinity" min="-Infinity" class="el-input__inner" v-model.number="formData.poster_list[tplIdx].title_style.height"></div>
+                        </div>
                       </el-col>
                     </el-row>
                     <el-row class="marginT10">
                       <el-col :span="12" class="paddingR5 flex">
                         <label>X：</label>
-                        <el-input v-model="formData.poster_list[tplIdx].title_style.left"></el-input>
+                        <!-- <el-input-number v-model="formData.poster_list[tplIdx].title_style.left" controls-position="right"></el-input-number> -->
+                        <div class="el-input-number is-controls-right">
+                          <span role="button" class="el-input-number__decrease" @click="formData.poster_list[tplIdx].title_style.left--"><i class="el-icon-arrow-down"></i></span>
+                          <span role="button" class="el-input-number__increase" @click="formData.poster_list[tplIdx].title_style.left++"><i class="el-icon-arrow-up"></i></span>
+                          <div class="el-input"><input type="text" autocomplete="off" max="Infinity" min="-Infinity" class="el-input__inner" v-model.number="formData.poster_list[tplIdx].title_style.left"></div>
+                        </div>
                       </el-col>
                       <el-col :span="12" class="paddingL5 flex">
                         <label>Y：</label>
-                        <el-input v-model="formData.poster_list[tplIdx].title_style.top"></el-input>
+                        <!-- <el-input-number v-model="formData.poster_list[tplIdx].title_style.top" controls-position="right"></el-input-number> -->
+                        <div class="el-input-number is-controls-right">
+                          <span role="button" class="el-input-number__decrease" @click="formData.poster_list[tplIdx].title_style.top--"><i class="el-icon-arrow-down"></i></span>
+                          <span role="button" class="el-input-number__increase" @click="formData.poster_list[tplIdx].title_style.top++"><i class="el-icon-arrow-up"></i></span>
+                          <div class="el-input"><input type="text" autocomplete="off" max="Infinity" min="-Infinity" class="el-input__inner" v-model.number="formData.poster_list[tplIdx].title_style.top"></div>
+                        </div>
                       </el-col>
                     </el-row>
                   </el-form-item>
