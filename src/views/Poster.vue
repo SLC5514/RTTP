@@ -77,7 +77,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  min-height: 14.89rem;
+  min-height: 14.9rem;
   margin: 0 auto;
   letter-spacing: 1px;
   color: #808080;

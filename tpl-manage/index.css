@@ -60,12 +60,15 @@ p {
 
 .preview {
   width: 375px;
-  height: 667px;
+  height: 745px;
   margin: 0 auto;
   border-radius: 10px;
   border: 20px solid #ccc;
   box-sizing: content-box;
   overflow: auto;
+}
+.preview.min {
+  height: 667px;
 }
 .preview .el-scrollbar {
   height: 100%;
@@ -78,9 +81,6 @@ p {
   width: 100%;
   height: 744px;
   box-sizing: border-box;
-}
-.preview .content.pull {
-  height: 667px;
 }
 .preview .content.pull-page {
   height: 744.5px;

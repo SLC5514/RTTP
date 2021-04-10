@@ -319,7 +319,7 @@ export default {
 <style lang="scss" scoped>
 .home {
   position: relative;
-  min-height: 14.89rem;
+  min-height: 14.9rem;
   text-align: center;
   overflow: hidden;
   background: #4b42f3 no-repeat center top / 100% auto;
