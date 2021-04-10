@@ -80,8 +80,13 @@ export default {
   width: 7.5rem;
   min-height: 14.9rem;
   color: #808080;
-  background: #182fba url(~@/assets/poster/bg.jpg) no-repeat top center/100%
-    auto;
+  // background: #182fba url(~@/assets/poster/bg.jpg) no-repeat top center/100%
+  //   auto;
+  background-color: #182fba;
+  background-image: url(~@/assets/poster/bg.jpg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 100% auto;
   position: relative;
 }
 .fw {
