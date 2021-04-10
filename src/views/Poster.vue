@@ -85,7 +85,7 @@ export default {
   background-color: #182fba;
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: 100% auto;
+  background-size: contain;
   position: relative;
 }
 .fw {

@@ -11,6 +11,13 @@ import VueClipboard from 'vue-clipboard2'
 import AlloyFinger from 'alloyfinger'
 import AlloyFingerPlugin from 'alloyfinger/vue/alloy_finger_vue.js'
 
+import VConsole from 'vconsole'
+
+const params = new URLSearchParams(window.location.search)
+if (params.get('vlog')) {
+  Vue.use(new VConsole())
+}
+
 import 'normalize.css/normalize.css'
 import './vant'
 import './rem'

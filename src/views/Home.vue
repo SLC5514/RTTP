@@ -326,7 +326,7 @@ export default {
   background-color: #4b42f3;
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: 100% auto;
+  background-size: contain;
   &.bg1 {
     background-image: url(~@/assets/home/bg1.jpg);
   }

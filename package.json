@@ -17,6 +17,7 @@
     "normalize.css": "^8.0.1",
     "postcss-pxtorem": "^5.1.1",
     "swiper": "^5.4.5",
+    "vconsole": "^3.4.1",
     "vh-check": "^2.0.5",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",

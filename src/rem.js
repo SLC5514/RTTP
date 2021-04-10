@@ -1,20 +1,3 @@
-// function INIT() {
-//   var init = 7.5//设计图宽的100%
-//   var num = 0;
-//   var mql = window.matchMedia("(orientation: portrait)");
-//   if (mql.matches) {
-//     num = document.documentElement.clientWidth//竖屏
-//   } else {
-//     num = document.documentElement.clientHeight//横屏
-//   }
-//   if (num > 750) num = 750;//定义最大值
-//   document.documentElement.style.fontSize = num / init + 'px';
-// }
-// INIT();
-// window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function () {
-//   INIT()
-// }, false);
-
 (function (doc, win) {
   var docEl = doc.documentElement,
     resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
@@ -27,12 +10,12 @@
         docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
       }
       var html = document.querySelector('html');
-      var settingFs = parseFloat(100 * (clientWidth / 750));
+      var settingFs = parseInt(100 * (clientWidth / 750));
       var settedFs = settingFs;
       var whileCount = 0;
       var status = true;
       while (status) {
-        var realFs = parseFloat(window.getComputedStyle(html).fontSize);
+        var realFs = parseInt(window.getComputedStyle(html).fontSize);
         var delta = realFs - settedFs;
         //不相等
         if (Math.abs(delta) >= 1) {
