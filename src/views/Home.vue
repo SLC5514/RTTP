@@ -248,8 +248,8 @@ export default {
       const box = document.querySelector('.preview>div')
       const rect = box.getBoundingClientRect()
       const scale = 1 / (this.$refs['preview-poster'].scale || 1)
-      let w = box.scrollWidth
-      let h = box.scrollHeight
+      let w = box.scrollWidth * scale
+      let h = box.scrollHeight * scale
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
@@ -300,6 +300,7 @@ export default {
     },
     closeGiftDialog() {
       this.showGiftDialog = false;
+      this.defAlbumImg = defAlbumImg;
       this.albumImg = null;
       this.pageType = 0;
       document.documentElement.scrollTop = 0;

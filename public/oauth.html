@@ -15,7 +15,7 @@
 
     // var base = 'http://407364bcd69cf6b3a1b0c981a7380c.huoyusaas.com';
     var redirect = getUrlParam("redirectUrl");
-    var url = window.location.origin + '/wx/wechatLogin?url=' + encodeURI(redirect);
+    var url = window.location.origin + '/wx/wechatLogin?url=' + encodeURIComponent(redirect);
     window.location.replace(url);
 
     // 获取URL中的参数

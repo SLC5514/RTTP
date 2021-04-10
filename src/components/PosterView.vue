@@ -110,32 +110,34 @@ export default {
       const box = this.$refs['box']
       const parent = box.parentNode
       this.scale = parent.clientWidth / box.clientWidth
-      // 图片尺寸位置初始化
-      const albumImg = this.$refs['album-img'];
-      if (albumImg) {
-        const pw = albumImg.parentNode.clientWidth;
-        const ph = albumImg.parentNode.clientHeight;
-        if (pw > 0 && ph > 0) {
-          const self = this;
-          this.albumImgAttr = JSON.parse(JSON.stringify(defAlbumImgAttr));
-          albumImg.onload = function() {
-            this.style = '';
-            const w = this.width || pw;
-            const h = this.height || ph;
-            const wr = pw / w;
-            const hr = ph / h;
-            if (wr > hr) {
-              self.albumImgAttr.w = pw;
-              self.albumImgAttr.h = h * wr;
-            } else {
-              self.albumImgAttr.h = ph;
-              self.albumImgAttr.w = w * hr;
+      this.$nextTick(() => {
+        // 图片尺寸位置初始化
+        const albumImg = this.$refs['album-img'];
+        if (albumImg) {
+          const pw = albumImg.parentNode.clientWidth;
+          const ph = albumImg.parentNode.clientHeight;
+          if (pw > 0 && ph > 0) {
+            const self = this;
+            this.albumImgAttr = JSON.parse(JSON.stringify(defAlbumImgAttr));
+            albumImg.onload = function() {
+              this.style = '';
+              const w = this.width || pw;
+              const h = this.height || ph;
+              const wr = pw / w;
+              const hr = ph / h;
+              if (wr > hr) {
+                self.albumImgAttr.w = pw;
+                self.albumImgAttr.h = h * wr;
+              } else {
+                self.albumImgAttr.h = ph;
+                self.albumImgAttr.w = w * hr;
+              }
+              self.albumImgAttr.x = (pw - self.albumImgAttr.w) / 2;
+              self.albumImgAttr.y = (ph - self.albumImgAttr.h) / 2;
             }
-            self.albumImgAttr.x = (pw - self.albumImgAttr.w) / 2;
-            self.albumImgAttr.y = (ph - self.albumImgAttr.h) / 2;
           }
         }
-      }
+      })
     },
 
     pressMove(e) {

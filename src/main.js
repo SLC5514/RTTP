@@ -26,7 +26,7 @@ Vue.use(AlloyFingerPlugin, {
 Vue.prototype.$oauth = function () {
   const params = new URLSearchParams(window.location.search)
   const openid = params.get('openid') || params.get('openId')
-  const redirect = window.location.href
+  const redirect = encodeURIComponent(window.location.href)
   if (!openid) {
     location.replace('/oauth.html?redirectUrl=' + redirect)
     return false
