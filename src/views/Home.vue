@@ -248,15 +248,15 @@ export default {
       const box = document.querySelector('.preview>div')
       const rect = box.getBoundingClientRect()
       const scale = 1 / (this.$refs['preview-poster'].scale || 1)
-      let w = box.scrollWidth * scale
-      let h = box.scrollHeight * scale
+      let w = box.scrollWidth
+      let h = box.scrollHeight
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
       let left = 0
-      // if (document.documentElement.clientWidth > 750) {
-      //   left = document.documentElement.clientWidth - 750
-      // }
+      if (document.documentElement.clientWidth > 750) {
+        left = document.documentElement.clientWidth - 750
+      }
       html2canvas(box, {
         canvas: canvas,
         scale: scale,

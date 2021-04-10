@@ -26,8 +26,8 @@
       <div class="back-rotate">
         <div class="left">
           <div class="user">
-            <img :src="userData.avatarUrl" alt="">
-            <span>{{userData.nickname}}</span>
+            <img :src="userData && userData.avatarUrl" alt="">
+            <span>{{userData && userData.nickname}}</span>
           </div>
           <p>
             {{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text1}}<br />{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text2}}

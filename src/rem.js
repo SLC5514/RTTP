@@ -1,17 +1,16 @@
-const baseSize = 100; // 蓝湖须设置相应尺寸
-
-// 设置 rem 函数
-function setRem() {
-  var width = document.documentElement.clientWidth;
-  // if (width > 750) width = 750;
-  const scale = width / 750;
-  document.documentElement.style.fontSize = baseSize * Math.min(scale, 2) + "px";
+function INIT() {
+  var init = 7.5//设计图宽的100%
+  var num = 0;
+  var mql = window.matchMedia("(orientation: portrait)");
+  if (mql.matches) {
+    num = document.documentElement.clientWidth//竖屏
+  } else {
+    num = document.documentElement.clientHeight//横屏
+  }
+  if (num > 750) num = 750;//定义最大值
+  document.documentElement.style.fontSize = num / init + 'px';
 }
-
-// 初始化
-setRem();
-
-// 改变窗口大小时重新设置 rem
-window.onresize = function() {
-  setRem();
-};
+INIT();
+window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", function () {
+  INIT()
+}, false);
