@@ -2,7 +2,7 @@
   <div class="rules-alert-box" v-show="show">
     <div class="content">
       <div class="close" @click="show = false"></div>
-      <p>{{$parent.pageData && $parent.pageData.rule_text}}</p>
+      <p>{{ruleText}}</p>
     </div>
   </div>
 </template>
@@ -10,6 +10,7 @@
 <script>
 export default {
   name: 'RulesAlert',
+  props: ['ruleText'],
   data() {
     return {
       show: false,

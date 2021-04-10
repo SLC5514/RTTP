@@ -60,11 +60,11 @@
       </div>
       <div class="allData" v-if="progressData.length > 2 && !lookAll" @click="lookAll = true">查看全部</div>
     </div>
-    <RulesAlert ref="rules-alert" />
+    <RulesAlert ref="rules-alert" :rule-text="pageData && pageData.rule_text" />
   </div>
 </template>
 <script>
-import { getProgressByOpenId } from '@/api'
+import { getProgressByOpenId, getMaterialById } from '@/api'
 export default {
   name: 'Overview',
   components: {
@@ -78,10 +78,17 @@ export default {
       unRefundNum: '',
       progressData: [],
       lookAll: false,
+      pageData: null
     }
   },
   created() {
     this.progressFn()
+    getMaterialById({
+      id: this.$params.get('id')
+    }).then(res => {
+      this.pageData = JSON.parse(res.data.content)
+      console.log(this.pageData)
+    }).catch()
   },
   methods: {
     progressFn() {
@@ -104,10 +111,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  background: #fff;
-  margin: 0 auto;
-  letter-spacing: 1px;
   color: #808080;
+  background: #fff;
 }
 .fw {
   font-weight: 400;

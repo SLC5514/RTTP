@@ -77,7 +77,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  width: 7.5rem;
   min-height: 14.9rem;
   color: #808080;
   // background: #182fba url(~@/assets/poster/bg.jpg) no-repeat top center/100%

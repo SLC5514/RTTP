@@ -49,7 +49,7 @@
       {{pageData && pageData.render_btn_text}}
     </div>
     <!-- 活动规则 -->
-    <RulesAlert ref="rules-alert" />
+    <RulesAlert ref="rules-alert" :rule-text="pageData && pageData.rule_text" />
     <!-- 复制对话框 -->
     <van-dialog className="copy-dialog" width="4.95rem" v-model="showCopyDialog" :showConfirmButton="false"
       closeOnClickOverlay>
