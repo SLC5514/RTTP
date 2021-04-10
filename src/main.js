@@ -14,7 +14,7 @@ import AlloyFingerPlugin from 'alloyfinger/vue/alloy_finger_vue.js'
 import VConsole from 'vconsole'
 
 const params = new URLSearchParams(window.location.search)
-if (params.get('vlog')) {
+if (params.get('debug')) {
   Vue.use(new VConsole())
 }
 
