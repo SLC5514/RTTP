@@ -128,18 +128,21 @@ export default {
   position: relative;
 }
 .container .receive .phone input {
-  border: 1px solid #ffcd54;
-  outline: none;
   position: absolute;
   left: 0;
   top: 0;
   width: 6.28rem;
   height: 0.9rem;
   font-size: 0.3rem;
-  box-sizing: border-box;
   text-align: center;
+  box-sizing: border-box;
   border-radius: 0.12rem;
   padding: 0 0.15rem 0 0.15rem;
+  border: 1px solid #ffcd54;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 button {
   width: 6.28rem;
