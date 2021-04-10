@@ -323,7 +323,10 @@ export default {
   min-height: 14.9rem;
   text-align: center;
   overflow: hidden;
-  background: #4b42f3 no-repeat center top / 100% auto;
+  background-color: #4b42f3;
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
   &.bg1 {
     background-image: url(~@/assets/home/bg1.jpg);
   }
