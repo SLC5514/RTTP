@@ -81,8 +81,8 @@ export default {
   color: #808080;
   // background: #182fba url(~@/assets/poster/bg.jpg) no-repeat center top/100%
   //   auto;
-  background-color: #182fba;
   background-image: url(~@/assets/poster/bg.jpg);
+  background-color: #182fba;
   background-repeat: no-repeat;
   background-position: center top;
   background-size: 100% auto;
