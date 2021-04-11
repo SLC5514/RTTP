@@ -1,5 +1,15 @@
 <template>
   <div :class="'home ' + (pageType <= 1 ? 'bg1' : 'bg2')" :style="pageBgStyle">
+    <template v-if="$isiOS">
+      <template v-if="!pageData || (pageType <= 1 && !pageData.show_bg_img[0]) || (pageType > 1 && !pageData.render_bg_img[0])">
+        <img v-if="pageType <= 1" src="../assets/home/bg1.jpg" alt="" class="page-bg-img">
+        <img v-else src="../assets/home/bg2.jpg" alt="" class="page-bg-img">
+      </template>
+      <template v-else-if="pageData && (pageType <= 1 && pageData.show_bg_img[0].path || pageType > 1 && pageData.render_bg_img[0].path)">
+        <img v-if="pageType <= 1" :src="pageData.show_bg_img[0].path" alt="" class="page-bg-img">
+        <img v-else :src="pageData.render_bg_img[0].path" alt="" class="page-bg-img">
+      </template>
+    </template>
     <div class="rule-btn pointer" @click="$refs['rules-alert'].showRulesAllert()">活动规则</div>
     <!-- 预览成品 -->
     <div v-show="pageType === 0" class="gallery-top">
@@ -68,7 +78,7 @@
       closeOnClickOverlay>
       <img
         class="gift"
-        :src="pageData && pageData.gift_img.path"
+        :src="pageData && pageData.gift_img[0] && pageData.gift_img[0].path"
         alt=""
       />
       <img class="bg" :src="giftImg" alt="" />
@@ -128,12 +138,12 @@ export default {
       if (this.pageType <= 1) {
         return {
           'background-color': this.pageData.show_bg_color,
-          'background-image': this.pageData.show_bg_img.path ? `url(${this.pageData.show_bg_img.path})` : null
+          'background-image': this.pageData.show_bg_img[0] && this.pageData.show_bg_img[0].path ? `url(${this.pageData.show_bg_img[0].path})` : null
         }
       } else {
         return {
           'background-color': this.pageData.render_bg_color,
-          'background-image': this.pageData.render_bg_img.path ? `url(${this.pageData.render_bg_img.path})` : null
+          'background-image': this.pageData.render_bg_img[0] && this.pageData.render_bg_img[0].path ? `url(${this.pageData.render_bg_img[0].path})` : null
         }
       }
     }
@@ -320,13 +330,14 @@ export default {
 <style lang="scss" scoped>
 .home {
   position: relative;
-  min-height: 14.9rem;
+  height: 100vh;
+  min-height: 13.34rem;
   text-align: center;
   overflow: hidden;
   background-color: #4b42f3;
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: contain;
+  background-size: 100% auto;
   &.bg1 {
     background-image: url(~@/assets/home/bg1.jpg);
   }
@@ -337,7 +348,7 @@ export default {
     font-size: 0.32rem;
     font-weight: 400;
     position: absolute;
-    top: 0.73rem;
+    top: 0.45rem;
     left: 0;
     width: 1.72rem;
     height: 0.6rem;
@@ -352,7 +363,7 @@ export default {
     position: relative;
     width: 3.98rem;
     height: 7.08rem;
-    margin: 1.77rem auto 0;
+    margin: 1.2rem auto 0;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
     & > div {
       width: 100%;
@@ -369,7 +380,7 @@ export default {
   .poster {
     width: 5.245rem;
     height: 9.295rem;
-    margin: 1.98rem auto 0.68rem;
+    margin: 1.45rem auto 0.2rem;
     background-color: #fff6c1;
     box-shadow: 0 0 0.26rem 0.21rem rgba(148, 57, 168, 0.39);
     & > img {
@@ -377,7 +388,7 @@ export default {
     }
   }
   .gallery-top {
-    margin: 1.77rem auto 0;
+    margin: 1.2rem auto 0;
     .swiper-slide {
       .item {
         position: relative;
@@ -390,7 +401,7 @@ export default {
     }
   }
   .gallery-thumbs {
-    margin-top: 0.65rem;
+    margin-top: 0.4rem;
     padding: 0 0.4rem;
     overflow: initial;
     .swiper-slide {
@@ -418,8 +429,8 @@ export default {
     font-size: 0.28rem;
     font-weight: 500;
     line-height: 0.55rem;
-    margin-top: 0.26rem;
-    margin-bottom: 0.44rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.2rem;
     text-align: center;
     color: #fff;
     span {

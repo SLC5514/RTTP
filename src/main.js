@@ -35,11 +35,15 @@ Vue.prototype.$oauth = function () {
   const openid = params.get('openid') || params.get('openId')
   const redirect = encodeURIComponent(window.location.href)
   if (!openid) {
-    location.replace('/oauth.html?redirectUrl=' + redirect)
+    window.location.replace('/oauth.html?redirectUrl=' + redirect)
     return false
   }
   return openid
 }
+
+const u = navigator.userAgent;
+Vue.prototype.$isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; // android终端
+Vue.prototype.$isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
 
 new Vue({
   router,

@@ -566,3 +566,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.page-bg-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 100%;
+  max-width: none;
+  & ~ :not([class*=van-]) {
+    position: relative;
+  }
+}

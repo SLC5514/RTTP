@@ -1,5 +1,13 @@
 <template>
   <div class="container" :style="pageBgStyle">
+    <template v-if="$isiOS">
+      <template v-if="!pageData || !pageData.invite_bg_img[0]">
+        <img src="../assets/poster/bg.jpg" alt="" class="page-bg-img">
+      </template>
+      <template v-else-if="pageData && pageData.invite_bg_img[0].path">
+        <img :src="pageData.invite_bg_img[0].path" alt="" class="page-bg-img">
+      </template>
+    </template>
     <div class="receive flexCol">
       <b>马上领取<span><i>598</i>元</span>思维大礼包</b>
       <div class="phone"><input type="text" v-model="phoneNum" placeholder="请输入手机号" maxLength="11"></div>
@@ -85,7 +93,7 @@ export default {
   background-color: #182fba;
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: contain;
+  background-size: 100% auto;
   position: relative;
 }
 .fw {

@@ -75,7 +75,7 @@ export default {
       userImg,
       scale: 1,
       qrcodeData: {
-        url: window.location.origin + '/poster?jtOpenId=' + this.$openId + '&materialId=' + this.$params.get('id'),
+        url: window.location.origin + '/poster?jtOpenId=' + this.$openId + '&materialId=' + this.$params.get('id') + (this.$params.get('debug') ? '&debug=' + this.$params.get('debug') : ''),
         // icon: '/favicon.ico',
       }, // 二维码数据
       albumImgAttr: JSON.parse(JSON.stringify(defAlbumImgAttr)),
