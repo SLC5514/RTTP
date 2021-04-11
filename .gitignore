@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 /dist
-/dist.7z
-
+/dist.*
+/tpl-manage.*
 
 # local env files
 .env.local

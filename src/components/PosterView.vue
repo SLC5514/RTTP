@@ -14,7 +14,7 @@
     <img class="title"
       v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].title_img[0] && $parent.pageData.poster_list[tplIdx].title_img[0].path"
       :src="formatTitlePath($parent.pageData && $parent.pageData.poster_list[tplIdx].title_img[0].path)"
-      :style="getPxStyle($parent.pageData.poster_list[tplIdx].title_style)"
+      :style="getPxStyle($parent.pageData.poster_list[tplIdx].title_style, true)"
       alt=""
     />
     <img class="logo"
@@ -157,18 +157,23 @@ export default {
       this.albumImgAttr.zoom = e.zoom;
     },
     // 处理样式
-    getPxStyle(paramStyle) {
+    getPxStyle(paramStyle, toRem) {
       let style = {};
       const needUnitStr = ['width', 'height', 'top', 'left', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom', 'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderWidth', 'fontSize', 'borderRadius', 'letterSpacing'];
       const transformStr = ["rotate", "fliph", "flipv"];
       const shadowStr = ["shadowColor", "shadowBlur", "shadowH", "shadowV"];
       const noNeedUnitStr = ['x', 'y', 'ratio'];
+      const rootRem = parseFloat(document.documentElement.style.fontSize);
       for (let key in paramStyle) {
         if (needUnitStr.includes(key)) {
           if (paramStyle[key] === 'auto' || paramStyle[key] === '100%') { // 属性兼容
             style[key] = paramStyle[key];
           } else {
-            style[key] = paramStyle[key] + 'px';
+            if (toRem) {
+              style[key] = paramStyle[key] / rootRem + 'rem';
+            } else {
+              style[key] = paramStyle[key] + 'px';
+            }
           }
         } else if (noNeedUnitStr.includes(key)) {
           continue;
@@ -179,7 +184,11 @@ export default {
         } else if (transformStr.includes(key)) {
           style['transform'] = `rotate(${paramStyle['rotate']}deg) scale(${paramStyle['fliph']}, ${paramStyle['flipv']})`;
         } else if (shadowStr.includes(key)) {
-          style['boxShadow'] = `${paramStyle['shadowH']}px ${paramStyle['shadowV']}px ${paramStyle['shadowBlur']}px ${paramStyle['shadowColor']}`;
+            if (toRem) {
+              style['boxShadow'] = `${paramStyle['shadowH'] / rootRem}rem ${paramStyle['shadowV'] / rootRem}rem ${paramStyle['shadowBlur'] / rootRem}rem ${paramStyle['shadowColor']}`;
+            } else {
+              style['boxShadow'] = `${paramStyle['shadowH']}px ${paramStyle['shadowV']}px ${paramStyle['shadowBlur']}px ${paramStyle['shadowColor']}`;
+            }
         } else {
           style[key] = paramStyle[key];
         }

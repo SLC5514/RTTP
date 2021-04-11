@@ -417,8 +417,8 @@ export default {
       }
       .item {
         position: relative;
-        width: 1.27rem;
-        height: 2.25rem;
+        width: 1.15rem;
+        height: 2.05rem;
         margin: 0 auto;
         background-color: #fff6c1;
         box-shadow: 0 0 0 0.09rem rgba(148, 57, 168, 0.21);

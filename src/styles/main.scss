@@ -552,6 +552,11 @@ img {
 
 html {
   font-size: 50px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 body {
   font-size: 14px;
