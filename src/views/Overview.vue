@@ -86,7 +86,7 @@ export default {
     getMaterialById({
       id: this.$params.get('id')
     }).then(res => {
-      this.pageData = JSON.parse(res.data.content)
+      this.pageData = JSON.parse(res.data && res.data.content || 'null')
       console.log(this.pageData)
     }).catch()
   },

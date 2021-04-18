@@ -81,11 +81,13 @@ new Vue({
       // 展示页
       show_info_text: '超过10000人通过海报邀请好友获得推荐奖励',
       show_btn_text: '我要推荐奖励',
+      show_btn_bg_color: '#fddc88',
       show_bg_color: '#4b42f3',
       show_bg_img: [JSON.parse(JSON.stringify(defImg))],
       // 生成页
       render_info_text: '超过10000人通过海报邀请好友获得推荐奖励',
       render_btn_text: '复制邀请语 得奖几率翻倍！',
+      render_btn_text_bg_color: '#fff6c1',
       render_bg_color: '#4b42f3',
       render_bg_img: [JSON.parse(JSON.stringify(defImg))],
       // 海报页
@@ -100,6 +102,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 305,
             height: 252,
@@ -118,6 +123,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 230,
             height: 343,
@@ -136,6 +144,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 230,
             height: 119,
@@ -154,6 +165,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 91,
             height: 317,
@@ -172,6 +186,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 324,
             height: 109,
@@ -190,6 +207,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 199,
             height: 308,
@@ -208,6 +228,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 239,
             height: 168,
@@ -226,6 +249,9 @@ new Vue({
           info_text1: '送你288元',
           info_text2: '真人直播体验课',
           info_text3: '扫码识别 立即领取',
+          info_text1_color: '#794df1',
+          info_text2_color: '#794df1',
+          info_text3_color: '#794df1',
           title_style: {
             width: 205,
             height: 164,
@@ -511,6 +537,9 @@ new Vue({
         info_text1: '送你288元',
         info_text2: '真人直播体验课',
         info_text3: '扫码识别 立即领取',
+        info_text1_color: '#794df1',
+        info_text2_color: '#794df1',
+        info_text3_color: '#794df1',
         title_style: {
           width: '',
           height: '',

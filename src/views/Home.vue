@@ -45,7 +45,7 @@
     <div class="info" v-show="pageType > 1">{{pageData && pageData.show_info_text}}</div>
     <!-- 推荐按钮 -->
     <van-uploader v-show="pageType === 0" :after-read="generateRead">
-      <div :class="'recommend-btn pointer ' + tadaClass">{{pageData && pageData.show_btn_text}}</div>
+      <div :class="'recommend-btn pointer ' + tadaClass" :style="'background-color:' + (pageData && pageData.show_btn_bg_color)">{{pageData && pageData.show_btn_text}}</div>
     </van-uploader>
     <!-- 重新生成按钮 -->
     <div v-show="pageType === 1">
@@ -55,7 +55,7 @@
       <div class="generate-btn pointer" @click="generatePointer">生成海报</div>
     </div>
     <!-- 复制按钮 -->
-    <div v-show="pageType === 2" class="copy-btn pointer" @click="showCopyDialog = true">
+    <div v-show="pageType === 2" class="copy-btn pointer" :style="'background-color:' + (pageData && pageData.render_btn_text_bg_color)" @click="showCopyDialog = true">
       {{pageData && pageData.render_btn_text}}
     </div>
     <!-- 活动规则 -->
@@ -152,7 +152,7 @@ export default {
     getMaterialById({
       id: this.$params.get('id')
     }).then(res => {
-      this.pageData = JSON.parse(res.data.content)
+      this.pageData = JSON.parse(res.data && res.data.content || 'null')
       console.log(this.pageData)
       this.$nextTick(() => {
         this.thumbsInit()

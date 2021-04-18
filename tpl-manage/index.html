@@ -22,16 +22,16 @@
                   ref="ruleForm1"
                   label-width="120px"
                 >
+                  <el-form-item prop="show_btn_bg_color" class="margin0"></el-form-item>
+                  <el-form-item prop="show_bg_color" class="margin0"></el-form-item>
                   <el-form-item label="描述提示文案" prop="show_info_text">
                     <el-input v-model="formData.show_info_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="推荐按钮文案" prop="show_btn_text">
+                  <el-form-item label="推荐按钮文案" prop="show_btn_text" class="flex-line">
                     <el-input v-model="formData.show_btn_text"></el-input>
+                    <el-color-picker v-model="formData.show_btn_bg_color" ></el-color-picker>
                   </el-form-item>
-                  <el-form-item label="背景色" prop="show_bg_color">
-                    <el-color-picker v-model="formData.show_bg_color" ></el-color-picker>
-                  </el-form-item>
-                  <el-form-item label="背景图" prop="bgImg">
+                  <el-form-item label="背景图" prop="bgImg" class="flex-line">
                     <el-upload
                       class="bg-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
@@ -48,9 +48,10 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸750*1336
                       </div>
                     </el-upload>
+                    <el-color-picker v-model="formData.show_bg_color" ></el-color-picker>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm1')"
@@ -74,7 +75,7 @@
                         <li></li>
                       </ul>
                       <div class="info">{{formData.show_info_text}}</div>
-                      <div class="recommend-btn">
+                      <div class="recommend-btn" :style="'background-color:' + formData.show_btn_bg_color">
                         {{formData.show_btn_text}}
                       </div>
                     </div>
@@ -92,16 +93,16 @@
                   ref="ruleForm2"
                   label-width="120px"
                 >
+                  <el-form-item prop="render_btn_text_bg_color" class="margin0"></el-form-item>
+                  <el-form-item prop="render_bg_color" class="margin0"></el-form-item>
                   <el-form-item label="描述提示文案" prop="render_info_text">
                     <el-input v-model="formData.render_info_text"></el-input>
                   </el-form-item>
-                  <el-form-item label="复制按钮文案" prop="render_btn_text">
+                  <el-form-item label="复制按钮文案" prop="render_btn_text" class="flex-line">
                     <el-input v-model="formData.render_btn_text"></el-input>
+                    <el-color-picker v-model="formData.render_btn_text_bg_color"></el-color-picker>
                   </el-form-item>
-                  <el-form-item label="背景色" prop="render_bg_color">
-                    <el-color-picker v-model="formData.render_bg_color"></el-color-picker>
-                  </el-form-item>
-                  <el-form-item label="背景图" prop="render_bg_img">
+                  <el-form-item label="背景图" prop="render_bg_img" class="flex-line">
                     <el-upload
                       class="bg-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
@@ -118,9 +119,10 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸750*1336
                       </div>
                     </el-upload>
+                    <el-color-picker v-model="formData.render_bg_color"></el-color-picker>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm2')"
@@ -137,7 +139,7 @@
                       <div class="rule-btn">活动规则</div>
                       <div class="poster"></div>
                       <div class="info">{{formData.render_info_text}}</div>
-                      <div class="copy-btn">{{formData.render_btn_text}}</div>
+                      <div class="copy-btn" :style="'background-color:' + formData.render_btn_text_bg_color">{{formData.render_btn_text}}</div>
                     </div>
                   </el-scrollbar>
                 </div>
@@ -153,10 +155,8 @@
                   ref="ruleForm3"
                   label-width="120px"
                 >
-                  <el-form-item label="背景色" prop="invite_bg_color">
-                    <el-color-picker v-model="formData.invite_bg_color"></el-color-picker>
-                  </el-form-item>
-                  <el-form-item label="背景图" prop="invite_bg_img">
+                  <el-form-item prop="invite_bg_color" class="margin0"></el-form-item>
+                  <el-form-item label="背景图" prop="invite_bg_img" class="flex-line">
                     <el-upload
                       class="gift-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
@@ -173,9 +173,10 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸750*1336
                       </div>
                     </el-upload>
+                    <el-color-picker v-model="formData.invite_bg_color"></el-color-picker>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm3')"
@@ -209,6 +210,9 @@
                   ref="ruleForm4"
                   label-width="120px"
                 >
+                  <el-form-item :prop="`poster_list.${tplIdx}.info_text1_color`" class="margin0"></el-form-item>
+                  <el-form-item :prop="`poster_list.${tplIdx}.info_text2_color`" class="margin0"></el-form-item>
+                  <el-form-item :prop="`poster_list.${tplIdx}.info_text3_color`" class="margin0"></el-form-item>
                   <el-form-item label="所选模板">
                     <el-select v-model="tplIdx" placeholder="请选择模板">
                       <el-option v-for="(v, i) in formData.poster_list" :key="i" :label="v.name" :value="i"></el-option>
@@ -216,27 +220,6 @@
                     <el-button type="primary" class="marginL10" @click="addTpl">添加模板</el-button>
                     <el-button type="danger" :disabled="formData.poster_list[tplIdx].is_def" @click="removeTpl">删除模板</el-button>
                   </el-form-item>
-                  <!-- <el-form-item label="蒙层">
-                    <el-upload
-                      class="mask-upload"
-                      :action="baseURL + '/qiniu/uploadFile'"
-                      :file-list="formData.poster_list[tplIdx].album_mask"
-                      :accept="['image/png']"
-                      :on-error="handleError"
-                      :on-success="handleSuccess"
-                      :before-upload="beforeUpload"
-                      @mousedown.native="uploadingKey = `poster_list.${tplIdx}.album_mask`"
-                      drag
-                    >
-                      <i class="el-icon-upload"></i>
-                      <div class="el-upload__text">
-                        将文件拖到此处，或<em>点击上传</em>
-                      </div>
-                      <div class="el-upload__tip" slot="tip">
-                        只能上传png文件，且不超过500kb
-                      </div>
-                    </el-upload>
-                  </el-form-item> -->
                   <el-form-item label="LOGO" :prop="`poster_list.${tplIdx}.logo_img`" :rules="{
                     required: true, message: '请上传LOGO', trigger: 'change'
                   }">
@@ -244,7 +227,7 @@
                       class="logo-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
                       :file-list="formData.poster_list[tplIdx].logo_img"
-                      :accept="['image/png']"
+                      :accept="['image/jpeg', 'image/jpg', 'image/png']"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :before-upload="beforeUpload"
@@ -256,7 +239,7 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸200*80
                       </div>
                     </el-upload>
                   </el-form-item>
@@ -267,7 +250,7 @@
                       class="title-upload"
                       :action="baseURL + '/qiniu/uploadFile'"
                       :file-list="formData.poster_list[tplIdx].title_img"
-                      :accept="['image/png']"
+                      :accept="['image/jpeg', 'image/jpg', 'image/png']"
                       :on-error="handleError"
                       :on-success="handleSuccess"
                       :before-upload="beforeUpload"
@@ -279,7 +262,7 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸300*300
                       </div>
                     </el-upload>
                   </el-form-item>
@@ -325,20 +308,23 @@
                       </el-col>
                     </el-row>
                   </el-form-item>
-                  <el-form-item label="描述文案1" :prop="`poster_list.${tplIdx}.info_text1`" :rules="{
+                  <el-form-item label="描述文案1" :prop="`poster_list.${tplIdx}.info_text1`" class="flex-line" :rules="{
                     required: true, message: '请输入描述文案', trigger: 'blur'
                   }">
                     <el-input v-model="formData.poster_list[tplIdx].info_text1"></el-input>
+                    <el-color-picker v-model="formData.poster_list[tplIdx].info_text1_color" ></el-color-picker>
                   </el-form-item>
-                  <el-form-item label="描述文案2" :prop="`poster_list.${tplIdx}.info_text2`" :rules="{
+                  <el-form-item label="描述文案2" :prop="`poster_list.${tplIdx}.info_text2`" class="flex-line" :rules="{
                     required: true, message: '请输入描述文案', trigger: 'blur'
                   }">
                     <el-input v-model="formData.poster_list[tplIdx].info_text2"></el-input>
+                    <el-color-picker v-model="formData.poster_list[tplIdx].info_text2_color" ></el-color-picker>
                   </el-form-item>
-                  <el-form-item label="描述文案3" :prop="`poster_list.${tplIdx}.info_text3`" :rules="{
+                  <el-form-item label="描述文案3" :prop="`poster_list.${tplIdx}.info_text3`" class="flex-line" :rules="{
                     required: true, message: '请输入描述文案', trigger: 'blur'
                   }">
                     <el-input v-model="formData.poster_list[tplIdx].info_text3"></el-input>
+                    <el-color-picker v-model="formData.poster_list[tplIdx].info_text3_color" ></el-color-picker>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm4')"
@@ -376,10 +362,9 @@
                               <img src="" alt="" />
                               <span>用户名</span>
                             </div>
-                            <p>
-                              {{formData.poster_list[tplIdx].info_text1}}<br />{{formData.poster_list[tplIdx].info_text2}}
-                            </p>
-                            <div class="info">{{formData.poster_list[tplIdx].info_text3}}</div>
+                            <p :style="'color:' + formData.poster_list[tplIdx].info_text1_color">{{formData.poster_list[tplIdx].info_text1}}</p>
+                            <p :style="'color:' + formData.poster_list[tplIdx].info_text2_color">{{formData.poster_list[tplIdx].info_text2}}</p>
+                            <div class="info" :style="'color:' + formData.poster_list[tplIdx].info_text3_color + ';border-color:' + formData.poster_list[tplIdx].info_text3_color">{{formData.poster_list[tplIdx].info_text3}}</div>
                           </div>
                           <div class="right">
                             <div class="qrcode"></div>
@@ -497,7 +482,7 @@
                         将文件拖到此处，或<em>点击上传</em>
                       </div>
                       <div class="el-upload__tip" slot="tip">
-                        只能上传jpg/png文件，且不超过500kb
+                        只能上传jpg/png文件，且不超过500kb，建议尺寸300*300
                       </div>
                     </el-upload>
                   </el-form-item>

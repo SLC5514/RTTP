@@ -29,10 +29,9 @@
             <img :src="userData && userData.avatarUrl" alt="">
             <span>{{userData && userData.nickname}}</span>
           </div>
-          <p>
-            {{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text1}}<br />{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text2}}
-          </p>
-          <div class="info">{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text3}}</div>
+          <p :style="'color:' + ($parent.pageData && $parent.pageData.poster_list[tplIdx].info_text1_color)">{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text1}}</p>
+          <p :style="'color:' + ($parent.pageData && $parent.pageData.poster_list[tplIdx].info_text2_color)">{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text2}}</p>
+          <div class="info" :style="`color:${$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text3_color};border-color:${$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text3_color};`">{{$parent.pageData && $parent.pageData.poster_list[tplIdx].info_text3}}</div>
         </div>
         <div class="right">
           <vue-qr class="qrcode" :text="qrcodeData.url" :logoSrc="qrcodeData.icon" :margin="0"></vue-qr>
@@ -269,6 +268,9 @@ export default {
         .user {
           display: flex;
           align-items: center;
+          & + p {
+            margin-top: 0.1rem;
+          }
           img {
             width: 0.4rem;
             height: 0.4rem;
@@ -287,7 +289,6 @@ export default {
           font-size: 0.36rem;
           font-weight: 400;
           line-height: 0.44rem;
-          margin-top: 0.1rem;
           color: #794df1;
           white-space: nowrap;
           span {
