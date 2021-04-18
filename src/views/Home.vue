@@ -199,13 +199,13 @@ export default {
       }).then((res) => {
         this.userData = res.data || {}
         if (!this.userData.phone) {
-          this.$router.replace({
-            path: '/poster',
-            query: {
-              openid: this.$openId,
-              materialId: this.$params.get('id')
-            },
-          })
+          // this.$router.replace({
+          //   path: '/poster',
+          //   query: {
+          //     openid: this.$openId,
+          //     materialId: this.$params.get('id')
+          //   },
+          // })
         }
       })
     },

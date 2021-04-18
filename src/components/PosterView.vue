@@ -219,18 +219,6 @@ export default {
   overflow: hidden;
   .album {
     max-width: none;
-    // width: 100%;
-    // height: 100%;
-    // object-fit: cover;
-  }
-  .album-mask {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
   }
   .title {
     position: absolute;
@@ -238,7 +226,6 @@ export default {
     top: -1.8rem;
     width: 6rem;
     height: 3.5rem;
-    object-fit: cover;
     z-index: 2;
   }
   .logo {
@@ -248,7 +235,6 @@ export default {
     width: 2.01rem;
     height: 0.79rem;
     background: #e6e6e6;
-    object-fit: cover;
     z-index: 3;
   }
   .btm {
