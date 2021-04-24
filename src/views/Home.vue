@@ -1,7 +1,7 @@
 <template>
   <div :class="'home ' + (pageType <= 1 ? 'bg1' : 'bg2')" :style="pageBgStyle">
     <template v-if="$isiOS">
-      <template v-if="!pageData || (pageType <= 1 && !pageData.show_bg_img[0]) || (pageType > 1 && !pageData.render_bg_img[0])">
+      <template v-if="!pageData || (pageType <= 1 && (!pageData.show_bg_img[0] || !pageData.show_bg_img[0].path)) || (pageType > 1 && (!pageData.render_bg_img[0] || !pageData.render_bg_img[0].path))">
         <img v-if="pageType <= 1" src="../assets/home/bg1.jpg" alt="" class="page-bg-img">
         <img v-else src="../assets/home/bg2.jpg" alt="" class="page-bg-img">
       </template>
@@ -24,7 +24,7 @@
     <!-- 报告生成效果 -->
     <div v-if="pageType === 1" class="preview">
       <div>
-        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :tpl-idx="activeIndex" :finger="true" />
+        <PosterView ref="preview-poster" :user-data="userData" :album-img="albumImg" :album-img-angle="albumImgAngle" :tpl-idx="activeIndex" :finger="true" />
       </div>
     </div>
     <!-- 海报 -->
@@ -96,10 +96,19 @@ import { wechatLogin, getStudentByOpenId, getMaterialById } from '@/api'
 import defAlbumImg from '@/assets/home/album.jpg'
 import giftImg from '@/assets/home/alert.png'
 import html2canvas from 'html2canvas'
+import EXIF from 'exif-js'
 import Swiper from 'swiper'
 import 'swiper/css/swiper.css'
 
+window.EXIF = EXIF;
+
 const rootSize = parseFloat(document.documentElement.style.fontSize)
+
+// 默认背景图
+const defImg = {
+  name: '默认图片',
+  path: '',
+};
 
 export default {
   name: 'Home',
@@ -120,16 +129,10 @@ export default {
       activeIndex: 0, // 所选蒙层位置
       defAlbumImg, // 相册图
       albumImg: null, // 相册图
+      albumImgAngle: 0, // 相册图旋转
       posterImg: null, // 海报图
       userData: null, // 用户数据
       copyTextRandom: 0, // 随机下标
-      copyTextList: [
-        '之前买过变成熟，但娃儿自学效果不好。后来在傲梦学习，因为是老师1对1教学，确实进步神速。讨论一两个编程的小问题，气氛特别好！',
-        'teset',
-        'aaaaaaaaa',
-        'bbbbbbbbbbbbb',
-        'ccccccccccccccccccccccc',
-      ],
     }
   },
   computed: {
@@ -153,7 +156,6 @@ export default {
       id: this.$params.get('id')
     }).then(res => {
       this.pageData = JSON.parse(res.data && res.data.content || 'null')
-      console.log(this.pageData)
       this.$nextTick(() => {
         this.thumbsInit()
       })
@@ -199,13 +201,13 @@ export default {
       }).then((res) => {
         this.userData = res.data || {}
         if (!this.userData.phone) {
-          // this.$router.replace({
-          //   path: '/poster',
-          //   query: {
-          //     openid: this.$openId,
-          //     materialId: this.$params.get('id')
-          //   },
-          // })
+          this.$router.replace({
+            path: '/poster',
+            query: {
+              openid: this.$openId,
+              materialId: this.$params.get('id')
+            },
+          })
         }
       })
     },
@@ -247,6 +249,23 @@ export default {
         } else {
           blob = e.target.result
         }
+        const exifData = EXIF.readFromBinaryFile(e.target.result)
+        this.albumImgAngle = 0
+        if (exifData) {
+          console.log('Orientation', exifData.Orientation)
+          switch (exifData.Orientation) {
+            case 6:
+              this.albumImgAngle = 90
+              break;
+            case 3:
+              this.albumImgAngle = 180
+              break;
+            case 8:
+              this.albumImgAngle = 270
+              break;
+            default: break;
+          }
+        }
         const blobUrl = window.URL.createObjectURL(blob)
         this.albumImg = blobUrl
         this.defAlbumImg = null
@@ -257,16 +276,16 @@ export default {
     generatePointer() {
       const box = document.querySelector('.preview>div')
       const rect = box.getBoundingClientRect()
-      const scale = 1 / (this.$refs['preview-poster'].scale || 1)
+      const scale = 1 / (this.$refs['preview-poster'].scale || 1) + 1
       let w = box.scrollWidth * scale
       let h = box.scrollHeight * scale
       const canvas = document.createElement('canvas')
       canvas.width = w
       canvas.height = h
-      let left = 0
-      if (document.documentElement.clientWidth > 750) {
-        left = document.documentElement.clientWidth - 750
-      }
+      // let left = 0
+      // if (document.documentElement.clientWidth > 750) {
+      //   left = document.documentElement.clientWidth - 750
+      // }
       html2canvas(box, {
         canvas: canvas,
         scale: scale,
@@ -276,9 +295,10 @@ export default {
         useCORS: true,
         width: w,
         hegiht: h,
-        windowWidth: w,
-        windowHeight: h,
-        x: window.scrollX + rect.left - left / 2,
+        // windowWidth: w,
+        // windowHeight: h,
+        x: window.scrollX + rect.left,
+        // x: window.scrollX + rect.left - left / 2,
         y: window.scrollY + rect.top,
         scrollX: 0,
         scrollY: 0,
@@ -369,6 +389,7 @@ export default {
       width: 100%;
       height: 100%;
       background-color: #fff6c1;
+      position: absolute;
     }
     .qrcode {
       position: absolute;
@@ -453,8 +474,6 @@ export default {
     font-weight: 800;
     color: #ffffff;
     text-align: center;
-    text-shadow: 0px 0.08rem 0.08rem rgba(255, 141, 58, 0.86);
-    box-shadow: 0px 0.08rem 0.08rem #ff7611;
   }
   .reselect-btn {
     display: inline-block;
@@ -462,7 +481,6 @@ export default {
     height: 0.9rem;
     line-height: 0.9rem;
     background: #ada9ff;
-    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
     border-radius: 0.5rem;
     text-align: center;
     font-size: 0.4rem;
@@ -476,7 +494,6 @@ export default {
     height: 0.9rem;
     line-height: 0.9rem;
     background: #fff6c1;
-    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
     border-radius: 0.5rem;
     text-align: center;
     font-size: 0.4rem;
@@ -489,13 +506,12 @@ export default {
     height: 0.9rem;
     line-height: 0.9rem;
     margin: 0 auto;
-    background: #fff6c1;
-    box-shadow: 0 0 0.5rem 0 rgba(39, 34, 149, 0.23);
+    background: #fddc88;
     border-radius: 0.5rem;
     text-align: center;
     font-size: 0.38rem;
     font-weight: 800;
-    color: #ff900e;
+    color: #fff;
   }
 
   .tada {

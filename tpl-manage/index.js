@@ -304,7 +304,7 @@ new Vue({
       ],
       render_btn_text: [
         { required: true, message: '请输入按钮文案', trigger: 'blur' },
-        { max: 16, message: '长度不能大于 16 个字符', trigger: ['change', 'blur'] }
+        { max: 12, message: '长度不能大于 12 个字符', trigger: ['change', 'blur'] }
       ],
       gift_img: [
         { required: true, message: '请上传礼品图', trigger: 'change' },

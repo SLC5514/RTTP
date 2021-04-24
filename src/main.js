@@ -44,6 +44,7 @@ Vue.prototype.$oauth = function () {
 const u = navigator.userAgent;
 Vue.prototype.$isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; // android终端
 Vue.prototype.$isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); // ios终端
+Vue.prototype.$isiOS = true;
 
 new Vue({
   router,

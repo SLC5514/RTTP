@@ -1,7 +1,7 @@
 <template>
   <div class="container" :style="pageBgStyle">
     <template v-if="$isiOS">
-      <template v-if="!pageData || !pageData.invite_bg_img[0]">
+      <template v-if="!pageData || (!pageData.invite_bg_img[0] || !pageData.invite_bg_img[0].path)">
         <img src="../assets/poster/bg.jpg" alt="" class="page-bg-img">
       </template>
       <template v-else-if="pageData && pageData.invite_bg_img[0].path">
@@ -14,7 +14,6 @@
       <button @click="phoneFn">限时免费 立即体验</button>
     </div>
   </div>
-
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
-  <div class="poster-view-box" ref="box" :style="posterViewStyle">
-    <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt=""
-      :style="albumImgStyle"
+  <div class="poster-view-box" ref="box" :style="posterViewStyle"
+      v-finger:multipoint-start="finger ? multipointStart : () => {}"
       v-finger:press-move="finger ? pressMove : () => {}"
       v-finger:rotate="finger ? rotate : () => {}"
       v-finger:pinch="finger ? pinch : () => {}"
     >
+    <img class="album" ref="album-img" v-if="albumImg" :src="albumImg" alt="" :style="albumImgStyle" />
     <img class="album-mask"
       v-if="$parent.pageData && $parent.pageData.poster_list[tplIdx].album_mask[0] && $parent.pageData.poster_list[tplIdx].album_mask[0].path"
       :src="$parent.pageData.poster_list[tplIdx].album_mask[0].path"
@@ -57,24 +57,26 @@ import tplT8 from '@/assets/home/tpl_t8.png'
 const defAlbumImgAttr = {
   w: '',
   h: '',
-  x: 0,
-  y: 0,
-  angle: 0,
-  zoom: 1
+  translateX: 0,
+  translateY: 0,
+  rotateZ: 0,
+  scaleX: 1,
+  scaleY: 1,
 }
 
 export default {
   name: 'PosterView',
-  props: ['userData', 'albumImg', 'tplIdx', 'finger'],
+  props: ['userData', 'albumImg', 'albumImgAngle', 'tplIdx', 'finger'],
   components: {
     vueQr,
   },
   data() {
     return {
       userImg,
-      scale: 1,
+      warpScale: 1,
+      imgScale: 1,
       qrcodeData: {
-        url: window.location.origin + '/poster?jtOpenId=' + this.$openId + '&materialId=' + this.$params.get('id') + (this.$params.get('debug') ? '&debug=' + this.$params.get('debug') : ''),
+        url: `${window.location.origin}/poster?jtOpenId=${this.$openId}&materialId=${this.$params.get('id')}${this.$params.get('debug') ? '&debug=' + this.$params.get('debug') : ''}`,
         // icon: '/favicon.ico',
       }, // 二维码数据
       albumImgAttr: JSON.parse(JSON.stringify(defAlbumImgAttr)),
@@ -84,15 +86,15 @@ export default {
   computed: {
     posterViewStyle() {
       return {
-        transform: `scale(${this.scale})`,
-        // height: (1 / this.scale) * 100 + '%',
+        transform: `scale(${this.warpScale})`,
+        // height: (1 / this.warpScale) * 100 + '%',
       }
     },
     albumImgStyle() {
       return {
         width: this.albumImgAttr.w + 'px',
         height: this.albumImgAttr.h + 'px',
-        transform: `translate(${this.albumImgAttr.x}px, ${this.albumImgAttr.y}px) rotate(${this.albumImgAttr.angle}deg) scale(${this.albumImgAttr.zoom})`
+        transform: `translate(${this.albumImgAttr.translateX}px, ${this.albumImgAttr.translateY}px) rotate(${this.albumImgAttr.rotateZ + (this.albumImgAngle || 0)}deg) scale(${this.albumImgAttr.scaleX}, ${this.albumImgAttr.scaleY})`
       }
     }
   },
@@ -108,7 +110,7 @@ export default {
     init() {
       const box = this.$refs['box']
       const parent = box.parentNode
-      this.scale = parent.clientWidth / box.clientWidth
+      this.warpScale = parent.clientWidth / box.clientWidth
       this.$nextTick(() => {
         // 图片尺寸位置初始化
         const albumImg = this.$refs['album-img'];
@@ -131,29 +133,31 @@ export default {
                 self.albumImgAttr.h = ph;
                 self.albumImgAttr.w = w * hr;
               }
-              self.albumImgAttr.x = (pw - self.albumImgAttr.w) / 2;
-              self.albumImgAttr.y = (ph - self.albumImgAttr.h) / 2;
+              self.albumImgAttr.translateX = (pw - self.albumImgAttr.w) / 2;
+              self.albumImgAttr.translateY = (ph - self.albumImgAttr.h) / 2;
             }
           }
         }
       })
     },
-
     pressMove(e) {
       e.stopPropagation();
       e.preventDefault();
-      this.albumImgAttr.x += e.deltaX / this.scale;
-      this.albumImgAttr.y += e.deltaY / this.scale;
+      this.albumImgAttr.translateX += e.deltaX / this.warpScale;
+      this.albumImgAttr.translateY += e.deltaY / this.warpScale;
     },
     rotate(e) {
       e.stopPropagation();
       e.preventDefault();
-      this.albumImgAttr.angle = e.angle;
+      this.albumImgAttr.rotateZ += e.angle;
+    },
+    multipointStart() {
+      this.imgScale = this.albumImgAttr.scaleX;
     },
     pinch(e) {
       e.stopPropagation();
       e.preventDefault();
-      this.albumImgAttr.zoom = e.zoom;
+      this.albumImgAttr.scaleX = this.albumImgAttr.scaleY = this.imgScale * e.zoom;
     },
     // 处理样式
     getPxStyle(paramStyle, toRem) {
